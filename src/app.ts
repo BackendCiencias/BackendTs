@@ -13,7 +13,12 @@ app.set('port', PORT)
 //middlewares 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(cors());
+let corsOptions = {
+    origin: ['http://localhost:3000'],
+    credentials: true,
+    optionSucccesStatus:200
+};
+app.use(cors(corsOptions));
 
 // routes
 app.use(authRoutes);
