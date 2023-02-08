@@ -1,7 +1,8 @@
 // import "dotenv/config"
 import express, { Application } from 'express'
-import authRoutes from './routes/auth'
+import authRoutes from './routes/auth.routes'
 import morgan from 'morgan'
+import cors from 'cors'
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000
@@ -12,6 +13,7 @@ app.set('port', PORT)
 //middlewares 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors());
 
 // routes
 app.use(authRoutes);
