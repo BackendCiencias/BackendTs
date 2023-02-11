@@ -28,36 +28,51 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         password: req.body.password,
     });
     secretary.password = yield secretary.encryptPassword(secretary.password);
-    const savedSecretary = yield secretary.save();
+    const { _id, email, names } = yield secretary.save();
     // .catch((error) => {
     //     console.log(error);
     //     res.send("Error en la creación");
     // });
-    console.log(savedSecretary);
+    console.log({ email, names });
     //token 
-    const token = jsonwebtoken_1.default.sign({ _id: savedSecretary._id }, process.env.TOKEN_SECRET || 'tokentest');
-    res.header('auth-token', token).json(savedSecretary);
+    const token = jsonwebtoken_1.default.sign({ _id: _id }, process.env.TOKEN_SECRET || 'tokentest');
+    res.header('auth-token', token).json({ _id, email, names });
     res.send('signup');
 });
 exports.signup = signup;
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // finding current secretary
     const secretary = yield secretary_model_1.default.findOne({ email: req.body.email });
     if (!secretary)
         return res.status(400).json('Email or password is wrong');
+    // checking password
     const okPasword = yield secretary.validatePassword(req.body.password);
     if (!okPasword)
         return res.status(400).json('Invalid Password');
+    // setting token
     const token = jsonwebtoken_1.default.sign({ _id: secretary._id }, process.env.TOKEN_SECRET || 'tokentest', {
         expiresIn: 60 * 60 * 24
     });
-    res.header('auth-token', token).json(secretary);
+    // ENVIAR - (email, names)
+    // sending token
+    res.cookie('auth-token', token).json({
+        email: secretary.email,
+        names: secretary.names,
+        _id: secretary._id
+    });
 });
 exports.signin = signin;
 const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // finding current secretary
     const secretary = yield secretary_model_1.default.findById(req.secretaryId, { password: 0 });
     if (!secretary)
         return res.status(404).json('No secretary found');
-    res.json(secretary);
+    // sending res
+    res.json({
+        email: secretary.email,
+        names: secretary.names,
+        _id: secretary._id
+    });
 });
 exports.profile = profile;
 //# sourceMappingURL=auth.controller.js.map

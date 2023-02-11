@@ -1,9 +1,9 @@
 import Secretary, { ISecretary } from '../models/secretary.model';
 import { Request , Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { token } from 'morgan';
 
 export const signup =  async(req: Request, res: Response) => {
+
     // saving a new secretary
     const secretary: ISecretary = new Secretary({
         names: req.body.names,
@@ -16,34 +16,57 @@ export const signup =  async(req: Request, res: Response) => {
         password: req.body.password,
     });
     secretary.password =  await secretary.encryptPassword(secretary.password);
-    const savedSecretary = await secretary.save();
+    const {_id, email, names} = await secretary.save();
+
+
     // .catch((error) => {
     //     console.log(error);
     //     res.send("Error en la creación");
     // });
-    console.log(savedSecretary);
+    console.log({email, names});
+
 
     //token 
-    const token:string = jwt.sign({_id: savedSecretary._id}, process.env.TOKEN_SECRET || 'tokentest' );
-    res.header('auth-token',token).json(savedSecretary);
+    const token:string = jwt.sign({_id: _id}, process.env.TOKEN_SECRET || 'tokentest' );
+    res.header('auth-token',token).json({_id, email, names});
     res.send('signup')
 };
 
 export const signin = async (req: Request, res: Response) => {
+
+    // finding current secretary
     const secretary = await Secretary.findOne({email: req.body.email});
     if(!secretary) return res.status(400).json('Email or password is wrong');
 
+    // checking password
     const okPasword: boolean = await secretary.validatePassword(req.body.password);
     if(!okPasword) return res.status(400).json('Invalid Password');
+
+    // setting token
     const token = jwt.sign({_id: secretary._id}, process.env.TOKEN_SECRET || 'tokentest',{
         expiresIn: 60 * 60 *24
     });
+    
+    // ENVIAR - (email, names)
 
-    res.header('auth-token', token).json(secretary);
+    // sending token
+    res.cookie('auth-token', token).json({
+        email: secretary.email,
+        names: secretary.names,
+        _id: secretary._id
+    });
 };
 
 export const profile = async (req: Request, res: Response) => {
+    
+    // finding current secretary
     const secretary = await Secretary.findById(req.secretaryId, {password: 0});
     if(!secretary) return res.status(404).json('No secretary found');
-    res.json(secretary);
+
+    // sending res
+    res.json({
+        email: secretary.email,
+        names: secretary.names,
+        _id: secretary._id
+    });
 };

@@ -23,6 +23,9 @@ const studentSchema = new mongoose_1.Schema({
     pension: [{ ref: "Pension", type: mongoose_1.Schema.Types.ObjectId }],
     tutor: [{ ref: "Tutor", type: mongoose_1.Schema.Types.ObjectId }],
     contracts: [{ ref: "Contracts", type: mongoose_1.Schema.Types.ObjectId }]
+}, {
+    timestamps: true,
+    versionKey: false,
 });
 exports.default = (0, mongoose_1.model)("Student", studentSchema);
 //# sourceMappingURL=student.model.js.map

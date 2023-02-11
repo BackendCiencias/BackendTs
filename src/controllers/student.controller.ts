@@ -16,8 +16,6 @@ export const createStudent =  async(req: Request, res: Response) => {
         grade: req.body.grade,
         collegue: req.body.collegue,
     });
-
-    
     // FALTA HACER FUNCIONES PARA ESTOS: 
     // pension: [ Types.ObjectId];
     // tutor: [ Types.ObjectId];

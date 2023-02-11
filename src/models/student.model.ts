@@ -39,6 +39,10 @@ const studentSchema = new Schema({
   pension: [{ref: "Pension", type: Schema.Types.ObjectId }],
   tutor: [{ref: "Tutor", type: Schema.Types.ObjectId }],
   contracts: [{ref: "Contracts", type: Schema.Types.ObjectId }]
+},
+{
+  timestamps: true,
+  versionKey: false,
 });
 
 export default model<IStudent>("Student", studentSchema);

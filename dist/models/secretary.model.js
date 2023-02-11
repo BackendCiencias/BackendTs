@@ -29,6 +29,9 @@ const secretarySchema = new mongoose_1.Schema({
     phone: { type: Number, required: true },
     email: { type: String, unique: true, required: true, lowercase: true },
     password: { type: String, required: true },
+}, {
+    timestamps: true,
+    versionKey: false,
 });
 secretarySchema.methods.encryptPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
     const salt = yield bcryptjs_1.default.genSalt(10);
