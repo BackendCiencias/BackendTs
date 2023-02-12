@@ -15,14 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.profile = exports.signin = exports.signup = void 0;
 const secretary_services_1 = require("./../services/secretary.services");
 const secretary_model_1 = __importDefault(require("../models/secretary.model"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const error_handle_1 = require("../utils/error.handle");
 const secretary_services_2 = require("../services/secretary.services");
 const signup = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { _id, email, names } = yield (0, secretary_services_2.registerSecretary)(body);
-        const token = jsonwebtoken_1.default.sign({ _id: _id }, process.env.TOKEN_SECRET || 'tokentest');
-        res.cookie('auth-token', token).json({ _id, email, names });
+        const { token, data } = yield (0, secretary_services_2.registerSecretary)(body);
+        res.cookie('auth-token', token).json({ data });
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_SECRETARY', e);
@@ -33,9 +31,9 @@ const signin = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { email, password } = body;
         const responseSecretary = yield (0, secretary_services_1.loginSecretary)({ email, password });
-        if (responseSecretary === "PASSWORD_INCORRECT" || responseSecretary === "EMAIL_INCORRECT") {
+        if (responseSecretary === "CONTRASEÑA_INCORRECTA" || responseSecretary === "EMAIL_INCORRECTO") {
             res.status(400);
-            return res.send(responseSecretary);
+            return res.send({ "error": responseSecretary });
         }
         const { token } = responseSecretary;
         // sending token

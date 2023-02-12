@@ -6,25 +6,26 @@ export const registerSecretary = async (secretary: ISecretary) => {
   // if(checkIs) return "ALREADY_USER";
 
   const createdSecretary = await Secretary.create(secretary);
-  createdSecretary.password = await createdSecretary.encryptPassword(
-    createdSecretary.password
-  );
+  createdSecretary.password = await createdSecretary.encryptPassword(createdSecretary.password);
+  
   const savedSecretary = await createdSecretary.save();
-  return savedSecretary;
+  const {_id, email, names}  = savedSecretary;
+
+  const data = {_id, email, names};
+  const token = generateToken(`${_id}`);
+
+  return {token, data};
 };
 
 export const loginSecretary = async ({ email, password }: Auth) => {
   const secretary = await Secretary.findOne({ email });
-  if (!secretary) return "EMAIL_INCORRECT";
+  if (!secretary) return "EMAIL_INCORRECTO";
 
-  const isCorrect: boolean = await secretary.validatePassword(password); //validate free?
-  if (!isCorrect) return "PASSWORD_INCORRECT";
+  const isCorrect: boolean = await secretary.validatePassword(password); //validate in utils?
+  if (!isCorrect) return "CONTRASEÑA_INCORRECTA";
 
   const data = { email: secretary.email, names: secretary.names, _id: secretary._id }
-
-  const token = generateToken(secretary.id);
-  return {
-    token,
-    data
-  };
+  const token = generateToken(`${secretary._id}`);
+  
+  return {token , data};
 };

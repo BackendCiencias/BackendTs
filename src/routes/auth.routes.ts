@@ -1,5 +1,6 @@
+import { verifyToken } from './../utils/jwt.handle';
+// import { checkJwt } from './../middlewares/session';
 import { Router } from 'express';
-import { verifyToken } from '../utils/jwt.handle';
 const router: Router = Router();
 
 import {signin, signup, profile} from '../controllers/auth.controller'

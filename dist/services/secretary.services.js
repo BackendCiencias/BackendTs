@@ -21,22 +21,22 @@ const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, funct
     const createdSecretary = yield secretary_model_1.default.create(secretary);
     createdSecretary.password = yield createdSecretary.encryptPassword(createdSecretary.password);
     const savedSecretary = yield createdSecretary.save();
-    return savedSecretary;
+    const { _id, email, names } = savedSecretary;
+    const data = { _id, email, names };
+    const token = (0, jwt_handle_1.generateToken)(`${_id}`);
+    return { token, data };
 });
 exports.registerSecretary = registerSecretary;
 const loginSecretary = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
     const secretary = yield secretary_model_1.default.findOne({ email });
     if (!secretary)
-        return "EMAIL_INCORRECT";
-    const isCorrect = yield secretary.validatePassword(password); //validate free?
+        return "EMAIL_INCORRECTO";
+    const isCorrect = yield secretary.validatePassword(password); //validate in utils?
     if (!isCorrect)
-        return "PASSWORD_INCORRECT";
+        return "CONTRASEÑA_INCORRECTA";
     const data = { email: secretary.email, names: secretary.names, _id: secretary._id };
-    const token = (0, jwt_handle_1.generateToken)(secretary.id);
-    return {
-        token,
-        data
-    };
+    const token = (0, jwt_handle_1.generateToken)(`${secretary._id}`);
+    return { token, data };
 });
 exports.loginSecretary = loginSecretary;
 //# sourceMappingURL=secretary.services.js.map

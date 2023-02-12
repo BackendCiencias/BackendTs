@@ -1,15 +1,13 @@
+import { daySetTime } from './../utils/dayTime';
 import { loginSecretary } from './../services/secretary.services';
 import Secretary from '../models/secretary.model';
 import { Request , Response } from 'express';
-import jwt from 'jsonwebtoken';
 import { handleHttp } from '../utils/error.handle';
 import { registerSecretary } from '../services/secretary.services';
 export const signup =  async({body}: Request, res: Response) => {
     try{
-        const {_id, email, names}= await registerSecretary(body);
-        const token:string = jwt.sign({_id: _id}, process.env.TOKEN_SECRET || 'tokentest' );
-        res.cookie('auth-token',token).json({_id, email, names});
-
+        const {token, data} = await registerSecretary(body);
+        res.cookie('auth-token', token,).json({data});
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_SECRETARY',e);
     }
@@ -20,12 +18,12 @@ export const signin = async ({body}: Request, res: Response) => {
         const {email, password} = body;
         const responseSecretary = await loginSecretary({email, password});
 
-        if(responseSecretary === "PASSWORD_INCORRECT" || responseSecretary === "EMAIL_INCORRECT"){
+        if(responseSecretary === "CONTRASEÑA_INCORRECTA" || responseSecretary === "EMAIL_INCORRECTO"){
             res.status(400)
-            return res.send(responseSecretary);
+            return res.send({"error": responseSecretary});
         } 
         const {token} = responseSecretary;
-
+        
         // sending token
         res.cookie('auth-token', token).json(responseSecretary);
     }catch(e){
