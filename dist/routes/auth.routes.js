@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const verifyToken_1 = require("../libs/verifyToken");
+const jwt_handle_1 = require("../utils/jwt.handle");
 const router = (0, express_1.Router)();
 const auth_controller_1 = require("../controllers/auth.controller");
 router.get('/', (req, res) => {
@@ -9,6 +9,6 @@ router.get('/', (req, res) => {
 });
 router.post('/api/auth/secretary/signup', auth_controller_1.signup);
 router.post('/api/auth/secretary/signin', auth_controller_1.signin);
-router.get('/api/auth/secretary/profile', verifyToken_1.TokenValidation, auth_controller_1.profile);
+router.get('/api/auth/secretary/profile', jwt_handle_1.verifyToken, auth_controller_1.profile);
 exports.default = router;
 //# sourceMappingURL=auth.routes.js.map

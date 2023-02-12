@@ -13,53 +13,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.profile = exports.signin = exports.signup = void 0;
+const secretary_services_1 = require("./../services/secretary.services");
 const secretary_model_1 = __importDefault(require("../models/secretary.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // saving a new secretary
-    const secretary = new secretary_model_1.default({
-        names: req.body.names,
-        genre: req.body.genre,
-        dni: req.body.dni,
-        nationality: req.body.nationality,
-        address: req.body.address,
-        phone: req.body.phone,
-        email: req.body.email,
-        password: req.body.password,
-    });
-    secretary.password = yield secretary.encryptPassword(secretary.password);
-    const { _id, email, names } = yield secretary.save();
-    // .catch((error) => {
-    //     console.log(error);
-    //     res.send("Error en la creación");
-    // });
-    console.log({ email, names });
-    //token 
-    const token = jsonwebtoken_1.default.sign({ _id: _id }, process.env.TOKEN_SECRET || 'tokentest');
-    res.header('auth-token', token).json({ _id, email, names });
-    res.send('signup');
+const error_handle_1 = require("../utils/error.handle");
+const secretary_services_2 = require("../services/secretary.services");
+const signup = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { _id, email, names } = yield (0, secretary_services_2.registerSecretary)(body);
+        const token = jsonwebtoken_1.default.sign({ _id: _id }, process.env.TOKEN_SECRET || 'tokentest');
+        res.cookie('auth-token', token).json({ _id, email, names });
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_SECRETARY', e);
+    }
 });
 exports.signup = signup;
-const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // finding current secretary
-    const secretary = yield secretary_model_1.default.findOne({ email: req.body.email });
-    if (!secretary)
-        return res.status(400).json('Email or password is wrong');
-    // checking password
-    const okPasword = yield secretary.validatePassword(req.body.password);
-    if (!okPasword)
-        return res.status(400).json('Invalid Password');
-    // setting token
-    const token = jsonwebtoken_1.default.sign({ _id: secretary._id }, process.env.TOKEN_SECRET || 'tokentest', {
-        expiresIn: 60 * 60 * 24
-    });
-    // ENVIAR - (email, names)
-    // sending token
-    res.cookie('auth-token', token).json({
-        email: secretary.email,
-        names: secretary.names,
-        _id: secretary._id
-    });
+const signin = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = body;
+        const responseSecretary = yield (0, secretary_services_1.loginSecretary)({ email, password });
+        if (responseSecretary === "PASSWORD_INCORRECT" || responseSecretary === "EMAIL_INCORRECT") {
+            res.status(400);
+            return res.send(responseSecretary);
+        }
+        const { token, data } = responseSecretary;
+        // sending token
+        res.cookie('auth-token', token).json(data);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNIN_SECRETARY', e);
+    }
 });
 exports.signin = signin;
 const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
