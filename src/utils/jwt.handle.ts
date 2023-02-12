@@ -20,7 +20,6 @@ export const verifyToken = (req : Request, res: Response ,next: NextFunction) =>
     
     const payload = verify(token, JWT_TOKEN) as IPayload;
     req.secretaryId = payload.id;
-
     next();
 }
 

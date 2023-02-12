@@ -37,9 +37,9 @@ const signin = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(400);
             return res.send(responseSecretary);
         }
-        const { token, data } = responseSecretary;
+        const { token } = responseSecretary;
         // sending token
-        res.cookie('auth-token', token).json(data);
+        res.cookie('auth-token', token).json(responseSecretary);
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNIN_SECRETARY', e);

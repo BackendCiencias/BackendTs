@@ -24,10 +24,10 @@ export const signin = async ({body}: Request, res: Response) => {
             res.status(400)
             return res.send(responseSecretary);
         } 
-        const {token, data} = responseSecretary;
+        const {token} = responseSecretary;
 
         // sending token
-        res.cookie('auth-token', token).json(data);
+        res.cookie('auth-token', token).json(responseSecretary);
     }catch(e){
         handleHttp(res, 'ERROR_SIGNIN_SECRETARY',e);
     }
