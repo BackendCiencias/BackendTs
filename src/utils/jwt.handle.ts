@@ -16,11 +16,9 @@ export const generateToken = (id:string) => {
 }
 export const verifyToken = (req : Request, res: Response ,next: NextFunction) => {
     const token = req.cookies["auth-token"];
-    console.log(token);
     if(!token) return res.status(401).json('Acces denied');
     
     const payload = verify(token, JWT_TOKEN) as IPayload;
-    console.log(payload.id)
     req.secretaryId = payload.id;
 
     next();
