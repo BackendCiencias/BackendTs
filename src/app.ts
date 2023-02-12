@@ -1,6 +1,9 @@
 // import "dotenv/config"
 import express, { Application } from 'express'
 import authRoutes from './routes/auth.routes'
+import classroomRoutes from './routes/classroom.routes'
+import studentRoutes from './routes/student.routes'
+import tutorRoutes from './routes/tutor.routes'
 import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -23,6 +26,6 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 // routes
-app.use(authRoutes);
+app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes);
 
 export default app;

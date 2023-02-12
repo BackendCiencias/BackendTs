@@ -8,18 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStudent = void 0;
-const student_services_1 = require("./../services/student.services");
-const error_handle_1 = require("../utils/error.handle");
-const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseStudent = yield (0, student_services_1.registerStudent)(body);
-        res.send(responseStudent);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_STUDENT', e);
-    }
+exports.registerTutor = void 0;
+const tutor_model_1 = __importDefault(require("./../models/tutor.model"));
+const registerTutor = (tutor) => __awaiter(void 0, void 0, void 0, function* () {
+    const tutorCreated = yield tutor_model_1.default.create(tutor);
+    const savedSecretary = yield tutorCreated.save();
+    return savedSecretary;
 });
-exports.createStudent = createStudent;
-//# sourceMappingURL=student.controller.js.map
+exports.registerTutor = registerTutor;
+//# sourceMappingURL=tutor.services.js.map

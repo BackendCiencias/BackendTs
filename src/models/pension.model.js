@@ -2,6 +2,7 @@ import { Schema, model, Types } from "mongoose";
 
 const PensionSchema = new Schema({
     year: {type: Number, required: true},
+    student: [{ ref: "Student", type: Schema.Types.ObjectId }],
     march: {
         payed: {type: Number},
         total: {type: Number, required: true},

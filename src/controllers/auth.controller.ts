@@ -4,7 +4,7 @@ import Secretary from '../models/secretary.model';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
 import { registerSecretary } from '../services/secretary.services';
-export const signup =  async({body}: Request, res: Response) => {
+export const signupSecretary =  async({body}: Request, res: Response) => {
     try{
         const {token, data} = await registerSecretary(body);
         res.cookie('auth-token', token,).json({data});
@@ -13,7 +13,7 @@ export const signup =  async({body}: Request, res: Response) => {
     }
 };
 
-export const signin = async ({body}: Request, res: Response) => {
+export const signinSecretary = async ({body}: Request, res: Response) => {
     try{
         const {email, password} = body;
         const responseSecretary = await loginSecretary({email, password});
@@ -32,7 +32,7 @@ export const signin = async ({body}: Request, res: Response) => {
     
 };
 
-export const profile = async (req: Request, res: Response) => {
+export const profileSecretary = async (req: Request, res: Response) => {
     
     // finding current secretary
     const secretary = await Secretary.findById(req.secretaryId, {password: 0});

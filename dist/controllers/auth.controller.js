@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profile = exports.signin = exports.signup = void 0;
+exports.profileSecretary = exports.signinSecretary = exports.signupSecretary = void 0;
 const secretary_services_1 = require("./../services/secretary.services");
 const secretary_model_1 = __importDefault(require("../models/secretary.model"));
 const error_handle_1 = require("../utils/error.handle");
 const secretary_services_2 = require("../services/secretary.services");
-const signup = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+const signupSecretary = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { token, data } = yield (0, secretary_services_2.registerSecretary)(body);
         res.cookie('auth-token', token).json({ data });
@@ -26,8 +26,8 @@ const signup = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* ()
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_SECRETARY', e);
     }
 });
-exports.signup = signup;
-const signin = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.signupSecretary = signupSecretary;
+const signinSecretary = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = body;
         const responseSecretary = yield (0, secretary_services_1.loginSecretary)({ email, password });
@@ -43,8 +43,8 @@ const signin = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* ()
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNIN_SECRETARY', e);
     }
 });
-exports.signin = signin;
-const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.signinSecretary = signinSecretary;
+const profileSecretary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // finding current secretary
     const secretary = yield secretary_model_1.default.findById(req.secretaryId, { password: 0 });
     if (!secretary)
@@ -56,5 +56,5 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         _id: secretary._id
     });
 });
-exports.profile = profile;
+exports.profileSecretary = profileSecretary;
 //# sourceMappingURL=auth.controller.js.map

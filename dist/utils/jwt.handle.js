@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = exports.generateToken = void 0;
+const error_handle_1 = require("../utils/error.handle");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const JWT_TOKEN = process.env.JWT_SECRET || 'tokentest';
 const generateToken = (_id) => {
@@ -15,9 +16,14 @@ const verifyToken = (req, res, next) => {
     console.log(token);
     if (!token)
         return res.status(401).json('Acces denied');
-    const payload = (0, jsonwebtoken_1.verify)(token, JWT_TOKEN);
-    req.secretaryId = payload._id;
-    next();
+    try {
+        const payload = (0, jsonwebtoken_1.verify)(token, JWT_TOKEN);
+        req.secretaryId = payload._id;
+        next();
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_VERIFICATION_TOKEN', e);
+    }
 };
 exports.verifyToken = verifyToken;
 // export const verifyToken = (jwt:string) => {

@@ -8,8 +8,8 @@ const auth_controller_1 = require("../controllers/auth.controller");
 router.get('/', (req, res) => {
     res.send('Backend alive... at least for now');
 });
-router.post('/api/auth/secretary/signup', auth_controller_1.signup);
-router.post('/api/auth/secretary/signin', auth_controller_1.signin);
-router.get('/api/auth/secretary/profile', jwt_handle_1.verifyToken, auth_controller_1.profile);
+router.post('/api/auth/secretary/signup', auth_controller_1.signupSecretary);
+router.post('/api/auth/secretary/signin', auth_controller_1.signinSecretary);
+router.get('/api/auth/secretary/profile', jwt_handle_1.verifyToken, auth_controller_1.profileSecretary);
 exports.default = router;
 //# sourceMappingURL=auth.routes.js.map

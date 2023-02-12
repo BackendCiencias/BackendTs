@@ -1,3 +1,4 @@
+import { handleHttp } from '../utils/error.handle';
 import {sign, verify} from 'jsonwebtoken';
 import { NextFunction, Request, Response } from "express"
 const JWT_TOKEN = process.env.JWT_SECRET || 'tokentest';
@@ -18,10 +19,14 @@ export const verifyToken = (req : Request, res: Response ,next: NextFunction) =>
     const token = req.cookies["auth-token"];
     console.log(token);
     if(!token) return res.status(401).json('Acces denied');
+    try{
+        const payload = verify(token, JWT_TOKEN) as IPayload;
+        req.secretaryId = payload._id;
+        next();
+    }catch(e){
+        handleHttp(res, 'ERROR_VERIFICATION_TOKEN',e);
+    }
     
-    const payload = verify(token, JWT_TOKEN) as IPayload;
-    req.secretaryId = payload._id;
-    next();
 }
 
 
