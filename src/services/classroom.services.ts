@@ -1,9 +1,10 @@
 import Classroom, { IClassroom } from './../models/classroom.model';
 
-interface SimplyClassroom{
-    grade: string,
-    collegue: string,
-    vacancies:number
+interface ISimplyClassroom{
+    grade: string;
+    collegue: string;
+    capacity: number;
+    ocuped: number;
 }
 
 export const updateVacancies  = () =>{
@@ -13,12 +14,12 @@ export const updateVacancies  = () =>{
 
 export const getAllVacancies  = async () =>{
     const allClassroom= await Classroom.find();
-    const spreadClassroom:SimplyClassroom[] = [];
+    const spreadClassroom:ISimplyClassroom[] = [];
 
     allClassroom.forEach(element => {
         const {grade, collegue, capacity, students} = element;
-        const vacancies = capacity - students.length;
-        spreadClassroom.push({grade, collegue, vacancies})
+        const ocuped = students.length;
+        spreadClassroom.push({grade, collegue, capacity, ocuped})
     });
     return spreadClassroom;
 }
@@ -27,12 +28,12 @@ export const getVacanciesByCollegue =async (collegue:string) => {
     console.log(collegue);
     if(!collegue || collegue == "undefined") return "MISSING_COLLEGUE_ARGUMENT";
     const allClassroom= await Classroom.find({"collegue": collegue});
-    const spreadClassroom:SimplyClassroom[] = [];
+    const spreadClassroom:ISimplyClassroom[] = [];
 
     allClassroom.forEach(element => {
         const {grade, collegue, capacity, students} = element;
-        const vacancies = capacity - students.length;
-        spreadClassroom.push({grade, collegue, vacancies})
+        const ocuped = students.length;
+        spreadClassroom.push({grade, collegue, capacity, ocuped})
     });
     return spreadClassroom;
 }

@@ -18,7 +18,7 @@ const getVacancies = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.send(responseVacancies);
     }
     catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_VACANCIES', e);
+        (0, error_handle_1.handleHttp)(res, 'ERROR_GETALL_VACANCIES', e);
     }
 });
 exports.getVacancies = getVacancies;

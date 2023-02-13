@@ -8,7 +8,7 @@ export const getVacancies = async (req:Request, res:Response) => {
         const responseVacancies = await getAllVacancies();
         res.send(responseVacancies);
     } catch (e) {
-        handleHttp(res, 'ERROR_VACANCIES', e)
+        handleHttp(res, 'ERROR_GETALL_VACANCIES', e)
     }
 }
 

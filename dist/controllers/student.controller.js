@@ -9,17 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStudent = void 0;
+exports.getStudents = exports.createStudent = void 0;
+const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
 const error_handle_1 = require("../utils/error.handle");
 const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { pensions } = body;
         const responseStudent = yield (0, student_services_1.registerStudent)(body);
-        res.send(responseStudent);
+        const responsePensions = yield (0, pension_services_1.registerPension)(pensions);
+        res.send({ responseStudent, responsePensions });
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_STUDENT', e);
     }
 });
 exports.createStudent = createStudent;
+const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const responseStudents = yield (0, student_services_1.getAllStudents)();
+        res.send(responseStudents);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_GETALL_STUDENT', e);
+    }
+});
+exports.getStudents = getStudents;
 //# sourceMappingURL=student.controller.js.map

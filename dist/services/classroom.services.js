@@ -23,8 +23,8 @@ const getAllVacancies = () => __awaiter(void 0, void 0, void 0, function* () {
     const spreadClassroom = [];
     allClassroom.forEach(element => {
         const { grade, collegue, capacity, students } = element;
-        const vacancies = capacity - students.length;
-        spreadClassroom.push({ grade, collegue, vacancies });
+        const ocuped = students.length;
+        spreadClassroom.push({ grade, collegue, capacity, ocuped });
     });
     return spreadClassroom;
 });
@@ -37,8 +37,8 @@ const getVacanciesByCollegue = (collegue) => __awaiter(void 0, void 0, void 0, f
     const spreadClassroom = [];
     allClassroom.forEach(element => {
         const { grade, collegue, capacity, students } = element;
-        const vacancies = capacity - students.length;
-        spreadClassroom.push({ grade, collegue, vacancies });
+        const ocuped = students.length;
+        spreadClassroom.push({ grade, collegue, capacity, ocuped });
     });
     return spreadClassroom;
 });

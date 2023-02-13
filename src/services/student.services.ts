@@ -5,3 +5,8 @@ export const registerStudent = async(student:IStudent) => {
     const savedSecretary = await studentCreated.save();
     return savedSecretary;
 }
+
+export const getAllStudents  = async () =>{
+    const allStudent= await Student.find();
+    return allStudent;
+}
