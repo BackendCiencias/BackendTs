@@ -3,6 +3,7 @@ interface ISimplyPensionMonth{
     month: string;
     total: number;
 }
+
 export const registerPension = async(pensionArr:ISimplyPensionMonth[]) => {
     let x = 0;
     pensionArr.forEach(async e =>  {
