@@ -11,7 +11,7 @@ export interface ITutor extends Document{
   address: string;
   phone: number;
   relationship: string;
-  students: [Types.ObjectId];
+  students: Types.ObjectId[];
 }
 const tutorSchema = new Schema({
   names: {

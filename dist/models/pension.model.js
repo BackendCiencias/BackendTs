@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const pensionSchema = new mongoose_1.Schema({
-    year: { type: Number, required: true },
-    student: [{ ref: "Student", type: mongoose_1.Schema.Types.ObjectId }],
+    year: { type: Number, required: true, default: new Date().getFullYear() },
+    student: { ref: "Student", type: mongoose_1.Schema.Types.ObjectId },
     march: {
         payed: { type: Number },
         total: { type: Number, required: true },

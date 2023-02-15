@@ -8,71 +8,146 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerPension = void 0;
-const registerPension = (pensionArr) => __awaiter(void 0, void 0, void 0, function* () {
-    let x = 0;
-    pensionArr.forEach((e) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(`element ${x++}`, e);
-        // const pensionCreated = await Pension.create(e);
-        // if(!pensionCreated) return "ERROR_CREATE_PENSION";
-    }));
-    return "Pensions Loading";
-    // const savedPension = await pensionCreated.save();
+const pension_model_1 = __importDefault(require("./../models/pension.model"));
+const student_model_1 = __importDefault(require("./../models/student.model"));
+const findMonth = (arrN, wordX) => {
+    // let x = 0;
+    // let march;
+    // pensionArr.forEach(element => {
+    //     if(Object.keys(element).includes("march")){
+    //         march = Object.values(element)[0]
+    //     }
+    // });
+    // console.log("1: ",march);
+    // march =  findMonth(pensionArr, "march");
+    // console.log("2: ",march);
+    arrN.forEach(element => {
+        if (Object.keys(element).includes(wordX)) {
+            return Object.values(element)[0];
+        }
+    });
+    return 176;
+};
+const registerPension = (pensionArr, studentId) => __awaiter(void 0, void 0, void 0, function* () {
+    const modifiedData = {
+        march: {
+            payed: 0,
+            total: pensionArr[0].march,
+            id_ticked: []
+        },
+        april: {
+            payed: 0,
+            total: pensionArr[1].april,
+            id_ticked: []
+        },
+        may: {
+            payed: 0,
+            total: pensionArr[2].may,
+            id_ticked: []
+        },
+        june: {
+            payed: 0,
+            total: pensionArr[3].june,
+            id_ticked: []
+        },
+        july: {
+            payed: 0,
+            total: pensionArr[4].july,
+            id_ticked: []
+        },
+        august: {
+            payed: 0,
+            total: pensionArr[5].august,
+            id_ticked: []
+        },
+        september: {
+            payed: 0,
+            total: pensionArr[6].september,
+            id_ticked: []
+        },
+        october: {
+            payed: 0,
+            total: pensionArr[7].october,
+            id_ticked: []
+        },
+        november: {
+            payed: 0,
+            total: pensionArr[8].november,
+            id_ticked: []
+        },
+        december: {
+            payed: 0,
+            total: pensionArr[9].december,
+            id_ticked: []
+        }
+    };
+    const pensionCreated = yield pension_model_1.default.create(modifiedData);
+    pensionCreated.student = studentId;
+    yield pensionCreated.save();
+    const studentTarget = yield student_model_1.default.findById(studentId);
+    if (!studentTarget)
+        return "ERROR_FINDING_STUDENT";
+    studentTarget.pension.push(pensionCreated._id);
+    yield studentTarget.save();
+    return { message: "SUCCESS_PENSION_STUDENT" };
 });
 exports.registerPension = registerPension;
-// "pensions": [
-//     { "march": 300},
-//     { "april":  301},
-//     { "may":  302},
-//     { "june":  303},
-//     { "july":  304},
-//     { "august":  305},
-//     { "september":  306},
-//     { "october":  307},
-//     { "november":  308},
-//     { "december":  309}
-//   ]
-// "pensions": [
-//     { 
-//       "month":  "march",
-//       "value": 300
+// const modifiedData = {
+//     year: 2023,
+//     march: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "march"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "april",
-//       "value": 300
+//     april: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "april"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "may",
-//       "value": 300
+//     may: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "may"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "june",
-//       "value": 300
+//     june: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "june"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "july",
-//       "value": 300
+//     july: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "july"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "august",
-//       "value": 300
+//     august: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "august"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "september",
-//       "value": 300
+//     september: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "september"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "october",
-//       "value": 300
+//     october: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "october"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "november",
-//       "value": 300
+//     november: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "november"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "december",
-//       "value": 300
+//     december: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "december"),
+//         id_ticked: []
 //     }
-//   ]
+// }
 //# sourceMappingURL=pension.services.js.map

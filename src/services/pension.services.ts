@@ -1,73 +1,143 @@
+import { Types } from 'mongoose';
 import Pension, { IPension } from './../models/pension.model';
-interface ISimplyPensionMonth{
-    month: string;
-    total: number;
-}
+import Student from './../models/student.model';
 
-export const registerPension = async(pensionArr:ISimplyPensionMonth[]) => {
-    let x = 0;
-    pensionArr.forEach(async e =>  {
-        console.log(`element ${x++}`, e);
-        // const pensionCreated = await Pension.create(e);
-        // if(!pensionCreated) return "ERROR_CREATE_PENSION";
+
+const findMonth = (arrN:any[], wordX:string) => {
+    // let x = 0;
+    // let march;
+    // pensionArr.forEach(element => {
+    //     if(Object.keys(element).includes("march")){
+    //         march = Object.values(element)[0]
+    //     }
+    // });
+    // console.log("1: ",march);
+    // march =  findMonth(pensionArr, "march");
+    // console.log("2: ",march);
+    arrN.forEach(element => {
+        if(Object.keys(element).includes(wordX)){
+            return Object.values(element)[0]
+        }
     });
-    return "Pensions Loading"
-    // const savedPension = await pensionCreated.save();
+    return 176
 }
-// "pensions": [
-//     { "march": 300},
-//     { "april":  301},
-//     { "may":  302},
-//     { "june":  303},
-//     { "july":  304},
-//     { "august":  305},
-//     { "september":  306},
-//     { "october":  307},
-//     { "november":  308},
-//     { "december":  309}
-//   ]
 
+export const registerPension = async(pensionArr:any[], studentId:Types.ObjectId) => {
+    
+    const modifiedData = {
+        march: {
+            payed: 0,
+            total: pensionArr[0].march,
+            id_ticked: []
+        },
+        april: {
+            payed: 0,
+            total: pensionArr[1].april,
+            id_ticked: []
+        },
+        may: {
+            payed: 0,
+            total: pensionArr[2].may,
+            id_ticked: []
+        },
+        june: {
+            payed: 0,
+            total: pensionArr[3].june,
+            id_ticked: []
+        },
+        july: {
+            payed: 0,
+            total: pensionArr[4].july,
+            id_ticked: []
+        },
+        august: {
+            payed: 0,
+            total: pensionArr[5].august,
+            id_ticked: []
+        },
+        september: {
+            payed: 0,
+            total: pensionArr[6].september,
+            id_ticked: []
+        },
+        october: {
+            payed: 0,
+            total: pensionArr[7].october,
+            id_ticked: []
+        },
+        november: {
+            payed: 0,
+            total: pensionArr[8].november,
+            id_ticked: []
+        },
+        december: {
+            payed: 0,
+            total: pensionArr[9].december,
+            id_ticked: []
+        }
+    }
+    const pensionCreated = await Pension.create(modifiedData);
+    pensionCreated.student = studentId;
+    await pensionCreated.save();
 
+    const studentTarget = await Student.findById(studentId);
+    if(!studentTarget) return "ERROR_FINDING_STUDENT";
+    studentTarget.pension.push(pensionCreated._id);
+    await studentTarget.save();
 
-// "pensions": [
-//     { 
-//       "month":  "march",
-//       "value": 300
+    return {message: "SUCCESS_PENSION_STUDENT"}
+}
+
+// const modifiedData = {
+//     year: 2023,
+//     march: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "march"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "april",
-//       "value": 300
+//     april: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "april"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "may",
-//       "value": 300
+//     may: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "may"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "june",
-//       "value": 300
+//     june: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "june"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "july",
-//       "value": 300
+//     july: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "july"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "august",
-//       "value": 300
+//     august: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "august"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "september",
-//       "value": 300
+//     september: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "september"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "october",
-//       "value": 300
+//     october: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "october"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "november",
-//       "value": 300
+//     november: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "november"),
+//         id_ticked: []
 //     },
-//     { 
-//       "month":  "december",
-//       "value": 300
+//     december: {
+//         payed: 0,
+//         total: findMonth(pensionArr, "december"),
+//         id_ticked: []
 //     }
-//   ]
+// }

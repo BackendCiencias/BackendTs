@@ -3,13 +3,13 @@ import { Schema, model, Types, Document } from "mongoose";
 export interface  IPensionMes {
     payed: number;
     total: number;
-    id_ticked: [Types.ObjectId];
+    id_ticked: Types.ObjectId[];
 }
 
 
 export interface IPension extends Document {
     year: number;
-    student: [Types.ObjectId];
+    student: Types.ObjectId;
     march: IPensionMes;
     april: IPensionMes;
     may: IPensionMes;
@@ -23,8 +23,8 @@ export interface IPension extends Document {
 }
 
 const pensionSchema = new Schema({
-    year: {type: Number, required: true},
-    student: [{ ref: "Student", type: Schema.Types.ObjectId }],
+    year: {type: Number, required: true, default: new Date().getFullYear()},
+    student: { ref: "Student", type: Schema.Types.ObjectId },
     march: {
         payed: {type: Number},
         total: {type: Number, required: true},

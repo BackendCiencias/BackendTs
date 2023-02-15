@@ -4,7 +4,7 @@ export interface IClassroom extends Document {
     grade: string,
     collegue: string,
     capacity: number,
-    students: [ Types.ObjectId];
+    students: Types.ObjectId[];
 }
   const classroomSchema = new Schema({
     grade: { type: String, required: true },

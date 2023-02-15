@@ -9,27 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTutorsByDNI = exports.createTutor = void 0;
-const tutor_services_1 = require("./../services/tutor.services");
+exports.createContract = void 0;
+const contract_services_1 = require("./../services/contract.services");
 const error_handle_1 = require("../utils/error.handle");
-const createTutor = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createContract = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseTutor = yield (0, tutor_services_1.registerTutor)(body);
-        res.send(responseTutor);
+        const { tutorsDNI, studentsDNI } = body;
+        const contractResponse = yield (0, contract_services_1.registerContract)(tutorsDNI, studentsDNI);
+        if (contractResponse == "TUTORS_DNI_IS_EMPTY" || contractResponse == "STUDENTS_DNI_IS_EMPTY") {
+            return res.status(400).send({ "error": contractResponse });
+        }
+        res.send(contractResponse);
     }
     catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_TUTOR', e);
+        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_CONTRACT', e);
     }
 });
-exports.createTutor = createTutor;
-const getTutorsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseTutors = yield (0, tutor_services_1.findTutorByDNI)(body.dni);
-        res.send(responseTutors);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_TUTOR_DNI', e);
-    }
-});
-exports.getTutorsByDNI = getTutorsByDNI;
-//# sourceMappingURL=tutor.controller.js.map
+exports.createContract = createContract;
+//# sourceMappingURL=contract.controller.js.map

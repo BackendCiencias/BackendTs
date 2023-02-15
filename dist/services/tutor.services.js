@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerTutor = void 0;
+exports.findTutorByDNI = exports.registerTutor = void 0;
 const tutor_model_1 = __importDefault(require("./../models/tutor.model"));
 const registerTutor = (tutor) => __awaiter(void 0, void 0, void 0, function* () {
     const tutorCreated = yield tutor_model_1.default.create(tutor);
@@ -20,4 +20,12 @@ const registerTutor = (tutor) => __awaiter(void 0, void 0, void 0, function* () 
     return savedSecretary;
 });
 exports.registerTutor = registerTutor;
+const findTutorByDNI = (tutorDNI) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(tutorDNI);
+    const tutorTarget = yield tutor_model_1.default.findOne({ "dni": tutorDNI });
+    if (!tutorTarget)
+        return "NOT_TUTOR_FOUNDED_BY_DNI";
+    return tutorTarget;
+});
+exports.findTutorByDNI = findTutorByDNI;
 //# sourceMappingURL=tutor.services.js.map

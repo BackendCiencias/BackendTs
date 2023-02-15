@@ -18,9 +18,9 @@ export interface IStudent extends Document {
   section: string;
   email: string;
   password: string;
-  pension: [Types.ObjectId];
-  tutor: [Types.ObjectId];
-  contracts: [Types.ObjectId];
+  pension: Types.ObjectId[];
+  tutor:  Types.ObjectId[];
+  contracts:  Types.ObjectId[];
 }
 const studentSchema = new Schema(
   {
