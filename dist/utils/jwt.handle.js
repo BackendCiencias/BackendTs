@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
     const token = req.cookies["auth-token"];
     console.log(token);
     if (!token)
-        return res.status(401).json('Acces denied');
+        return res.status(401).json({ "error": 'TOKEN_MISSING' });
     try {
         const payload = (0, jsonwebtoken_1.verify)(token, JWT_TOKEN);
         req.secretaryId = payload._id;
