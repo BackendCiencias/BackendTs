@@ -16,7 +16,10 @@ export const generateToken = (_id:string) => {
    return jwt;
 }
 export const verifyToken = (req : Request, res: Response ,next: NextFunction) => {
-    const token = req.cookies["auth-token"];
+    // const token = req.cookies["auth-token"];
+    // console.log(token);
+    const jwtByUser = req.headers.authorization || '';
+    const token =jwtByUser.split(' ').pop();
     console.log(token);
     if(!token) return res.status(401).json({"error": 'TOKEN_MISSING'});
     try{

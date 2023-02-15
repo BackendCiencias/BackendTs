@@ -12,7 +12,10 @@ const generateToken = (_id) => {
 };
 exports.generateToken = generateToken;
 const verifyToken = (req, res, next) => {
-    const token = req.cookies["auth-token"];
+    // const token = req.cookies["auth-token"];
+    // console.log(token);
+    const jwtByUser = req.headers.authorization || '';
+    const token = jwtByUser.split(' ').pop();
     console.log(token);
     if (!token)
         return res.status(401).json({ "error": 'TOKEN_MISSING' });

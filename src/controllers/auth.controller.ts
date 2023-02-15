@@ -36,7 +36,7 @@ export const profileSecretary = async (req: Request, res: Response) => {
     
     // finding current secretary
     const secretary = await Secretary.findById(req.secretaryId, {password: 0});
-    if(!secretary) return res.status(404).json('No secretary found');
+    if(!secretary) return res.status(404).json({"error": 'No secretary found'});
 
     // sending res
     res.json({
