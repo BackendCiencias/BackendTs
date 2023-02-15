@@ -24,6 +24,6 @@ export const getTutors =  async(req: Request, res: Response) => {
         const responseTutors = await getAllTutors();
         res.send(responseTutors);
     }catch(e){
-        handleHttp(res, 'ERROR_GETALL_STUDENT',e);
+        handleHttp(res, 'ERROR_GETALL_TUTORS',e);
     }
 };
