@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTutorsByDNI = exports.createTutor = void 0;
+exports.getTutors = exports.getTutorsByDNI = exports.createTutor = void 0;
 const tutor_services_1 = require("./../services/tutor.services");
 const error_handle_1 = require("../utils/error.handle");
 const createTutor = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,4 +32,14 @@ const getTutorsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getTutorsByDNI = getTutorsByDNI;
+const getTutors = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const responseTutors = yield (0, tutor_services_1.getAllTutors)();
+        res.send(responseTutors);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_GETALL_STUDENT', e);
+    }
+});
+exports.getTutors = getTutors;
 //# sourceMappingURL=tutor.controller.js.map

@@ -13,3 +13,9 @@ export const findTutorByDNI = async(tutorDNI:string) => {
     if(!tutorTarget) return "NOT_TUTOR_FOUNDED_BY_DNI";
     return tutorTarget;
 }
+
+
+export const getAllTutors  = async () =>{
+    const allTutors= await Tutor.find();
+    return allTutors;
+}

@@ -1,4 +1,4 @@
-import { findTutorByDNI, registerTutor } from './../services/tutor.services';
+import { findTutorByDNI, getAllTutors, registerTutor } from './../services/tutor.services';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
 export const createTutor =  async({body}: Request, res: Response) => {
@@ -16,5 +16,14 @@ export const getTutorsByDNI =  async({body}: Request, res: Response) => {
         res.send(responseTutors);
     }catch(e){
         handleHttp(res, 'ERROR_TUTOR_DNI',e);
+    }
+};
+
+export const getTutors =  async(req: Request, res: Response) => {
+    try{
+        const responseTutors = await getAllTutors();
+        res.send(responseTutors);
+    }catch(e){
+        handleHttp(res, 'ERROR_GETALL_STUDENT',e);
     }
 };
