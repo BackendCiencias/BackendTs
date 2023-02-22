@@ -37,52 +37,52 @@ const registerPension = (pensionArr, studentId) => __awaiter(void 0, void 0, voi
     const modifiedData = {
         march: {
             payed: 0,
-            total: pensionArr[0].march,
+            total: pensionArr.march,
             id_ticked: []
         },
         april: {
             payed: 0,
-            total: pensionArr[1].april,
+            total: pensionArr.april,
             id_ticked: []
         },
         may: {
             payed: 0,
-            total: pensionArr[2].may,
+            total: pensionArr.may,
             id_ticked: []
         },
         june: {
             payed: 0,
-            total: pensionArr[3].june,
+            total: pensionArr.june,
             id_ticked: []
         },
         july: {
             payed: 0,
-            total: pensionArr[4].july,
+            total: pensionArr.july,
             id_ticked: []
         },
         august: {
             payed: 0,
-            total: pensionArr[5].august,
+            total: pensionArr.august,
             id_ticked: []
         },
         september: {
             payed: 0,
-            total: pensionArr[6].september,
+            total: pensionArr.september,
             id_ticked: []
         },
         october: {
             payed: 0,
-            total: pensionArr[7].october,
+            total: pensionArr.october,
             id_ticked: []
         },
         november: {
             payed: 0,
-            total: pensionArr[8].november,
+            total: pensionArr.november,
             id_ticked: []
         },
         december: {
             payed: 0,
-            total: pensionArr[9].december,
+            total: pensionArr.december,
             id_ticked: []
         }
     };

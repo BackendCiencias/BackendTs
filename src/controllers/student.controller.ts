@@ -8,7 +8,7 @@ export const createStudent =  async({body}: Request, res: Response) => {
         const responseStudent = await registerStudent(body);
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
-        if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
+        // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
         // res.send({responseStudent, responsePensions});
         res.send({message: "Success"});
     }catch(e){

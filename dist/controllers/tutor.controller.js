@@ -38,7 +38,7 @@ const getTutors = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.send(responseTutors);
     }
     catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_GETALL_STUDENT', e);
+        (0, error_handle_1.handleHttp)(res, 'ERROR_GETALL_TUTORS', e);
     }
 });
 exports.getTutors = getTutors;

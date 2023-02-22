@@ -19,8 +19,7 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
         const responseStudent = yield (0, student_services_1.registerStudent)(body);
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
-        if (responsePensions == "ERROR_FINDING_STUDENT")
-            return res.status(400).send({ "error": responsePensions });
+        // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
         // res.send({responseStudent, responsePensions});
         res.send({ message: "Success" });
     }
