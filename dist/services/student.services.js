@@ -34,7 +34,7 @@ const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.registerStudent = registerStudent;
 const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
-    const studentTarget = yield student_model_1.default.findById(studentId, { password: 0 });
+    const studentTarget = yield student_model_1.default.findById(studentId, { password: 0 }).populate("pension");
     if (!studentTarget)
         return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;

@@ -22,7 +22,7 @@ export const registerStudent = async(student:IStudent) => {
 }
 
 export const findStudentById = async(studentId:string) => {
-    const studentTarget = await Student.findById(studentId, {password: 0});
+    const studentTarget = await Student.findById(studentId, {password: 0}).populate("pension");
     if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;
 }

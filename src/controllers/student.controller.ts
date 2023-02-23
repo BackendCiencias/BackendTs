@@ -20,7 +20,8 @@ export const createStudent =  async({body}: Request, res: Response) => {
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        res.send(responseStudent);
+        const actStudent = await findStudentById(responseStudent._id);
+        res.send(actStudent);
         // res.send({message: "Success"});
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_STUDENT',e);
