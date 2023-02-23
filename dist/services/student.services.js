@@ -23,8 +23,8 @@ const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function*
     const { name1, name2, surname1, surname2 } = names;
     const createdEmail = (0, stringPreprocesor_1.createEmail)(name1, surname1, surname2);
     // const createdEmail:string = "alumno2madero@cienciasperu.edu.pe";
-    const okEmail = yield student_model_1.default.find({ email: createdEmail }).select('email');
-    console.log(okEmail);
+    // const okEmail = await Student.find({email: createdEmail}).select('email')
+    // console.log(okEmail);
     const createdPassword = (0, stringPreprocesor_1.createPassword)(dni, name1, name2, surname1, surname2);
     student.email = createdEmail;
     student.password = createdPassword;

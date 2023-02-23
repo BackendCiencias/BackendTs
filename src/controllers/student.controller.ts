@@ -16,11 +16,12 @@ export const createStudent =  async({body}: Request, res: Response) => {
             const {_id, grade, collegue} = responseStudent;
             await updateVacancies(_id, grade, collegue)
         }
+
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        // res.send({responseStudent, responsePensions});
-        res.send({message: "Success"});
+        res.send(responseStudent);
+        // res.send({message: "Success"});
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_STUDENT',e);
     }
