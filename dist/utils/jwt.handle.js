@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
     // console.log(token);
     const jwtByUser = req.headers.authorization || '';
     const token = jwtByUser.split(' ').pop();
-    console.log(token);
+    // console.log(token);
     if (!token)
         return res.status(401).json({ "error": 'TOKEN_MISSING' });
     try {

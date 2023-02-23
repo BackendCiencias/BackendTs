@@ -1,4 +1,4 @@
-import { getAllVacancies, getVacanciesByCollegue, registerVacancies } from './../services/classroom.services';
+import { getAllVacancies, getVacanciesByCollegue, registerVacancies, addVacancies } from './../services/classroom.services';
 import { handleHttp } from '../utils/error.handle';
 import Classroom, { IClassroom } from '../models/classroom.model';
 import { Request , Response } from 'express';
@@ -18,6 +18,16 @@ export const collegueVacancies = async ({body}:Request, res:Response) => {
         res.send(responseVacancies);
     } catch (e) {
         handleHttp(res, 'ERROR_VACANCIES', e)
+    }
+}
+
+export const addCapacityVacancies = async ({body}:Request, res:Response) => {
+    try {
+        const {grade, collegue, cantVacancies} = body;
+        const responseCreate = await addVacancies(grade, collegue, cantVacancies);
+        res.send(responseCreate);
+    } catch (e) {
+        handleHttp(res, 'ERROR_CREATE_VACANCIES', e)
     }
 }
 

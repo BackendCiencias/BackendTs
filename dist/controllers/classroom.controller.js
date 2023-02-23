@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateAllVacancies = exports.collegueVacancies = exports.getVacancies = void 0;
+exports.generateAllVacancies = exports.addCapacityVacancies = exports.collegueVacancies = exports.getVacancies = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const error_handle_1 = require("../utils/error.handle");
 const getVacancies = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,6 +32,17 @@ const collegueVacancies = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.collegueVacancies = collegueVacancies;
+const addCapacityVacancies = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { grade, collegue, cantVacancies } = body;
+        const responseCreate = yield (0, classroom_services_1.addVacancies)(grade, collegue, cantVacancies);
+        res.send(responseCreate);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_CREATE_VACANCIES', e);
+    }
+});
+exports.addCapacityVacancies = addCapacityVacancies;
 const generateAllVacancies = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseCreate = yield (0, classroom_services_1.registerVacancies)(body.classrooms);

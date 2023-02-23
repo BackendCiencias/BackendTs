@@ -9,9 +9,9 @@ interface ISimplyClassroom{
 }
 
 export const updateVacancies  = async(studentId:Types.ObjectId, studentGrade:string, studentCollegue:string) =>{
-    const findClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
-    findClassroom?.students.push(studentId);
-    findClassroom?.save();
+    const findedClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
+    findedClassroom?.students.push(studentId);
+    findedClassroom?.save();
     return "updateVacancies";
 }
 export const checkVacancies = async(studentGrade:string, studentCollegue:string) => {
@@ -66,7 +66,13 @@ export const getVacanciesByCollegue =async (collegue:string) => {
 }
 
 export const addVacancies = async (grade:string, collegue:string, cant:number) => {
-    return "Addign Vacancies"
+    const findedClassroom = await Classroom.findOne({grade, collegue});
+    if(!findedClassroom) return "Invalid grade or collegue";
+    const {capacity} = findedClassroom;
+    console.log(capacity, cant)
+    findedClassroom.capacity = capacity+cant;
+    await findedClassroom.save();
+    return "Added Vacancies"
 }
 
 export const registerVacancies  = async (classroomArr:IClassroom[]) =>{

@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerVacancies = exports.addVacancies = exports.getVacanciesByCollegue = exports.getAllVacancies = exports.checkVacancies = exports.updateVacancies = void 0;
 const classroom_model_1 = __importDefault(require("./../models/classroom.model"));
 const updateVacancies = (studentId, studentGrade, studentCollegue) => __awaiter(void 0, void 0, void 0, function* () {
-    const findClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
-    findClassroom === null || findClassroom === void 0 ? void 0 : findClassroom.students.push(studentId);
-    findClassroom === null || findClassroom === void 0 ? void 0 : findClassroom.save();
+    const findedClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
+    findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.students.push(studentId);
+    findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.save();
     return "updateVacancies";
 });
 exports.updateVacancies = updateVacancies;
@@ -76,7 +76,14 @@ const getVacanciesByCollegue = (collegue) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getVacanciesByCollegue = getVacanciesByCollegue;
 const addVacancies = (grade, collegue, cant) => __awaiter(void 0, void 0, void 0, function* () {
-    return "Addign Vacancies";
+    const findedClassroom = yield classroom_model_1.default.findOne({ grade, collegue });
+    if (!findedClassroom)
+        return "Invalid grade or collegue";
+    const { capacity } = findedClassroom;
+    console.log(capacity, cant);
+    findedClassroom.capacity = capacity + cant;
+    yield findedClassroom.save();
+    return "Added Vacancies";
 });
 exports.addVacancies = addVacancies;
 const registerVacancies = (classroomArr) => __awaiter(void 0, void 0, void 0, function* () {
