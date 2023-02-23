@@ -51,7 +51,7 @@ const registerContract = (tutorsDNI, studentsDNI) => __awaiter(void 0, void 0, v
         }, []);
         studentAct.tutor = reducedTutors;
         yield studentAct.save();
-        console.log("Saved: ", studentAct.dni);
+        // console.log("Saved: ", studentAct.dni)
     }
     for (const tutorAct of tutorsPopulate) {
         const actStudents = tutorAct.students;
@@ -65,14 +65,19 @@ const registerContract = (tutorsDNI, studentsDNI) => __awaiter(void 0, void 0, v
         // console.log(tutorAct.dni, ":", reducedStudents);
         tutorAct.students = reducedStudents;
         yield tutorAct.save();
-        console.log("Saved: ", tutorAct.dni);
+        // console.log("Saved: ", tutorAct.dni)
     }
     const modifiedData = {
         students: studentsId,
         tutors: tutorsId
     };
     const createdContract = yield contract_model_1.default.create(modifiedData);
-    console.log(createdContract);
+    for (const studentAct of studentsPopulate) {
+        studentAct.contracts.push(createdContract._id);
+        yield studentAct.save();
+        // console.log("Saved Contracts: ", studentAct.dni)
+    }
+    // console.log(createdContract);
     return { createdContract };
 });
 exports.registerContract = registerContract;

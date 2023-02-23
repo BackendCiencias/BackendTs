@@ -38,7 +38,7 @@ export const registerContract = async (tutorsDNI:string[], studentsDNI:string[])
         },[]);
         studentAct.tutor = reducedTutors;
         await studentAct.save();
-        console.log("Saved: ", studentAct.dni)
+        // console.log("Saved: ", studentAct.dni)
     }
 
     for(const tutorAct of tutorsPopulate){
@@ -52,7 +52,7 @@ export const registerContract = async (tutorsDNI:string[], studentsDNI:string[])
         // console.log(tutorAct.dni, ":", reducedStudents);
         tutorAct.students = reducedStudents;
         await tutorAct.save();
-        console.log("Saved: ", tutorAct.dni)
+        // console.log("Saved: ", tutorAct.dni)
     }
 
     const modifiedData = {
@@ -61,6 +61,11 @@ export const registerContract = async (tutorsDNI:string[], studentsDNI:string[])
     }
 
     const createdContract = await Contract.create(modifiedData);
-    console.log(createdContract);
+    for(const studentAct of studentsPopulate){
+        studentAct.contracts.push(createdContract._id);
+        await studentAct.save();
+        // console.log("Saved Contracts: ", studentAct.dni)
+    }
+    // console.log(createdContract);
     return {createdContract}
 }
