@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import Classroom, { IClassroom } from './../models/classroom.model';
 
 interface ISimplyClassroom{
@@ -7,9 +8,17 @@ interface ISimplyClassroom{
     ocuped: number;
 }
 
-export const updateVacancies  = () =>{
-
+export const updateVacancies  = async(studentId:Types.ObjectId, studentGrade:string, studentCollegue:string) =>{
+    const findClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
+    findClassroom?.students.push(studentId);
+    findClassroom?.save();
     return "updateVacancies";
+}
+export const checkVacancies = async(studentGrade:string, studentCollegue:string) => {
+    const okClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
+    if(!okClassroom) return "Invalid grade and collegue";
+    const {capacity, students} = okClassroom;
+    return (capacity - students.length) > 0;
 }
 
 export const getAllVacancies  = async () =>{
@@ -27,15 +36,37 @@ export const getAllVacancies  = async () =>{
 export const getVacanciesByCollegue =async (collegue:string) => {
     console.log(collegue);
     if(!collegue || collegue == "undefined") return "MISSING_COLLEGUE_ARGUMENT";
-    const allClassroom= await Classroom.find({"collegue": collegue});
-    const spreadClassroom:ISimplyClassroom[] = [];
-
+    const keyWords:string[] = [];
+    if(collegue == "Cimas"){
+        keyWords.push("Colegio Cimas");
+    }else if (collegue == "Ciencias"){
+        keyWords.push("Ciencias Aplicadas");
+        keyWords.push("Ciencias Secundaria");
+    }else {
+        return {error:"Collegue not found"}
+    }
+    const allClassroom = await Classroom.find({"collegue": keyWords});
+    const iniClassroom:ISimplyClassroom[] = [];
+    const primClassroom:ISimplyClassroom[] = [];
+    const secClassroom:ISimplyClassroom[] = [];
     allClassroom.forEach(element => {
-        const {grade, collegue, capacity, students} = element;
-        const ocuped = students.length;
-        spreadClassroom.push({grade, collegue, capacity, ocuped})
+    const {grade, collegue, capacity, students} = element;
+    const ocuped = students.length;
+        if(grade.includes("inicial")){
+            iniClassroom.push({grade, collegue, capacity, ocuped})
+        }
+        else if(grade.includes("primaria")){
+            primClassroom.push({grade, collegue, capacity, ocuped})
+        }
+        else{
+            secClassroom.push({grade, collegue, capacity, ocuped})
+        }
     });
-    return spreadClassroom;
+    return {"Inicial": iniClassroom, "Primaria": primClassroom, "Secundaria": secClassroom}
+}
+
+export const addVacancies = async (grade:string, collegue:string, cant:number) => {
+    return "Addign Vacancies"
 }
 
 export const registerVacancies  = async (classroomArr:IClassroom[]) =>{

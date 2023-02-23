@@ -4,6 +4,16 @@ const mongoose_1 = require("mongoose");
 const pensionSchema = new mongoose_1.Schema({
     year: { type: Number, required: true, default: new Date().getFullYear() },
     student: { ref: "Student", type: mongoose_1.Schema.Types.ObjectId },
+    admission: {
+        payed: { type: Number },
+        total: { type: Number, required: true },
+        id_ticked: [{ ref: "Ticked", type: mongoose_1.Schema.Types.ObjectId }]
+    },
+    tuition: {
+        payed: { type: Number },
+        total: { type: Number, required: true },
+        id_ticked: [{ ref: "Ticked", type: mongoose_1.Schema.Types.ObjectId }]
+    },
     march: {
         payed: { type: Number },
         total: { type: Number, required: true },

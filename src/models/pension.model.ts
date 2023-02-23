@@ -10,6 +10,8 @@ export interface  IPensionMes {
 export interface IPension extends Document {
     year: number;
     student: Types.ObjectId;
+    admission: number;
+    tuition: number;
     march: IPensionMes;
     april: IPensionMes;
     may: IPensionMes;
@@ -25,6 +27,16 @@ export interface IPension extends Document {
 const pensionSchema = new Schema({
     year: {type: Number, required: true, default: new Date().getFullYear()},
     student: { ref: "Student", type: Schema.Types.ObjectId },
+    admission: {
+        payed: {type: Number},
+        total: {type: Number, required: true},
+        id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]
+    },
+    tuition: {
+        payed: {type: Number},
+        total: {type: Number, required: true},
+        id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]
+    },
     march: {
         payed: {type: Number},
         total: {type: Number, required: true},

@@ -25,6 +25,16 @@ const findMonth = (arrN:any[], wordX:string) => {
 export const registerPension = async(pensionArr:any, studentId:Types.ObjectId) => {
 
     const modifiedData = {
+        admission:{
+            payed: 0,
+            total: pensionArr.admission,
+            id_ticked: []
+        }, 
+        tuition: {
+            payed: 0,
+            total: pensionArr.tuition,
+            id_ticked: []
+        },
         march: {
             payed: 0,
             total: pensionArr.march,

@@ -35,6 +35,16 @@ const findMonth = (arrN, wordX) => {
 };
 const registerPension = (pensionArr, studentId) => __awaiter(void 0, void 0, void 0, function* () {
     const modifiedData = {
+        admission: {
+            payed: 0,
+            total: pensionArr.admission,
+            id_ticked: []
+        },
+        tuition: {
+            payed: 0,
+            total: pensionArr.tuition,
+            id_ticked: []
+        },
         march: {
             payed: 0,
             total: pensionArr.march,

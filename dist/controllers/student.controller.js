@@ -10,13 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createStudent = void 0;
+const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
+const classroom_services_2 = require("../services/classroom.services");
 const error_handle_1 = require("../utils/error.handle");
 const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { pensions } = body;
+        const okVacancies = yield (0, classroom_services_2.checkVacancies)(body.grade, body.collegue);
+        if (okVacancies == "Invalid grade and collegue")
+            return res.status(400).send({ error: okVacancies });
+        if (!okVacancies)
+            return res.status(400).send({ error: "Sold out vacancies" });
         const responseStudent = yield (0, student_services_1.registerStudent)(body);
+        if (responseStudent) {
+            const { _id, grade, collegue } = responseStudent;
+            yield (0, classroom_services_1.updateVacancies)(_id, grade, collegue);
+        }
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});

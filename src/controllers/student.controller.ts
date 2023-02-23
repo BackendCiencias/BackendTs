@@ -1,11 +1,21 @@
+import { updateVacancies } from './../services/classroom.services';
 import { registerPension } from './../services/pension.services';
-import { registerStudent, getAllStudents, findStudentById, findStudentByDNI } from './../services/student.services';
+import { registerStudent, getAllStudents, findStudentById, findStudentByDNI} from './../services/student.services';
+import { checkVacancies } from '../services/classroom.services';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
 export const createStudent =  async({body}: Request, res: Response) => {
     try{
         const {pensions} = body;
+        const okVacancies = await checkVacancies(body.grade, body.collegue); 
+        if(okVacancies == "Invalid grade and collegue") return res.status(400).send({error: okVacancies});
+        if(!okVacancies) return res.status(400).send({error: "Sold out vacancies"})
+
         const responseStudent = await registerStudent(body);
+        if(responseStudent){
+            const {_id, grade, collegue} = responseStudent;
+            await updateVacancies(_id, grade, collegue)
+        }
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
