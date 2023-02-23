@@ -1,3 +1,4 @@
+import { createPassword, createEmail } from './../utils/stringPreprocesor';
 import { ObjectId, Types } from 'mongoose';
 import Student, { IStudent } from './../models/student.model';
 
@@ -6,7 +7,15 @@ export const registerStudent = async(student:IStudent) => {
     // if(!student.dni) return "MISSSING_DNI";
     // const isAlready = await Student.findOne({"dni": student.dni});
     // if(isAlready) return "STUDENT";
-
+    const {dni, names} = student;
+    const {name1, name2, surname1, surname2} = names;
+    const createdEmail:string =  createEmail(name1, surname1, surname2);
+    // const createdEmail:string = "alumno2madero@cienciasperu.edu.pe";
+    const okEmail = await Student.find({email: createdEmail}).select('email')
+    console.log(okEmail);
+    const createdPassword:string = createPassword(dni,name1, name2, surname1, surname2);
+    student.email = createdEmail;
+    student.password = createdPassword;
     const studentCreated = await Student.create(student);
     const savedStudent = await studentCreated.save();
     return savedStudent;
