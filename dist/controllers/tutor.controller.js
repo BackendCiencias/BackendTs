@@ -25,6 +25,9 @@ exports.createTutor = createTutor;
 const getTutorsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseTutors = yield (0, tutor_services_1.findTutorByDNI)(body.dni);
+        if (responseTutors == "NOT_TUTOR_FOUNDED_BY_DNI") {
+            return res.status(400).send({ error: responseTutors });
+        }
         res.send(responseTutors);
     }
     catch (e) {

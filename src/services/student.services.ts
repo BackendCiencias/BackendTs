@@ -29,7 +29,7 @@ export const findStudentById = async(studentId:string) => {
 
 export const findStudentByDNI = async(studentDNI:string) => {
     console.log(studentDNI);
-    const studentTarget = await Student.findOne({"dni": studentDNI});
+    const studentTarget = await Student.findOne({"dni": studentDNI}).populate("pension");
     if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_DNI";
     return studentTarget;
 }

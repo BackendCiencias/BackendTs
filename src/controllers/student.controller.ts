@@ -49,6 +49,9 @@ export const getStudentsById =  async(req: Request, res: Response) => {
 export const getStudentsByDNI =  async({body}: Request, res: Response) => {
     try{
         const responseStudents = await findStudentByDNI(body.dni);
+        if(responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI"){
+            return res.status(400).send({error: responseStudents});
+        }
         res.send(responseStudents);
     }catch(e){
         handleHttp(res, 'ERROR_STUDENT_DNI',e);

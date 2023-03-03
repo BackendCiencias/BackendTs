@@ -63,6 +63,9 @@ exports.getStudentsById = getStudentsById;
 const getStudentsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseStudents = yield (0, student_services_1.findStudentByDNI)(body.dni);
+        if (responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI") {
+            return res.status(400).send({ error: responseStudents });
+        }
         res.send(responseStudents);
     }
     catch (e) {

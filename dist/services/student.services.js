@@ -42,7 +42,7 @@ const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, functio
 exports.findStudentById = findStudentById;
 const findStudentByDNI = (studentDNI) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(studentDNI);
-    const studentTarget = yield student_model_1.default.findOne({ "dni": studentDNI });
+    const studentTarget = yield student_model_1.default.findOne({ "dni": studentDNI }).populate("pension");
     if (!studentTarget)
         return "NOT_STUDENT_FOUNDED_BY_DNI";
     return studentTarget;

@@ -13,6 +13,9 @@ export const createTutor =  async({body}: Request, res: Response) => {
 export const getTutorsByDNI =  async({body}: Request, res: Response) => {
     try{
         const responseTutors = await findTutorByDNI(body.dni);
+        if(responseTutors == "NOT_TUTOR_FOUNDED_BY_DNI"){
+            return res.status(400).send({error: responseTutors});
+        }
         res.send(responseTutors);
     }catch(e){
         handleHttp(res, 'ERROR_TUTOR_DNI',e);
