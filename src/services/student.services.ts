@@ -1,6 +1,6 @@
 import { createPassword, createEmail } from './../utils/stringPreprocesor';
-import { ObjectId, Types } from 'mongoose';
 import Student, { IStudent } from './../models/student.model';
+import Role, { IRole } from './../models/role.model';
 
 
 export const registerStudent = async(student:IStudent) => {
@@ -16,6 +16,8 @@ export const registerStudent = async(student:IStudent) => {
     const createdPassword:string = createPassword(dni,name1, name2, surname1, surname2);
     student.email = createdEmail;
     student.password = createdPassword;
+    const role = await Role.findOne({name: "student"});
+    student.roles = [role?._id];
     const studentCreated = await Student.create(student);
     const savedStudent = await studentCreated.save();
     return savedStudent;

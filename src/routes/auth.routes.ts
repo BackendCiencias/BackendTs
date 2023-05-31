@@ -1,4 +1,4 @@
-import { verifyToken } from './../utils/jwt.handle';
+import { isSecretary, verifyToken } from '../middlewares/jwt.handle';
 // import { checkJwt } from './../middlewares/session';
 import { Router } from 'express';
 const router: Router = Router();
@@ -9,9 +9,9 @@ router.get('/', (req,res) => {
     res.send('Backend alive... at least for now')
 })
 
-router.post('/api/auth/secretary/signup', signupSecretary);
+router.post('/api/auth/secretary/signup', [verifyToken, isSecretary], signupSecretary);
 router.post('/api/auth/secretary/signin', signinSecretary);
 
-router.get('/api/auth/secretary/profile', verifyToken, profileSecretary);
+router.get('/api/auth/secretary/profile', [verifyToken, isSecretary], profileSecretary);
 
 export default router;

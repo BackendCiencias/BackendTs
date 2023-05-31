@@ -29,6 +29,7 @@ const secretarySchema = new mongoose_1.Schema({
     phone: { type: Number, required: true },
     email: { type: String, unique: true, required: true, lowercase: true },
     password: { type: String, required: true },
+    roles: [{ ref: "Role", type: mongoose_1.Schema.Types.ObjectId }],
 }, {
     timestamps: true,
     versionKey: false,

@@ -1,4 +1,4 @@
-import { verifyToken } from './../utils/jwt.handle';
+import { verifyToken } from '../middlewares/jwt.handle';
 import { Router } from 'express';
 const router: Router = Router();
 

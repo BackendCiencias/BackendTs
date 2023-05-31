@@ -23,6 +23,7 @@ const studentSchema = new mongoose_1.Schema({
     pension: [{ ref: "Pension", type: mongoose_1.Schema.Types.ObjectId }],
     tutor: [{ ref: "Tutor", type: mongoose_1.Schema.Types.ObjectId }],
     contracts: [{ ref: "Contracts", type: mongoose_1.Schema.Types.ObjectId }],
+    roles: [{ ref: "Role", type: mongoose_1.Schema.Types.ObjectId }],
 }, {
     timestamps: true,
     versionKey: false,

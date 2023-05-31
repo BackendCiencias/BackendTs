@@ -1,15 +1,19 @@
+import { createRoles } from './utils/initialSetup';
 // import "dotenv/config"
 import express, { Application } from 'express'
 import authRoutes from './routes/auth.routes'
 import classroomRoutes from './routes/classroom.routes'
 import studentRoutes from './routes/student.routes'
 import tutorRoutes from './routes/tutor.routes'
+import teacherRoutes from './routes/teacher.routes'
+import directorRoutes from './routes/director.routes'
 import contractRoutes from './routes/contract.routes'
 import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
 const app: Application = express();
+createRoles();
 const PORT = process.env.PORT || 3000
 
 // settings
@@ -27,6 +31,6 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 // routes
-app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes, contractRoutes);
+app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes, contractRoutes, teacherRoutes, directorRoutes);
 
 export default app;

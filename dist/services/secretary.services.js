@@ -13,13 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginSecretary = exports.registerSecretary = void 0;
-const jwt_handle_1 = require("./../utils/jwt.handle");
+const jwt_handle_1 = require("../middlewares/jwt.handle");
 const secretary_model_1 = __importDefault(require("../models/secretary.model"));
+const role_model_1 = __importDefault(require("./../models/role.model"));
 const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, function* () {
     // const checkIs = await Secretary.findOne({email: secretary.email})
     // if(checkIs) return "ALREADY_USER";
     const createdSecretary = yield secretary_model_1.default.create(secretary);
     createdSecretary.password = yield createdSecretary.encryptPassword(createdSecretary.password);
+    const role = yield role_model_1.default.findOne({ name: "secretary" });
+    createdSecretary.roles = [role === null || role === void 0 ? void 0 : role._id];
     const savedSecretary = yield createdSecretary.save();
     const { _id, email, names } = savedSecretary;
     const data = { _id, email, names };

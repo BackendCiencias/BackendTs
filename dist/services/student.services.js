@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
+const role_model_1 = __importDefault(require("./../models/role.model"));
 const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
     // if(!student.dni) return "MISSSING_DNI";
     // const isAlready = await Student.findOne({"dni": student.dni});
@@ -28,6 +29,8 @@ const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function*
     const createdPassword = (0, stringPreprocesor_1.createPassword)(dni, name1, name2, surname1, surname2);
     student.email = createdEmail;
     student.password = createdPassword;
+    const role = yield role_model_1.default.findOne({ name: "student" });
+    student.roles = [role === null || role === void 0 ? void 0 : role._id];
     const studentCreated = yield student_model_1.default.create(student);
     const savedStudent = yield studentCreated.save();
     return savedStudent;

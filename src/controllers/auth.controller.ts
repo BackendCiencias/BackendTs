@@ -35,7 +35,7 @@ export const signinSecretary = async ({body}: Request, res: Response) => {
 export const profileSecretary = async (req: Request, res: Response) => {
     
     // finding current secretary
-    const secretary = await Secretary.findById(req.secretaryId, {password: 0});
+    const secretary = await Secretary.findById(req.userId, {password: 0});
     if(!secretary) return res.status(404).json({"error": 'No secretary found'});
 
     // sending res

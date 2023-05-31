@@ -21,6 +21,7 @@ export interface IStudent extends Document {
   pension: Types.ObjectId[];
   tutor:  Types.ObjectId[];
   contracts:  Types.ObjectId[];
+  roles:  Types.ObjectId[];
 }
 const studentSchema = new Schema(
   {
@@ -45,6 +46,7 @@ const studentSchema = new Schema(
     pension: [{ ref: "Pension", type: Schema.Types.ObjectId }],
     tutor: [{ ref: "Tutor", type: Schema.Types.ObjectId }],
     contracts: [{ ref: "Contracts", type: Schema.Types.ObjectId }],
+    roles: [{ ref: "Role", type: Schema.Types.ObjectId }],
   },
   {
     timestamps: true,

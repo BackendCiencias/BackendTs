@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ "error": 'TOKEN_MISSING' });
     try {
         const payload = (0, jsonwebtoken_1.verify)(token, JWT_TOKEN);
-        req.secretaryId = payload._id;
+        req.userId = payload._id;
         next();
     }
     catch (e) {
@@ -29,8 +29,4 @@ const verifyToken = (req, res, next) => {
     }
 };
 exports.verifyToken = verifyToken;
-// export const verifyToken = (jwt:string) => {
-//     const isCorrect = verify(jwt, JWT_TOKEN);
-//     return isCorrect;
-// }
 //# sourceMappingURL=jwt.handle.js.map

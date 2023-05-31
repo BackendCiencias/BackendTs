@@ -1,5 +1,6 @@
-import { generateToken } from "./../utils/jwt.handle";
+import { generateToken } from "../middlewares/jwt.handle";
 import Secretary, { ISecretary } from "../models/secretary.model";
+import Role, { IRole } from './../models/role.model';
 import { Auth } from "interfaces/auth";
 export const registerSecretary = async (secretary: ISecretary) => {
   // const checkIs = await Secretary.findOne({email: secretary.email})
@@ -7,7 +8,8 @@ export const registerSecretary = async (secretary: ISecretary) => {
 
   const createdSecretary = await Secretary.create(secretary);
   createdSecretary.password = await createdSecretary.encryptPassword(createdSecretary.password);
-  
+  const role = await Role.findOne({name: "secretary"});
+  createdSecretary.roles = [role?._id];
   const savedSecretary = await createdSecretary.save();
   const {_id, email, names}  = savedSecretary;
 

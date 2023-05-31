@@ -46,7 +46,7 @@ const signinSecretary = ({ body }, res) => __awaiter(void 0, void 0, void 0, fun
 exports.signinSecretary = signinSecretary;
 const profileSecretary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // finding current secretary
-    const secretary = yield secretary_model_1.default.findById(req.secretaryId, { password: 0 });
+    const secretary = yield secretary_model_1.default.findById(req.userId, { password: 0 });
     if (!secretary)
         return res.status(404).json({ "error": 'No secretary found' });
     // sending res
