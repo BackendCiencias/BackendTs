@@ -1,6 +1,8 @@
 import { createPassword, createEmail } from './../utils/stringPreprocesor';
 import Student, { IStudent } from './../models/student.model';
 import Role, { IRole } from './../models/role.model';
+import { Auth } from "interfaces/auth";
+import { generateToken } from './../middlewares/jwt.handle';
 
 
 export const registerStudent = async(student:IStudent) => {
@@ -13,16 +15,36 @@ export const registerStudent = async(student:IStudent) => {
     // const createdEmail:string = "alumno2madero@cienciasperu.edu.pe";
     // const okEmail = await Student.find({email: createdEmail}).select('email')
     // console.log(okEmail);
-    const createdPassword:string = createPassword(dni,name1, name2, surname1, surname2);
+    const literalPassword:string = createPassword(dni,name1, name2, surname1, surname2);
+    student.password = literalPassword;
     student.email = createdEmail;
-    student.password = createdPassword;
     const role = await Role.findOne({name: "student"});
     student.roles = [role?._id];
     const studentCreated = await Student.create(student);
+    studentCreated.password = await studentCreated.encryptPassword(literalPassword);
     const savedStudent = await studentCreated.save();
-    return savedStudent;
+    console.log(savedStudent);
+    return {
+        _id : savedStudent._id,
+        grade: savedStudent.grade,
+        collegue: savedStudent.collegue,
+        email: createdEmail,
+        password: literalPassword
+    };
 }
 
+export const loginStudent = async ({ email, password }: Auth) => {
+    const student = await Student.findOne({ email });
+    if (!student) return "EMAIL_INCORRECTO";
+    const isCorrect: boolean = await student.validatePassword(password); //validate in utils?
+    if (!isCorrect) return "CONTRASEÑA_INCORRECTA";
+  
+    const data = { email: student.email, names: student.names, _id: student._id }
+    const token = generateToken(`${student._id}`);
+    
+    return {token , data};
+  };
+  
 export const findStudentById = async(studentId:string) => {
     const studentTarget = await Student.findById(studentId, {password: 0}).populate("pension");
     if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_ID";

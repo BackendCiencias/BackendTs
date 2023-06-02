@@ -71,21 +71,19 @@ const getAllTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getAllTeachers = getAllTeachers;
 const getSalaryNoPayed = (teacherId) => __awaiter(void 0, void 0, void 0, function* () {
-    let acum = 0;
-    const teacherFounded = yield (0, exports.findTeacherById)(teacherId);
-    if (teacherFounded === "NOT_TEACHER_FOUNDED_BY_ID")
-        throw new Error('NO TEACHER FOUND');
-    const year = new Date().getFullYear();
-    const paymentAct = teacherFounded.payment.find(e => e.year == year);
-    if (!paymentAct)
-        throw new Error('NO PAYMENT FOUND');
-    const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-    for (let month of months) {
-        console.log(paymentAct[`${month}`]);
-        acum += paymentAct[month]["total"];
-        acum -= paymentAct[month]["payed"];
-    }
-    console.log(acum);
+    // let acum = 0;
+    // const teacherFounded = await findTeacherById(teacherId);
+    // if(teacherFounded === "NOT_TEACHER_FOUNDED_BY_ID") throw new Error('NO TEACHER FOUND');
+    // const year = new Date().getFullYear();
+    // const paymentAct = teacherFounded.payment.find(e => e.year == year);
+    // if(!paymentAct) throw new Error('NO PAYMENT FOUND');
+    // const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+    // for (let month of months){
+    //     console.log(paymentAct[`${month}`]);
+    //     acum += paymentAct[month]["total"];
+    //     acum -= paymentAct[month]["payed"];
+    // }
+    // console.log(acum);
 });
 exports.getSalaryNoPayed = getSalaryNoPayed;
 //# sourceMappingURL=teacher.services.js.map

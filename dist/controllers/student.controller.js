@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createStudent = void 0;
+exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
@@ -32,7 +32,7 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
         const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
         const actStudent = yield (0, student_services_1.findStudentById)(responseStudent._id);
-        res.send(actStudent);
+        res.send({ actStudent, email: responseStudent.email, password: responseStudent.password });
         // res.send({message: "Success"});
     }
     catch (e) {
@@ -73,4 +73,22 @@ const getStudentsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getStudentsByDNI = getStudentsByDNI;
+const signinStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = body;
+        const responseStudent = yield (0, student_services_1.loginStudent)({ email, password });
+        console.log("bien");
+        if (responseStudent === "CONTRASEÑA_INCORRECTA" || responseStudent === "EMAIL_INCORRECTO") {
+            res.status(400);
+            return res.send({ "error": responseStudent });
+        }
+        const { token } = responseStudent;
+        // sending token
+        res.cookie('auth-token', token).json(responseStudent);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNIN_STUDENT', e);
+    }
+});
+exports.signinStudent = signinStudent;
 //# sourceMappingURL=student.controller.js.map

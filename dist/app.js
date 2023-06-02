@@ -26,7 +26,7 @@ app.use((0, morgan_1.default)('dev'));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 let corsOptions = {
-    origin: ['http://localhost:3000', "https://frontend-cienciasapp.vercel.app"],
+    origin: ['http://localhost:3000', "https://frontend-cienciasapp.vercel.app", "https://www.cienciasperu.edu.pe"],
     credentials: true,
     optionSucccesStatus: 200
 };
