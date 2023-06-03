@@ -8,6 +8,7 @@ import tutorRoutes from './routes/tutor.routes'
 import teacherRoutes from './routes/teacher.routes'
 import directorRoutes from './routes/director.routes'
 import contractRoutes from './routes/contract.routes'
+import categoryRoutes from './routes/category.routes'
 import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -31,6 +32,6 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 // routes
-app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes, contractRoutes, teacherRoutes, directorRoutes);
+app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes, contractRoutes, teacherRoutes, directorRoutes, categoryRoutes);
 
 export default app;

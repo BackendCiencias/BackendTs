@@ -1,6 +1,9 @@
 import { Types } from 'mongoose';
 import Pension, { IPension } from './../models/pension.model';
+import Category, { ICategory } from './../models/category.model';
 import Student from './../models/student.model';
+import { generateTickedC } from './tickedC.services';
+
 
 
 const findMonth = (arrN:any[], wordX:string) => {
@@ -151,3 +154,28 @@ export const registerPension = async(pensionArr:any, studentId:Types.ObjectId) =
 //         id_ticked: []
 //     }
 // }
+
+
+export const payMonthPension = async (idStudent:string, month:string) => {
+    const pension = await Pension.findOne({ student: idStudent});
+    if (!pension) return "INVALID_ID_STUDENT";
+
+    const cant = pension?.[`${month}`].total;
+    pension?.[`${month}`].payed = cant;
+    // console.log(pension?.[`${month}`]);
+    const catego = await Category.findOne({name: "Pension"});
+    const idCategory = catego?.id;
+    const tickedGenerated = await generateTickedC(
+        {
+            date: "2002-08-11",
+            amount: cant,
+            student: idStudent, 
+            category: [idCategory]
+        }
+    )
+    // console.log(tickedGenerated)
+    pension?.[`${month}`].id_ticked = [tickedGenerated.id];
+    const modifiedPension = await pension.save();
+    console.log(tickedGenerated);
+    return tickedGenerated;
+};

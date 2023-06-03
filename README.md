@@ -123,6 +123,41 @@ https://backend-ts.vercel.app/api/
 
 ---
 
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Pay Month Pension</code></summary>
+
+#### Link
+```
+secretary/pension
+```
+
+#### Request
+
+```
+{
+  "idStudent": "idStudent",
+  "month": "somevalue"
+}
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  "date": "timestamp",
+  "amount": number,
+  "student": "idStudent",
+  "category": "idCategory",
+  "_id": "647a88e08a526c326d8dd4ef"
+}
+```
+</details></details>
+
+---
+
 ## Student
 <!-- Secretary Signin -->
 ---
@@ -164,3 +199,81 @@ https://backend-ts.vercel.app/api/
   }
 }
 ```
+</details></details>
+
+---
+
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Get By DNI Student</code></summary>
+
+#### Link
+```
+/student/dni/
+```
+
+#### Request
+```
+{
+  "dni": "somevalue"
+}
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  STUDENT_MODEL
+}
+```
+</details></details>
+
+---
+
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>Get By ID Student</code></summary>
+
+#### Link
+```
+/api/student/:id
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  STUDENT_MODEL
+}
+```
+</details></details>
+
+---
+
+
+
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>Get All Students</code></summary>
+
+#### Link
+```
+/api/student
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+[
+  STUDENT_MODEL
+]
+```
+</details></details>
+
+---

@@ -13,6 +13,7 @@ const tutor_routes_1 = __importDefault(require("./routes/tutor.routes"));
 const teacher_routes_1 = __importDefault(require("./routes/teacher.routes"));
 const director_routes_1 = __importDefault(require("./routes/director.routes"));
 const contract_routes_1 = __importDefault(require("./routes/contract.routes"));
+const category_routes_1 = __importDefault(require("./routes/category.routes"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -32,6 +33,6 @@ let corsOptions = {
 };
 app.use((0, cors_1.default)(corsOptions));
 // routes
-app.use(auth_routes_1.default, classroom_routes_1.default, student_routes_1.default, tutor_routes_1.default, contract_routes_1.default, teacher_routes_1.default, director_routes_1.default);
+app.use(auth_routes_1.default, classroom_routes_1.default, student_routes_1.default, tutor_routes_1.default, contract_routes_1.default, teacher_routes_1.default, director_routes_1.default, category_routes_1.default);
 exports.default = app;
 //# sourceMappingURL=app.js.map

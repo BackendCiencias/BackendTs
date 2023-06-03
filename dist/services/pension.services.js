@@ -12,9 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerPension = void 0;
+exports.payMonthPension = exports.registerPension = void 0;
 const pension_model_1 = __importDefault(require("./../models/pension.model"));
+const category_model_1 = __importDefault(require("./../models/category.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
+const tickedC_services_1 = require("./tickedC.services");
 const findMonth = (arrN, wordX) => {
     // let x = 0;
     // let march;
@@ -160,4 +162,26 @@ exports.registerPension = registerPension;
 //         id_ticked: []
 //     }
 // }
+const payMonthPension = (idStudent, month) => __awaiter(void 0, void 0, void 0, function* () {
+    const pension = yield pension_model_1.default.findOne({ student: idStudent });
+    if (!pension)
+        return "INVALID_ID_STUDENT";
+    const cant = pension === null || pension === void 0 ? void 0 : pension[`${month}`].total;
+    pension === null || pension === void 0 ? void 0 : pension[`${month}`].payed = cant;
+    // console.log(pension?.[`${month}`]);
+    const catego = yield category_model_1.default.findOne({ name: "Pension" });
+    const idCategory = catego === null || catego === void 0 ? void 0 : catego.id;
+    const tickedGenerated = yield (0, tickedC_services_1.generateTickedC)({
+        date: "2002-08-11",
+        amount: cant,
+        student: idStudent,
+        category: [idCategory]
+    });
+    // console.log(tickedGenerated)
+    pension === null || pension === void 0 ? void 0 : pension[`${month}`].id_ticked = [tickedGenerated.id];
+    const modifiedPension = yield pension.save();
+    console.log(tickedGenerated);
+    return tickedGenerated;
+});
+exports.payMonthPension = payMonthPension;
 //# sourceMappingURL=pension.services.js.map
