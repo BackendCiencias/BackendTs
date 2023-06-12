@@ -1,7 +1,7 @@
 import { Schema, model, Types, Document } from "mongoose";
+import bcrypt from "bcryptjs";
 
-
-export interface ITeacher extends Document {
+export interface IAssistant extends Document {
   names: {
     name1: string;
     name2: string;
@@ -18,9 +18,11 @@ export interface ITeacher extends Document {
   password: string;
   payment: Types.ObjectId[];
   roles:  Types.ObjectId[];
+  encryptPassword(password: string): Promise<string>;
+  validatePassword(password: string): Promise<boolean>;
 }
 
-const teacherSchema = new Schema(
+const assistantSchema = new Schema(
   {
     names: {
       name1: { type: String, required: true },
@@ -44,5 +46,17 @@ const teacherSchema = new Schema(
     versionKey: false,
   }
 );
-
-export default model<ITeacher>("Teacher", teacherSchema);
+assistantSchema.methods.encryptPassword = async (
+    password: string
+  ): Promise<string> => {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
+  };
+  
+  assistantSchema.methods.validatePassword = async function (
+    password: string
+  ): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+  };
+  
+export default model<IAssistant>("Assistant", assistantSchema);

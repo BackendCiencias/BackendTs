@@ -7,19 +7,25 @@ export interface IStudent extends Document {
     surname1: string;
     surname2: string;
   };
-  genre: "M" | "F";
   dni: string;
+  genre: "M" | "F";
   nationality: string;
   address: string;
   birth: string;
   phone: number;
-  origin: string;
+
+  nivel: string;
   grade: string;
-  collegue: string;
   section: string;
+  collegue: string;
+  origin: string;
+
   email: string;
   password: string;
+  bankcode: string;
   pension: Types.ObjectId[];
+  attendanceNormal: any;
+  attendanceSpecial: any;
   tutor:  Types.ObjectId[];
   contracts:  Types.ObjectId[];
   roles:  Types.ObjectId[];
@@ -36,17 +42,33 @@ const studentSchema = new Schema(
     },
     genre: { type: String, required: false },
     dni: { type: String, required: true, unique: true },
-    nationality: { type: String, required: false },
+    nationality: { type: String, default: "PER",required: false },
     address: { type: String, required: false },
     birth: { type: Date, required: false },
     origin: { type: String, required: false },
     phone: { type: Number, required: false },
+    nivel: { type: String, required: true },
     grade: { type: String, required: true },
-    collegue: { type: String, required: true },
+    collegue: { type: String, required: false },
     section: { type: String, default: "A" },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true},
+    bankcode: { type: String, required: false},
+    email: { type: String, required: false},
+    password: { type: String, required: false},
     pension: [{ ref: "Pension", type: Schema.Types.ObjectId }],
+    attendanceNormal: [{
+      idAtt: { ref: "Attendance", type: Schema.Types.ObjectId }, 
+      code: { type: String, require:true}, 
+      timeAtt: {type: Date, default: new Date().setHours(0,0,0), require: true},
+      state: {type: String, default: 'C',require: true} 
+      // A: temprano, B: tarde, C: falta
+    }],
+    attendanceSpecial: [{
+      idAtt: { ref: "Attendance", type: Schema.Types.ObjectId }, 
+      code: { type: String, require:true}, 
+      timeAtt: {type: Date, default: new Date().setHours(0,0,0), require: true},
+      state: {type: String, default: 'C',require: true} 
+      // A: temprano, B: tarde, C: falta
+    }],
     tutor: [{ ref: "Tutor", type: Schema.Types.ObjectId }],
     contracts: [{ ref: "Contracts", type: Schema.Types.ObjectId }],
     roles: [{ ref: "Role", type: Schema.Types.ObjectId }],

@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isStudent = exports.isSecretary = exports.isDirector = exports.verifyToken = exports.generateToken = void 0;
+exports.isStudent = exports.isAssistant = exports.isSecretary = exports.isDirector = exports.verifyToken = exports.generateToken = void 0;
 const role_model_1 = __importDefault(require("./../models/role.model"));
 const director_model_1 = __importDefault(require("./../models/director.model"));
 const secretary_model_1 = __importDefault(require("./../models/secretary.model"));
+const assistant_model_1 = __importDefault(require("./../models/assistant.model"));
 const error_handle_1 = require("../utils/error.handle");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const JWT_TOKEN = process.env.JWT_SECRET || 'tokentest';
@@ -74,6 +75,21 @@ const isSecretary = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     next();
 });
 exports.isSecretary = isSecretary;
+const isAssistant = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const assistant = yield assistant_model_1.default.findById(req.userId);
+    if (!assistant)
+        return res.status(401).json({ "error": 'UNAUTHORIZED' });
+    const roles = yield role_model_1.default.find({ _id: { $in: assistant.roles } });
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'assistant') {
+            next();
+            return;
+        }
+    }
+    return res.status(401).json({ "error": 'Require Assistant Role' });
+    next();
+});
+exports.isAssistant = isAssistant;
 const isStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.isStudent = isStudent;

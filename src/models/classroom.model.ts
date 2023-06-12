@@ -10,7 +10,7 @@ export interface IClassroom extends Document {
     grade: { type: String, required: true },
     collegue: { type: String, required: true },
     capacity: { type: Number, required: true},
-    students:  [{ref: "Student", type: Schema.Types.ObjectId }]
+    students:  [{ref: "Student", type: Schema.Types.ObjectId}]
   },
   {
     timestamps: true,

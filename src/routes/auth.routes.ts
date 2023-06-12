@@ -13,7 +13,6 @@ router.get('/', (req,res) => {
 router.post('/api/auth/secretary/signup', [verifyToken, isSecretary], signupSecretary);
 router.post('/api/auth/secretary/signin', signinSecretary);
 router.get('/api/auth/secretary/profile', [verifyToken, isSecretary], profileSecretary);
-
-router.post('/api/secretary/pension', payPension);
+router.post('/api/secretary/pension',[verifyToken, isSecretary], payPension);
 
 export default router;

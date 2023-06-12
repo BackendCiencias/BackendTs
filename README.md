@@ -277,3 +277,124 @@ secretary/pension
 </details></details>
 
 ---
+
+
+## Assitant(Auxiliar)
+---
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Sign in Assistant</code></summary>
+
+#### Link
+```
+/assistant/signin
+```
+
+#### Request
+
+```
+{
+  "email": "somevalue@cienciasperu.edu.pe",
+  "password": "some_confidencial_value"
+}
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  "token": "JSON Web Token",
+  "data":
+  {
+    "email": "somevaluel@ciencia.edu.pe",
+    "names":
+    {
+      "name1": "somevalue",
+      "surname1": "somevalue",
+      "surname2": "somevalue",
+    },
+    "_id": "somevalue"
+  }
+}
+```
+</details></details>
+
+---
+
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Create Attendance</code></summary>
+
+#### Link
+```
+/assistant/createatt
+```
+
+#### Request
+<details>
+<summary><code>Normal</code> <code><b>/</b></code> <code>Can be Empty</code></summary>
+
+```
+{
+}
+```
+</details>
+<details>
+<summary><code>Especial</code> <code><b>/</b></code> <code>Required</code></summary>
+
+```
+{
+  "timeLimit": "2023-06-10T15:00:00.633Z",
+  "description": "somevalue",
+  "type": "E"
+}
+```
+</details>
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  "code": "day/month/fullYear",
+  "description": "somevalue",
+  "type": "E",
+  "timeLimit": "Date",
+  "_id": "648736d007d5b0ae51c4afff",
+}
+```
+</details></details>
+
+---
+
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Student Attendance</code></summary>
+
+#### Link
+```
+/assistant/studentAtt
+```
+
+#### Request
+```
+{
+  "dni": "somevalue",
+}
+```
+
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  "time": "Date", 
+  "state": "A: temprano, B: tarde, C: falta"
+}
+```
+</details></details>

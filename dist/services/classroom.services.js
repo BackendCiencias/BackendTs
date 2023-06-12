@@ -16,6 +16,8 @@ exports.registerVacancies = exports.addVacancies = exports.getVacanciesByCollegu
 const classroom_model_1 = __importDefault(require("./../models/classroom.model"));
 const updateVacancies = (studentId, studentGrade, studentCollegue) => __awaiter(void 0, void 0, void 0, function* () {
     const findedClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
+    if (!findedClassroom)
+        console.log("null", studentId);
     findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.students.push(studentId);
     findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.save();
     return "updateVacancies";
@@ -87,13 +89,27 @@ const addVacancies = (grade, collegue, cant) => __awaiter(void 0, void 0, void 0
 });
 exports.addVacancies = addVacancies;
 const registerVacancies = (classroomArr) => __awaiter(void 0, void 0, void 0, function* () {
-    // let x = 0;
-    // classroomArr.forEach(async e =>  {
-    //     console.log(`element ${x++}`, e.grade);
-    //     const classroomCreated = await Classroom.create(e);
-    //     if(!classroomCreated) return "ERROR_CREATE_CLASSROOM";
-    // });
+    let x = 0;
+    try {
+        for (let classroom of classroomArr) {
+            console.log(`element ${x++}`, classroom.grade);
+            const classroomCreated = yield classroom_model_1.default.create(classroom);
+            if (!classroomCreated)
+                return "ERROR_CREATE_CLASSROOM";
+        }
+    }
+    catch (e) {
+        return { error: "ERROR_CREATE_CLASSROOM_BULK", reason: e };
+    }
     return "Desactivado :P";
 });
 exports.registerVacancies = registerVacancies;
+// export const assingStudentClass =async (grade:string, collegue:string, studentid:Types.ObjectId) => {
+//     const findedClassroom = await Classroom.findOne({grade, collegue});
+//     if(!findedClassroom) return "Invalid grade or collegue";
+//     console.log(findedClassroom)
+//     findedClassroom.students.push(studentid);
+//     await findedClassroom.save();
+//     return "Student class assing success"
+// }
 //# sourceMappingURL=classroom.services.js.map

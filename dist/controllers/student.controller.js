@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createStudent = void 0;
+exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
@@ -40,6 +40,17 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.createStudent = createStudent;
+const createBulkStudents = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { pensions } = body;
+        const responseStudent = yield (0, student_services_1.registerStudentSpecial)(body);
+        res.status(200).send(responseStudent);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_SPECIAL_BULK_STUDENTS', e);
+    }
+});
+exports.createBulkStudents = createBulkStudents;
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseStudents = yield (0, student_services_1.getAllStudents)();

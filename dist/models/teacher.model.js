@@ -15,7 +15,7 @@ const teacherSchema = new mongoose_1.Schema({
     birth: { type: Date, required: true },
     phone: { type: Number, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, select: false },
+    password: { type: String, required: true },
     payment: [{ ref: "Payment", type: mongoose_1.Schema.Types.ObjectId }],
     roles: [{ ref: "Role", type: mongoose_1.Schema.Types.ObjectId }],
 }, {

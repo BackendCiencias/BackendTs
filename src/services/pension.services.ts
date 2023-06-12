@@ -165,9 +165,10 @@ export const payMonthPension = async (idStudent:string, month:string) => {
     // console.log(pension?.[`${month}`]);
     const catego = await Category.findOne({name: "Pension"});
     const idCategory = catego?.id;
+    const today = new Date().toDateString();
     const tickedGenerated = await generateTickedC(
         {
-            date: "2002-08-11",
+            date: today,
             amount: cant,
             student: idStudent, 
             category: [idCategory]

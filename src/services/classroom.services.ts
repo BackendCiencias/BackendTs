@@ -10,6 +10,7 @@ interface ISimplyClassroom{
 
 export const updateVacancies  = async(studentId:Types.ObjectId, studentGrade:string, studentCollegue:string) =>{
     const findedClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
+    if(!findedClassroom) console.log("null", studentId);
     findedClassroom?.students.push(studentId);
     findedClassroom?.save();
     return "updateVacancies";
@@ -76,11 +77,24 @@ export const addVacancies = async (grade:string, collegue:string, cant:number) =
 }
 
 export const registerVacancies  = async (classroomArr:IClassroom[]) =>{
-    // let x = 0;
-    // classroomArr.forEach(async e =>  {
-    //     console.log(`element ${x++}`, e.grade);
-    //     const classroomCreated = await Classroom.create(e);
-    //     if(!classroomCreated) return "ERROR_CREATE_CLASSROOM";
-    // });
+    let x = 0;
+    try {
+        for(let classroom of classroomArr ){
+            console.log(`element ${x++}`, classroom.grade);
+            const classroomCreated = await Classroom.create(classroom);
+            if(!classroomCreated) return "ERROR_CREATE_CLASSROOM";
+        }
+    } catch (e) {
+        return {error: "ERROR_CREATE_CLASSROOM_BULK", reason: e}
+    }
     return "Desactivado :P";
 }
+
+// export const assingStudentClass =async (grade:string, collegue:string, studentid:Types.ObjectId) => {
+//     const findedClassroom = await Classroom.findOne({grade, collegue});
+//     if(!findedClassroom) return "Invalid grade or collegue";
+//     console.log(findedClassroom)
+//     findedClassroom.students.push(studentid);
+//     await findedClassroom.save();
+//     return "Student class assing success"
+// }

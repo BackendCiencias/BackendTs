@@ -23,17 +23,33 @@ const studentSchema = new mongoose_1.Schema({
     },
     genre: { type: String, required: false },
     dni: { type: String, required: true, unique: true },
-    nationality: { type: String, required: false },
+    nationality: { type: String, default: "PER", required: false },
     address: { type: String, required: false },
     birth: { type: Date, required: false },
     origin: { type: String, required: false },
     phone: { type: Number, required: false },
+    nivel: { type: String, required: true },
     grade: { type: String, required: true },
-    collegue: { type: String, required: true },
+    collegue: { type: String, required: false },
     section: { type: String, default: "A" },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    bankcode: { type: String, required: false },
+    email: { type: String, required: false },
+    password: { type: String, required: false },
     pension: [{ ref: "Pension", type: mongoose_1.Schema.Types.ObjectId }],
+    attendanceNormal: [{
+            idAtt: { ref: "Attendance", type: mongoose_1.Schema.Types.ObjectId },
+            code: { type: String, require: true },
+            timeAtt: { type: Date, default: new Date().setHours(0, 0, 0), require: true },
+            state: { type: String, default: 'C', require: true }
+            // A: temprano, B: tarde, C: falta
+        }],
+    attendanceSpecial: [{
+            idAtt: { ref: "Attendance", type: mongoose_1.Schema.Types.ObjectId },
+            code: { type: String, require: true },
+            timeAtt: { type: Date, default: new Date().setHours(0, 0, 0), require: true },
+            state: { type: String, default: 'C', require: true }
+            // A: temprano, B: tarde, C: falta
+        }],
     tutor: [{ ref: "Tutor", type: mongoose_1.Schema.Types.ObjectId }],
     contracts: [{ ref: "Contracts", type: mongoose_1.Schema.Types.ObjectId }],
     roles: [{ ref: "Role", type: mongoose_1.Schema.Types.ObjectId }],

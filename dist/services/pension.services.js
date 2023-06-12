@@ -171,8 +171,9 @@ const payMonthPension = (idStudent, month) => __awaiter(void 0, void 0, void 0, 
     // console.log(pension?.[`${month}`]);
     const catego = yield category_model_1.default.findOne({ name: "Pension" });
     const idCategory = catego === null || catego === void 0 ? void 0 : catego.id;
+    const today = new Date().toDateString();
     const tickedGenerated = yield (0, tickedC_services_1.generateTickedC)({
-        date: "2002-08-11",
+        date: today,
         amount: cant,
         student: idStudent,
         category: [idCategory]

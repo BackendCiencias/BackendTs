@@ -1,6 +1,7 @@
 import Role, { IRole } from './../models/role.model';
 import Director, { IDirector } from './../models/director.model';
 import Secretary, { ISecretary } from './../models/secretary.model';
+import Assistant, { IAssistant } from './../models/assistant.model';
 import { IPayload } from '../interfaces/payload';
 import { handleHttp } from '../utils/error.handle';
 import {sign, verify} from 'jsonwebtoken';
@@ -54,6 +55,21 @@ export const isSecretary = async (req : Request, res: Response ,next: NextFuncti
         }
     }
     return res.status(401).json({"error": 'Require Secretary Role'});
+    next();
+}
+
+
+export const isAssistant = async (req : Request, res: Response ,next: NextFunction) => {
+    const assistant = await Assistant.findById(req.userId);
+    if(!assistant) return res.status(401).json({"error": 'UNAUTHORIZED'});
+    const roles = await Role.find({_id: {$in: assistant.roles}});
+    for(let i = 0; i < roles.length; i++){
+        if(roles[i].name === 'assistant'){
+            next();            
+            return;
+        }
+    }
+    return res.status(401).json({"error": 'Require Assistant Role'});
     next();
 }
 

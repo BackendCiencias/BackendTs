@@ -16,11 +16,13 @@ exports.getAllTickeds = exports.generateTickedC = void 0;
 const tickedC_model_1 = __importDefault(require("./../models/tickedC.model"));
 const generateTickedC = (tickedC) => __awaiter(void 0, void 0, void 0, function* () {
     const tickedC_Created = yield tickedC_model_1.default.create(tickedC);
+    // const ticked = await TickedC.find({id: tickedC_Created.id}).populate("student");
     return tickedC_Created;
 });
 exports.generateTickedC = generateTickedC;
 const getAllTickeds = () => __awaiter(void 0, void 0, void 0, function* () {
     const allTickeds = yield tickedC_model_1.default.find();
+    console;
     return allTickeds;
 });
 exports.getAllTickeds = getAllTickeds;

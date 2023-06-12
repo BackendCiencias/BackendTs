@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 router.post('/api/auth/secretary/signup', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], auth_controller_1.signupSecretary);
 router.post('/api/auth/secretary/signin', auth_controller_1.signinSecretary);
 router.get('/api/auth/secretary/profile', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], auth_controller_1.profileSecretary);
-router.post('/api/secretary/pension', pension_controller_1.payPension);
+router.post('/api/secretary/pension', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], pension_controller_1.payPension);
 exports.default = router;
 //# sourceMappingURL=auth.routes.js.map

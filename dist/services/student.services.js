@@ -12,21 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudent = void 0;
+exports.getAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
 const jwt_handle_1 = require("./../middlewares/jwt.handle");
+const classroom_services_1 = require("./classroom.services");
 const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
-    // if(!student.dni) return "MISSSING_DNI";
-    // const isAlready = await Student.findOne({"dni": student.dni});
-    // if(isAlready) return "STUDENT";
     const { dni, names } = student;
     const { name1, name2, surname1, surname2 } = names;
     const createdEmail = (0, stringPreprocesor_1.createEmail)(name1, surname1, surname2);
-    // const createdEmail:string = "alumno2madero@cienciasperu.edu.pe";
-    // const okEmail = await Student.find({email: createdEmail}).select('email')
-    // console.log(okEmail);
     const literalPassword = (0, stringPreprocesor_1.createPassword)(dni, name1, name2, surname1, surname2);
     student.password = literalPassword;
     student.email = createdEmail;
@@ -45,6 +40,59 @@ const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function*
     };
 });
 exports.registerStudent = registerStudent;
+const tradGrade = (nivel, grade) => {
+    const nvLower = nivel.toLocaleLowerCase();
+    var trad = {
+        "3 AÑOS": { code: "3" },
+        "4 AÑOS": { code: "4" },
+        "5 AÑOS": { code: "5" },
+        "PRIMERO": { code: "1ro_" },
+        "SEGUNDO": { code: "2do_" },
+        "TERCERO": { code: "3ro_" },
+        "CUARTO": { code: "4to_" },
+        "QUINTO": { code: "5to_" },
+        "SEXTO": { code: "6to_" },
+        "ELITE 1": { code: "E1_" },
+        "ELITE 2": { code: "E2_" }
+    };
+    const newGrade = trad[grade].code + nvLower;
+    return newGrade;
+};
+exports.tradGrade = tradGrade;
+const registerStudentSpecial = (studentArr) => __awaiter(void 0, void 0, void 0, function* () {
+    const studentsCreated = [];
+    let x = 0;
+    try {
+        for (let stu of studentArr) {
+            // console.log(`element ${x++}`, e);
+            const role = yield role_model_1.default.findOne({ name: "student" });
+            const realGrade = (0, exports.tradGrade)(stu.nivel, stu.grade);
+            const realCollegue = (stu.nivel == "SECUNDARIA") ? "Ciencias Secundaria" : "Ciencias Aplicadas";
+            const studentCreated = yield student_model_1.default.create({
+                names: {
+                    name1: stu.name1,
+                    name2: stu.name2,
+                    surname1: stu.surname1,
+                    surname2: stu.surname2,
+                },
+                nivel: stu.nivel,
+                grade: realGrade,
+                section: stu.section,
+                collegue: realCollegue,
+                dni: stu.dni,
+                roles: [role === null || role === void 0 ? void 0 : role._id]
+            });
+            studentsCreated.push(studentCreated);
+            const checkClassroom = yield (0, classroom_services_1.updateVacancies)(studentCreated.id, studentCreated.grade, studentCreated.collegue);
+            console.log(checkClassroom);
+        }
+        return studentsCreated;
+    }
+    catch (e) {
+        return { error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e };
+    }
+});
+exports.registerStudentSpecial = registerStudentSpecial;
 const loginStudent = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_model_1.default.findOne({ email });
     if (!student)
