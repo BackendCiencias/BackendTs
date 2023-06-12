@@ -58,14 +58,14 @@ const studentSchema = new Schema(
     attendanceNormal: [{
       idAtt: { ref: "Attendance", type: Schema.Types.ObjectId }, 
       code: { type: String, require:true}, 
-      timeAtt: {type: Date, default: new Date().setHours(0,0,0), require: true},
+      timeAtt: {type: Date, default: new Date().setHours(0,0,0,0), require: true},
       state: {type: String, default: 'C',require: true} 
       // A: temprano, B: tarde, C: falta
     }],
     attendanceSpecial: [{
       idAtt: { ref: "Attendance", type: Schema.Types.ObjectId }, 
       code: { type: String, require:true}, 
-      timeAtt: {type: Date, default: new Date().setHours(0,0,0), require: true},
+      timeAtt: {type: Date, default: new Date().setHours(0,0,0,0), require: true},
       state: {type: String, default: 'C',require: true} 
       // A: temprano, B: tarde, C: falta
     }],

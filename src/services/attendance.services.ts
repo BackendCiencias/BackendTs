@@ -50,12 +50,21 @@ export const studentAttendanceSign = async(dni:IAttendance) => {
     const codeAttendanceToday = today.getDay() + "/" + today.getMonth() + "/"+today.getFullYear();
     try {
         const student = await Student.findOne({dni: dni},{attendanceNormal: 1});
+        if(!student)return {error: "STUDENT_NOT_FOUND_ATTENDANCE"};
+        
         const sz = student?.attendanceNormal.length-1; 
-        const midnight = new Date().setHours(0,0,0);
-        console.log(midnight.toString());
-        console.log(student?.attendanceNormal[sz])
-        return student
-    } catch (e) {
-        return {error: "ERROR_ATTENDANCETODAY_STUDENT_ASSING", reason: e};
+        if(student.attendanceNormal[sz].state != "C") return {error: "ALREADY_SIGN_STUDENT_ATTENDANCE"}
+        const timeNow = new Date();
+        const timeLate = new Date();
+        let stateAtt = "A";
+        timeLate.setHours(8,0,0,0);
+        if( timeNow > timeLate) stateAtt = "B";
+        student.attendanceNormal[sz].state = stateAtt;
+        student.attendanceNormal[sz].timeAtt = timeNow;
+        student.save();
+        return {state: stateAtt, time: timeNow}
+        
+    } catch (error) {
+        return {error: "ERROR_SING_STUDENT_ATTENDACE", reason: error};
     }
 }

@@ -66,14 +66,24 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
     const codeAttendanceToday = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
     try {
         const student = yield student_model_1.default.findOne({ dni: dni }, { attendanceNormal: 1 });
+        if (!student)
+            return { error: "STUDENT_NOT_FOUND_ATTENDANCE" };
         const sz = (student === null || student === void 0 ? void 0 : student.attendanceNormal.length) - 1;
-        const midnight = new Date().setHours(0, 0, 0);
-        console.log(midnight.toString());
-        console.log(student === null || student === void 0 ? void 0 : student.attendanceNormal[sz]);
-        return student;
+        if (student.attendanceNormal[sz].state != "C")
+            return { error: "ALREADY_SIGN_STUDENT_ATTENDANCE" };
+        const timeNow = new Date();
+        const timeLate = new Date();
+        let stateAtt = "A";
+        timeLate.setHours(8, 0, 0, 0);
+        if (timeNow > timeLate)
+            stateAtt = "B";
+        student.attendanceNormal[sz].state = stateAtt;
+        student.attendanceNormal[sz].timeAtt = timeNow;
+        student.save();
+        return { state: stateAtt, time: timeNow };
     }
-    catch (e) {
-        return { error: "ERROR_ATTENDANCETODAY_STUDENT_ASSING", reason: e };
+    catch (error) {
+        return { error: "ERROR_SING_STUDENT_ATTENDACE", reason: error };
     }
 });
 exports.studentAttendanceSign = studentAttendanceSign;
