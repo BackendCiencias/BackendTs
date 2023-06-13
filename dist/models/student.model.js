@@ -29,6 +29,7 @@ const studentSchema = new mongoose_1.Schema({
     origin: { type: String, required: false },
     phone: { type: Number, required: false },
     nivel: { type: String, required: false },
+    // nivel: { type: String, required: false },
     grade: { type: String, required: true },
     collegue: { type: String, required: false },
     section: { type: String, default: "A" },

@@ -122,6 +122,73 @@ https://backend-ts.vercel.app/api/
 </details>
 
 ---
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Register New Assistant</code></summary>
+
+#### Link
+```
+/assistant/signup
+```
+
+#### Request
+
+```
+{
+  "names": 
+  { 
+    "name1": "            somevalue",
+    "name2": "            somevalue",
+    "surname1": "         somevalue",
+    "surname2": "         somevalue" 
+  },
+  "genre": "              somevalue",
+  "dni": "                somevalue",
+  "nationality": "        somevalue",
+  "address": "            somevalue",
+  "birth": "2002-08-11",
+  "phone":                number,
+  "payments": {
+    "march":              number,
+    "april":              number,
+    "may":                number,
+    "june":               number,
+    "july":               number,
+    "august":             number,
+    "september":          number,
+    "october":            number,
+    "november":           number,
+    "december":           number
+  }
+}
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  "email":     "generated",
+  "password":  "generated"
+}
+```
+
+</details>
+
+<details>
+<summary><code>Status 500</code> <code><b>/</b></code> <code> Invalid Token (could be expired)</code></summary>
+
+```
+{
+  "error": "ERROR_VERIFICATION_TOKEN",
+}
+```
+
+</details>
+</details>
+
+---
 
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Pay Month Pension</code></summary>
