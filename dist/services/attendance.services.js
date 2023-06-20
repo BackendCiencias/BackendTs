@@ -12,15 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentAttendanceSign = exports.createAttendanceToday = void 0;
+exports.todayAttendance = exports.studentAttendanceSign = exports.createAttendanceToday = void 0;
 const attendance_model_1 = __importDefault(require("./../models/attendance.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, function* () {
     const today = new Date();
     const nameAtt = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
     attendance.code = nameAtt;
-    const createdAttendance = yield attendance_model_1.default.create(attendance);
     if (attendance.type == 'E') {
+        const newIndex = yield attendance_model_1.default.count();
+        attendance.code = nameAtt + "_E" + newIndex;
+        const createdAttendance = yield attendance_model_1.default.create(attendance);
         const allStudents = yield student_model_1.default.find({}, { attendanceSpecial: 1 });
         const newAttendance = {
             idAtt: createdAttendance.id,
@@ -29,7 +31,7 @@ const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, 
         try {
             for (let stu of allStudents) {
                 stu.attendanceSpecial.push(newAttendance);
-                yield stu.save();
+                stu.save();
             }
             return createdAttendance;
         }
@@ -38,20 +40,19 @@ const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, 
         }
     }
     else {
+        const checkExist = yield attendance_model_1.default.findOne({ code: nameAtt });
+        if (checkExist)
+            return "ERROR_ALREADY_CREADTED_ATTENDANCE";
+        const createdAttendance = yield attendance_model_1.default.create(attendance);
         const allStudents = yield student_model_1.default.find({}, { attendanceNormal: 1 });
         const newAttendance = {
             idAtt: createdAttendance.id,
             code: createdAttendance.code
         };
         try {
-            if (allStudents[0].attendanceNormal.length > 0) {
-                const lastAttendance = allStudents[0].attendanceNormal[allStudents[0].attendanceNormal.length - 1];
-                if (lastAttendance.code == createdAttendance.code)
-                    return { message: "ALREADY_CREADTED_ATTENDANCE" };
-            }
             for (let stu of allStudents) {
                 stu.attendanceNormal.push(newAttendance);
-                yield stu.save();
+                stu.save();
             }
             return createdAttendance;
         }
@@ -87,4 +88,11 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.studentAttendanceSign = studentAttendanceSign;
+const todayAttendance = () => __awaiter(void 0, void 0, void 0, function* () {
+    const today = new Date();
+    const codeToday = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
+    const allAttendances = yield attendance_model_1.default.find({ code: codeToday });
+    return allAttendances;
+});
+exports.todayAttendance = todayAttendance;
 //# sourceMappingURL=attendance.services.js.map

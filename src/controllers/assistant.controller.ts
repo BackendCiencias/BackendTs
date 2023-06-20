@@ -4,7 +4,6 @@ import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
 import { loginAssistant } from './../services/assistant.services';
 import Assistant, { IAssistant } from './../models/assistant.model';
-import { createAttendanceToday, studentAttendanceSign } from './../services/attendance.services';
 
 export const createAssistant =  async({body}: Request, res: Response) => {
     try{
@@ -95,29 +94,5 @@ export const getAssistantsByDNI =  async({body}: Request, res: Response) => {
         res.send(responseAssistants);
     }catch(e){
         handleHttp(res, 'ERROR_ASSISTANT_DNI',e);
-    }
-};
-
-export const createAttendance =  async({body}: Request, res: Response) => {
-    try{
-        const responseAttendance = await createAttendanceToday(body);
-        // if(responseAttendance == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAttendance});
-        // }
-        res.send(responseAttendance);
-    }catch(e){
-        handleHttp(res, 'ERROR_ASSISTANT_CREATE_ATTENDANCE',e);
-    }
-};
-
-export const studentAttendance =  async({body}: Request, res: Response) => {
-    try{
-        const responseAssistants = await studentAttendanceSign(body.dni);
-        // if(responseAssistants == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAssistants});
-        // }
-        res.send(responseAssistants);
-    }catch(e){
-        handleHttp(res, 'ERROR_STUDENT_ATTENDANCE',e);
     }
 };

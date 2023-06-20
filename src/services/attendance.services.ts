@@ -6,8 +6,11 @@ export const createAttendanceToday = async(attendance:IAttendance) => {
     const today = new Date();
     const nameAtt = today.getDay() + "/" + today.getMonth() + "/"+today.getFullYear();
     attendance.code = nameAtt;
-    const createdAttendance = await Attendance.create(attendance);
+    
     if(attendance.type == 'E'){
+        const newIndex = await Attendance.count();
+        attendance.code = nameAtt + "_E" +  newIndex;
+        const createdAttendance = await Attendance.create(attendance);
         const allStudents = await Student.find({}, { attendanceSpecial: 1});
         const newAttendance = {
             idAtt: createdAttendance.id,
@@ -16,26 +19,26 @@ export const createAttendanceToday = async(attendance:IAttendance) => {
         try {
             for(let stu of allStudents){
                 stu.attendanceSpecial.push(newAttendance)
-                await stu.save();
+                stu.save();
             }
             return createdAttendance;
         } catch (e) {
             return {error: "ERROR_ATTENDANCETODAY_STUDENT_ASSING_SPECIAL", reason: e};
         }
     }else{
+        const checkExist = await Attendance.findOne({code: nameAtt});
+        if(checkExist) return "ERROR_ALREADY_CREADTED_ATTENDANCE";
+        const createdAttendance = await Attendance.create(attendance);
+        
         const allStudents = await Student.find({}, { attendanceNormal: 1});
         const newAttendance = {
             idAtt: createdAttendance.id,
             code: createdAttendance.code
         }
         try {
-            if(allStudents[0].attendanceNormal.length > 0){
-                const lastAttendance = allStudents[0].attendanceNormal[allStudents[0].attendanceNormal.length -1]
-                if(lastAttendance.code == createdAttendance.code) return {message: "ALREADY_CREADTED_ATTENDANCE"};
-            }
             for(let stu of allStudents){
                 stu.attendanceNormal.push(newAttendance)
-                await stu.save();
+                stu.save();
             }
             return createdAttendance;
         } catch (e) {
@@ -67,4 +70,12 @@ export const studentAttendanceSign = async(dni:IAttendance) => {
     } catch (error) {
         return {error: "ERROR_SING_STUDENT_ATTENDACE", reason: error};
     }
+}
+
+
+export const todayAttendance = async() => {
+    const today = new Date();
+    const codeToday = today.getDay() + "/" + today.getMonth() + "/"+today.getFullYear();
+    const allAttendances = await Attendance.find({code: codeToday});
+    return allAttendances;
 }

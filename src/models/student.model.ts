@@ -36,7 +36,7 @@ const studentSchema = new Schema(
   {
     names: {
       name1: { type: String, required: true },
-      name2: { type: String },
+      name2: { type: String, default: "" },
       surname1: { type: String, required: true },
       surname2: { type: String, required: true },
     },

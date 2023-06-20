@@ -34,9 +34,9 @@ export const tradGrade = (nivel: string, grade: string) => {
         code: string;
      }
      var trad: Record<string, Partial<IGrade>> = {
-        "3 AÑOS": {code: "3"},
-        "4 AÑOS": {code: "4"},
-        "5 AÑOS": {code: "5"},
+        "3 AÑOS": {code: "3_"},
+        "4 AÑOS": {code: "4_"},
+        "5 AÑOS": {code: "5_"},
         "PRIMERO": {code : "1ro_"},
         "SEGUNDO": {code :"2do_"},
         "TERCERO": {code :"3ro_"},
@@ -47,18 +47,27 @@ export const tradGrade = (nivel: string, grade: string) => {
         "ELITE 2": {code :"E2_"}
      };
     const newGrade  = trad[grade].code + nvLower;
+    console.log(newGrade);
     return newGrade;
 }
-export const registerStudentSpecial = async(studentArr:any[]) => {
+export const registerStudentSpecial = async() => {
+    const fs = require('fs');
+    const leerArchivo = (path:string) => fs.readFileSync(path, 'utf8');
+
+    const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
+    const studentArr = JSON.parse(archivoChistes1);
+    // console.log(studentArr[4])
+    // return {message: "Okidoki"};
     const studentsCreated:IStudent[]= []
     let x = 0;
+    let cnt = 0;
+    const role = await Role.findOne({name: "student"});
     try {
         for(let stu of studentArr)  {
             // console.log(`element ${x++}`, e);
-            const role = await Role.findOne({name: "student"});
             const realGrade = tradGrade(stu.nivel, stu.grade);
             const realCollegue = (stu.nivel == "SECUNDARIA")? "Ciencias Secundaria": "Ciencias Aplicadas";
-            const studentCreated = await Student.create({
+            const studentCreated = Student.create({
                 names: {
                     name1: stu.name1,
                     name2: stu.name2,
@@ -72,11 +81,14 @@ export const registerStudentSpecial = async(studentArr:any[]) => {
                 dni: stu.dni,
                 roles: [role?._id]
             });
-            studentsCreated.push(studentCreated);
-            const checkClassroom = await updateVacancies(studentCreated.id, studentCreated.grade, studentCreated.collegue)
-            console.log(checkClassroom)
+            studentCreated.then((e) => {
+                updateVacancies(e.id, e.grade, e.collegue);
+                // console.log("id: ", e.id)
+            }).catch((error) => console.log("pipipi"))
+            cnt = cnt + 1;
+            console.log("Creado ",cnt)
         }
-        return studentsCreated;
+        return {message: "SUCCESSFULLY CREATED"};
     } catch (e) {
         return {error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e};
     }

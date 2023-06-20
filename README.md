@@ -395,7 +395,7 @@ secretary/pension
 
 #### Link
 ```
-/assistant/createatt
+/attendance/createatt
 ```
 
 #### Request
@@ -433,6 +433,16 @@ secretary/pension
   "_id": "648736d007d5b0ae51c4afff",
 }
 ```
+</details>
+
+<details>
+<summary><code>Status 400</code> <code><b>/</b></code> <code>Failed</code></summary>
+
+```
+{
+  "error": "ERROR_ALREADY_CREADTED_ATTENDANCE"
+}
+```
 </details></details>
 
 ---
@@ -442,7 +452,7 @@ secretary/pension
 
 #### Link
 ```
-/assistant/studentAtt
+/attendance/studentAtt
 ```
 
 #### Request
@@ -463,5 +473,37 @@ secretary/pension
   "time": "Date", 
   "state": "A: temprano, B: tarde, C: falta"
 }
+{
+  "error": "ERROR_ALREADY_CREADTED_ATTENDANCE"
+}
+```
+</details>
+</details>
+
+--- 
+
+
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>Today Attendance</code></summary>
+
+#### Link
+```
+/attendance/today
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+[
+  {
+    "_id": "somevalue",
+    "code": "day/month/year",
+    "type": "N",
+    "timeLimit": "date",
+  }
+]
 ```
 </details></details>

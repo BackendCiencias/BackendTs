@@ -31,7 +31,7 @@ export const createStudent =  async({body}: Request, res: Response) => {
 export const createBulkStudents =  async({body}: Request, res: Response) => {
     try{
         const {pensions} = body;
-        const responseStudent = await registerStudentSpecial(body);
+        const responseStudent = await registerStudentSpecial();
         res.status(200).send(responseStudent);
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_SPECIAL_BULK_STUDENTS',e);

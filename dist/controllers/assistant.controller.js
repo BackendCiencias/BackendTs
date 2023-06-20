@@ -12,13 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentAttendance = exports.createAttendance = exports.getAssistantsByDNI = exports.getAssistantsById = exports.getAssistants = exports.profileAssistant = exports.signinAssistant = exports.createAssistant = void 0;
+exports.getAssistantsByDNI = exports.getAssistantsById = exports.getAssistants = exports.profileAssistant = exports.signinAssistant = exports.createAssistant = void 0;
 const payment_services_1 = require("../services/payment.services");
 const assistant_services_1 = require("../services/assistant.services");
 const error_handle_1 = require("../utils/error.handle");
 const assistant_services_2 = require("./../services/assistant.services");
 const assistant_model_1 = __importDefault(require("./../models/assistant.model"));
-const attendance_services_1 = require("./../services/attendance.services");
 const createAssistant = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { payments } = body;
@@ -113,30 +112,4 @@ const getAssistantsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getAssistantsByDNI = getAssistantsByDNI;
-const createAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseAttendance = yield (0, attendance_services_1.createAttendanceToday)(body);
-        // if(responseAttendance == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAttendance});
-        // }
-        res.send(responseAttendance);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_ASSISTANT_CREATE_ATTENDANCE', e);
-    }
-});
-exports.createAttendance = createAttendance;
-const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseAssistants = yield (0, attendance_services_1.studentAttendanceSign)(body.dni);
-        // if(responseAssistants == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAssistants});
-        // }
-        res.send(responseAssistants);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_STUDENT_ATTENDANCE', e);
-    }
-});
-exports.studentAttendance = studentAttendance;
 //# sourceMappingURL=assistant.controller.js.map

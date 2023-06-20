@@ -43,9 +43,9 @@ exports.registerStudent = registerStudent;
 const tradGrade = (nivel, grade) => {
     const nvLower = nivel.toLocaleLowerCase();
     var trad = {
-        "3 AÑOS": { code: "3" },
-        "4 AÑOS": { code: "4" },
-        "5 AÑOS": { code: "5" },
+        "3 AÑOS": { code: "3_" },
+        "4 AÑOS": { code: "4_" },
+        "5 AÑOS": { code: "5_" },
         "PRIMERO": { code: "1ro_" },
         "SEGUNDO": { code: "2do_" },
         "TERCERO": { code: "3ro_" },
@@ -56,19 +56,27 @@ const tradGrade = (nivel, grade) => {
         "ELITE 2": { code: "E2_" }
     };
     const newGrade = trad[grade].code + nvLower;
+    console.log(newGrade);
     return newGrade;
 };
 exports.tradGrade = tradGrade;
-const registerStudentSpecial = (studentArr) => __awaiter(void 0, void 0, void 0, function* () {
+const registerStudentSpecial = () => __awaiter(void 0, void 0, void 0, function* () {
+    const fs = require('fs');
+    const leerArchivo = (path) => fs.readFileSync(path, 'utf8');
+    const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
+    const studentArr = JSON.parse(archivoChistes1);
+    // console.log(studentArr[4])
+    // return {message: "Okidoki"};
     const studentsCreated = [];
     let x = 0;
+    let cnt = 0;
+    const role = yield role_model_1.default.findOne({ name: "student" });
     try {
         for (let stu of studentArr) {
             // console.log(`element ${x++}`, e);
-            const role = yield role_model_1.default.findOne({ name: "student" });
             const realGrade = (0, exports.tradGrade)(stu.nivel, stu.grade);
             const realCollegue = (stu.nivel == "SECUNDARIA") ? "Ciencias Secundaria" : "Ciencias Aplicadas";
-            const studentCreated = yield student_model_1.default.create({
+            const studentCreated = student_model_1.default.create({
                 names: {
                     name1: stu.name1,
                     name2: stu.name2,
@@ -82,11 +90,14 @@ const registerStudentSpecial = (studentArr) => __awaiter(void 0, void 0, void 0,
                 dni: stu.dni,
                 roles: [role === null || role === void 0 ? void 0 : role._id]
             });
-            studentsCreated.push(studentCreated);
-            const checkClassroom = yield (0, classroom_services_1.updateVacancies)(studentCreated.id, studentCreated.grade, studentCreated.collegue);
-            console.log(checkClassroom);
+            studentCreated.then((e) => {
+                (0, classroom_services_1.updateVacancies)(e.id, e.grade, e.collegue);
+                // console.log("id: ", e.id)
+            }).catch((error) => console.log("pipipi"));
+            cnt = cnt + 1;
+            console.log("Creado ", cnt);
         }
-        return studentsCreated;
+        return { message: "SUCCESSFULLY CREATED" };
     }
     catch (e) {
         return { error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e };

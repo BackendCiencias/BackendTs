@@ -9,11 +9,15 @@ interface ISimplyClassroom{
 }
 
 export const updateVacancies  = async(studentId:Types.ObjectId, studentGrade:string, studentCollegue:string) =>{
-    const findedClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
-    if(!findedClassroom) console.log("null", studentId);
-    findedClassroom?.students.push(studentId);
-    findedClassroom?.save();
-    return "updateVacancies";
+    try {
+        const findedClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
+        if(!findedClassroom) console.log("null", studentId);
+        findedClassroom?.students.push(studentId);
+        findedClassroom?.save();
+        return "updateVacancies";
+    } catch (e) {
+        return {error: "ERROR_UPDATE_VACANCIES", e}
+    }
 }
 export const checkVacancies = async(studentGrade:string, studentCollegue:string) => {
     const okClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});

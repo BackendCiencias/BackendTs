@@ -15,12 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerVacancies = exports.addVacancies = exports.getVacanciesByCollegue = exports.getAllVacancies = exports.checkVacancies = exports.updateVacancies = void 0;
 const classroom_model_1 = __importDefault(require("./../models/classroom.model"));
 const updateVacancies = (studentId, studentGrade, studentCollegue) => __awaiter(void 0, void 0, void 0, function* () {
-    const findedClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
-    if (!findedClassroom)
-        console.log("null", studentId);
-    findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.students.push(studentId);
-    findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.save();
-    return "updateVacancies";
+    try {
+        const findedClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
+        if (!findedClassroom)
+            console.log("null", studentId);
+        findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.students.push(studentId);
+        findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.save();
+        return "updateVacancies";
+    }
+    catch (e) {
+        return { error: "ERROR_UPDATE_VACANCIES", e };
+    }
 });
 exports.updateVacancies = updateVacancies;
 const checkVacancies = (studentGrade, studentCollegue) => __awaiter(void 0, void 0, void 0, function* () {

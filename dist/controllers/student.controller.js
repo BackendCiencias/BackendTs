@@ -43,7 +43,7 @@ exports.createStudent = createStudent;
 const createBulkStudents = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { pensions } = body;
-        const responseStudent = yield (0, student_services_1.registerStudentSpecial)(body);
+        const responseStudent = yield (0, student_services_1.registerStudentSpecial)();
         res.status(200).send(responseStudent);
     }
     catch (e) {
