@@ -28,9 +28,9 @@ exports.createAttendance = createAttendance;
 const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseAssistants = yield (0, attendance_services_1.studentAttendanceSign)(body.dni);
-        // if(responseAssistants == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAssistants});
-        // }
+        if (responseAssistants == "ALREADY_SIGN_STUDENT_ATTENDANCE") {
+            return res.status(400).send({ error: responseAssistants });
+        }
         res.send(responseAssistants);
     }
     catch (e) {

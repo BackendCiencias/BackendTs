@@ -56,7 +56,7 @@ export const studentAttendanceSign = async(dni:IAttendance) => {
         if(!student)return {error: "STUDENT_NOT_FOUND_ATTENDANCE"};
         
         const sz = student?.attendanceNormal.length-1; 
-        if(student.attendanceNormal[sz].state != "C") return {error: "ALREADY_SIGN_STUDENT_ATTENDANCE"}
+        if(student.attendanceNormal[sz].state != "C") return "ALREADY_SIGN_STUDENT_ATTENDANCE"
         const timeNow = new Date();
         const timeLate = new Date();
         let stateAtt = "A";

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
+exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
@@ -31,7 +31,7 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        const actStudent = yield (0, student_services_1.findStudentById)(responseStudent._id);
+        const actStudent = yield (0, student_services_1.findStudentByParamId)(responseStudent._id);
         res.send({ actStudent, email: responseStudent.email, password: responseStudent.password });
         // res.send({message: "Success"});
     }
@@ -42,7 +42,6 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
 exports.createStudent = createStudent;
 const createBulkStudents = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { pensions } = body;
         const responseStudent = yield (0, student_services_1.registerStudentSpecial)();
         res.status(200).send(responseStudent);
     }
@@ -53,7 +52,7 @@ const createBulkStudents = ({ body }, res) => __awaiter(void 0, void 0, void 0, 
 exports.createBulkStudents = createBulkStudents;
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseStudents = yield (0, student_services_1.getAllStudents)();
+        const responseStudents = yield (0, student_services_1.findAllStudents)();
         res.send(responseStudents);
     }
     catch (e) {
@@ -63,7 +62,7 @@ const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getStudents = getStudents;
 const getStudentsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseStudents = yield (0, student_services_1.findStudentById)(req.params.student_id);
+        const responseStudents = yield (0, student_services_1.findStudentByParamId)(req.params.student_id);
         res.send(responseStudents);
     }
     catch (e) {
@@ -102,4 +101,15 @@ const signinStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.signinStudent = signinStudent;
+const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = body;
+        const modStudent = yield (0, student_services_1.modifyStudent)();
+        const modPension = yield (0, pension_services_1.modifyPension)();
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_MODIFY_STUDENT', e);
+    }
+});
+exports.modifyStudentData = modifyStudentData;
 //# sourceMappingURL=student.controller.js.map

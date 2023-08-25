@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
+exports.modifyStudent = exports.findStudentById = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentByParamId = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
 const jwt_handle_1 = require("./../middlewares/jwt.handle");
 const classroom_services_1 = require("./classroom.services");
+const pension_services_1 = require("./pension.services");
 const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni, names } = student;
     const { name1, name2, surname1, surname2 } = names;
@@ -65,11 +66,13 @@ const registerStudentSpecial = () => __awaiter(void 0, void 0, void 0, function*
     const leerArchivo = (path) => fs.readFileSync(path, 'utf8');
     const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
     const studentArr = JSON.parse(archivoChistes1);
+    // const allStudent = JSON.parse(archivoChistes1);
+    // const studentArr = [allStudent[4]];
     // console.log(studentArr[4])
     // return {message: "Okidoki"};
-    const studentsCreated = [];
     let x = 0;
     let cnt = 0;
+    let fail = 0;
     const role = yield role_model_1.default.findOne({ name: "student" });
     try {
         for (let stu of studentArr) {
@@ -90,13 +93,35 @@ const registerStudentSpecial = () => __awaiter(void 0, void 0, void 0, function*
                 dni: stu.dni,
                 roles: [role === null || role === void 0 ? void 0 : role._id]
             });
+            if (cnt == 560)
+                console.log(stu);
             studentCreated.then((e) => {
                 (0, classroom_services_1.updateVacancies)(e.id, e.grade, e.collegue);
                 // console.log("id: ", e.id)
             }).catch((error) => console.log("pipipi"));
+            const pensions = {
+                admission: stu.admission,
+                tuition: stu.tuition,
+                march: stu.pension,
+                april: stu.pension,
+                may: stu.pension,
+                june: stu.pension,
+                july: stu.pension,
+                august: stu.pension,
+                september: stu.pension,
+                october: stu.pension,
+                november: stu.pension,
+                december: stu.pension,
+                books: stu.books,
+                agenda: stu.agenda
+            };
+            studentCreated.then((e) => {
+                (0, pension_services_1.registerPension)(pensions, e._id).catch((error) => console.log("failed", fail++, error));
+            });
             cnt = cnt + 1;
             console.log("Creado ", cnt);
         }
+        console.log("Total Failed ", fail);
         return { message: "SUCCESSFULLY CREATED" };
     }
     catch (e) {
@@ -116,13 +141,13 @@ const loginStudent = ({ email, password }) => __awaiter(void 0, void 0, void 0, 
     return { token, data };
 });
 exports.loginStudent = loginStudent;
-const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
+const findStudentByParamId = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     const studentTarget = yield student_model_1.default.findById(studentId, { password: 0 }).populate("pension");
     if (!studentTarget)
         return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;
 });
-exports.findStudentById = findStudentById;
+exports.findStudentByParamId = findStudentByParamId;
 const findStudentByDNI = (studentDNI) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(studentDNI);
     const studentTarget = yield student_model_1.default.findOne({ "dni": studentDNI }).populate("pension");
@@ -131,9 +156,19 @@ const findStudentByDNI = (studentDNI) => __awaiter(void 0, void 0, void 0, funct
     return studentTarget;
 });
 exports.findStudentByDNI = findStudentByDNI;
-const getAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+const findAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
     const allStudent = yield student_model_1.default.find();
     return allStudent;
 });
-exports.getAllStudents = getAllStudents;
+exports.findAllStudents = findAllStudents;
+const findStudentById = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Get Student By Id Alive");
+    console.log();
+});
+exports.findStudentById = findStudentById;
+const modifyStudent = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Modify Student Alive");
+    console.log();
+});
+exports.modifyStudent = modifyStudent;
 //# sourceMappingURL=student.services.js.map

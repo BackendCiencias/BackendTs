@@ -63,6 +63,16 @@ const pensionSchema = new mongoose_1.Schema({
         payed: { type: Number },
         total: { type: Number, required: true },
         id_ticked: [{ ref: "Ticked", type: mongoose_1.Schema.Types.ObjectId }]
+    },
+    books: {
+        payed: { type: Number },
+        total: { type: Number, required: true },
+        id_ticked: [{ ref: "Ticked", type: mongoose_1.Schema.Types.ObjectId }]
+    },
+    agenda: {
+        payed: { type: Number },
+        total: { type: Number, required: true },
+        id_ticked: [{ ref: "Ticked", type: mongoose_1.Schema.Types.ObjectId }]
     }
 });
 exports.default = (0, mongoose_1.model)("Pension", pensionSchema);

@@ -1,6 +1,6 @@
 import { updateVacancies } from './../services/classroom.services';
-import { registerPension } from './../services/pension.services';
-import { registerStudent, getAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial} from './../services/student.services';
+import { modifyPension, registerPension } from './../services/pension.services';
+import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudent, findStudentByParamId} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
@@ -20,7 +20,7 @@ export const createStudent =  async({body}: Request, res: Response) => {
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        const actStudent = await findStudentById(responseStudent._id);
+        const actStudent = await findStudentByParamId(responseStudent._id);
         res.send({actStudent, email: responseStudent.email, password: responseStudent.password});
         // res.send({message: "Success"});
     }catch(e){
@@ -30,7 +30,6 @@ export const createStudent =  async({body}: Request, res: Response) => {
 
 export const createBulkStudents =  async({body}: Request, res: Response) => {
     try{
-        const {pensions} = body;
         const responseStudent = await registerStudentSpecial();
         res.status(200).send(responseStudent);
     }catch(e){
@@ -40,7 +39,7 @@ export const createBulkStudents =  async({body}: Request, res: Response) => {
 
 export const getStudents =  async(req: Request, res: Response) => {
     try{
-        const responseStudents = await getAllStudents();
+        const responseStudents = await findAllStudents();
         res.send(responseStudents);
     }catch(e){
         handleHttp(res, 'ERROR_GETALL_STUDENT',e);
@@ -49,7 +48,7 @@ export const getStudents =  async(req: Request, res: Response) => {
 
 export const getStudentsById =  async(req: Request, res: Response) => {
     try{
-        const responseStudents = await findStudentById(req.params.student_id);
+        const responseStudents = await findStudentByParamId(req.params.student_id);
         res.send(responseStudents);
     }catch(e){
         handleHttp(res, 'ERROR_STUDENT_ID',e);
@@ -86,4 +85,15 @@ export const signinStudent = async ({body}: Request, res: Response) => {
         handleHttp(res, 'ERROR_SIGNIN_STUDENT',e);
     }
     
+};
+
+export const modifyStudentData = async ({body}: Request, res: Response) => {
+    try{
+        const {email, password} = body;
+        const modStudent = await modifyStudent();
+        const modPension = await modifyPension();
+        
+    }catch(e){
+        handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
+    }
 };

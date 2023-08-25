@@ -11,7 +11,7 @@ interface ISimplyClassroom{
 export const updateVacancies  = async(studentId:Types.ObjectId, studentGrade:string, studentCollegue:string) =>{
     try {
         const findedClassroom = await Classroom.findOne({grade: studentGrade, collegue: studentCollegue});
-        if(!findedClassroom) console.log("null", studentId);
+        if(!findedClassroom) console.log("Not Found Classroom", studentGrade, "Student", studentId);
         findedClassroom?.students.push(studentId);
         findedClassroom?.save();
         return "updateVacancies";

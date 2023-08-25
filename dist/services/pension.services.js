@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.payMonthPension = exports.registerPension = void 0;
+exports.modifyPension = exports.payMonthPension = exports.registerPension = void 0;
 const pension_model_1 = __importDefault(require("./../models/pension.model"));
 const category_model_1 = __importDefault(require("./../models/category.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
@@ -36,6 +36,8 @@ const findMonth = (arrN, wordX) => {
     return 176;
 };
 const registerPension = (pensionArr, studentId) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("PENSION LLEGANDO",pensionArr);
+    // console.log("WTF",pensionArr.admission);
     const modifiedData = {
         admission: {
             payed: 0,
@@ -95,6 +97,16 @@ const registerPension = (pensionArr, studentId) => __awaiter(void 0, void 0, voi
         december: {
             payed: 0,
             total: pensionArr.december,
+            id_ticked: []
+        },
+        books: {
+            payed: 0,
+            total: pensionArr.books,
+            id_ticked: []
+        },
+        agenda: {
+            payed: 0,
+            total: pensionArr.agenda,
             id_ticked: []
         }
     };
@@ -185,4 +197,8 @@ const payMonthPension = (idStudent, month) => __awaiter(void 0, void 0, void 0, 
     return tickedGenerated;
 });
 exports.payMonthPension = payMonthPension;
+const modifyPension = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Modify Pension Alive");
+});
+exports.modifyPension = modifyPension;
 //# sourceMappingURL=pension.services.js.map

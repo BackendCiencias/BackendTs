@@ -71,7 +71,7 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
             return { error: "STUDENT_NOT_FOUND_ATTENDANCE" };
         const sz = (student === null || student === void 0 ? void 0 : student.attendanceNormal.length) - 1;
         if (student.attendanceNormal[sz].state != "C")
-            return { error: "ALREADY_SIGN_STUDENT_ATTENDANCE" };
+            return "ALREADY_SIGN_STUDENT_ATTENDANCE";
         const timeNow = new Date();
         const timeLate = new Date();
         let stateAtt = "A";

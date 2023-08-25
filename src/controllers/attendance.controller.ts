@@ -17,9 +17,9 @@ export const createAttendance =  async({body}: Request, res: Response) => {
 export const studentAttendance =  async({body}: Request, res: Response) => {
     try{
         const responseAssistants = await studentAttendanceSign(body.dni);
-        // if(responseAssistants == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAssistants});
-        // }
+        if(responseAssistants == "ALREADY_SIGN_STUDENT_ATTENDANCE"){
+            return res.status(400).send({error: responseAssistants});
+        }
         res.send(responseAssistants);
     }catch(e){
         handleHttp(res, 'ERROR_STUDENT_ATTENDANCE',e);

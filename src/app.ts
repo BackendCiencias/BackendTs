@@ -36,4 +36,4 @@ app.use(cors(corsOptions));
 // routes
 app.use(authRoutes, classroomRoutes, studentRoutes, tutorRoutes, contractRoutes, teacherRoutes, directorRoutes, categoryRoutes, assistantRoutes, attendanceRoutes);
 
-export default app;
+export default app; 

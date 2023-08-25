@@ -20,13 +20,16 @@ export const registerSecretary = async (secretary: ISecretary) => {
 };
 
 export const loginSecretary = async ({ email, password }: Auth) => {
-  const secretary = await Secretary.findOne({ email });
+  const secretary = await Secretary.findOne({ email }).populate('roles');
+  const readyRoles:String[]= [];
   if (!secretary) return "EMAIL_INCORRECTO";
+  for(let r of secretary?.roles) readyRoles.push(r.name);
 
   const isCorrect: boolean = await secretary.validatePassword(password); //validate in utils?
   if (!isCorrect) return "CONTRASEÑA_INCORRECTA";
 
-  const data = { email: secretary.email, names: secretary.names, _id: secretary._id }
+  const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles};
+  console.log(data.rol);
   const token = generateToken(`${secretary._id}`);
   
   return {token , data};

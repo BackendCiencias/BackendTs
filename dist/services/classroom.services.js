@@ -18,7 +18,7 @@ const updateVacancies = (studentId, studentGrade, studentCollegue) => __awaiter(
     try {
         const findedClassroom = yield classroom_model_1.default.findOne({ grade: studentGrade, collegue: studentCollegue });
         if (!findedClassroom)
-            console.log("null", studentId);
+            console.log("Not Found Classroom", studentGrade, "Student", studentId);
         findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.students.push(studentId);
         findedClassroom === null || findedClassroom === void 0 ? void 0 : findedClassroom.save();
         return "updateVacancies";

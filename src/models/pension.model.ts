@@ -22,6 +22,8 @@ export interface IPension extends Document {
     october: IPensionMes;
     november: IPensionMes;
     december: IPensionMes;
+    agenda: IPensionMes;
+    books: IPensionMes;
 }
 
 const pensionSchema = new Schema({
@@ -83,6 +85,16 @@ const pensionSchema = new Schema({
         id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]
     },
     december: {
+        payed: {type: Number},
+        total: {type: Number, required: true},
+        id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]
+    },
+    books: {
+        payed: {type: Number},
+        total: {type: Number, required: true},
+        id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]
+    },
+    agenda: {
         payed: {type: Number},
         total: {type: Number, required: true},
         id_ticked: [{ref: "Ticked", type: Schema.Types.ObjectId }]

@@ -4,6 +4,7 @@ import Role, { IRole } from './../models/role.model';
 import { Auth } from "interfaces/auth";
 import { generateToken } from './../middlewares/jwt.handle';
 import { updateVacancies } from './classroom.services';
+import { registerPension } from './pension.services';
 
 
 export const registerStudent = async(student:IStudent) => {
@@ -56,11 +57,14 @@ export const registerStudentSpecial = async() => {
 
     const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
     const studentArr = JSON.parse(archivoChistes1);
+    // const allStudent = JSON.parse(archivoChistes1);
+    // const studentArr = [allStudent[4]];
+
     // console.log(studentArr[4])
     // return {message: "Okidoki"};
-    const studentsCreated:IStudent[]= []
     let x = 0;
     let cnt = 0;
+    let fail = 0;
     const role = await Role.findOne({name: "student"});
     try {
         for(let stu of studentArr)  {
@@ -80,14 +84,36 @@ export const registerStudentSpecial = async() => {
                 collegue: realCollegue,
                 dni: stu.dni,
                 roles: [role?._id]
-            });
+            })
+            if(cnt == 560) console.log(stu);
+
             studentCreated.then((e) => {
-                updateVacancies(e.id, e.grade, e.collegue);
+                updateVacancies(e.id, e.grade, e.collegue)
                 // console.log("id: ", e.id)
             }).catch((error) => console.log("pipipi"))
+            const pensions = {
+                admission: stu.admission,
+                tuition: stu.tuition,
+                march:  stu.pension,
+                april:   stu.pension,
+                may:   stu.pension,
+                june:   stu.pension,
+                july:   stu.pension,
+                august:   stu.pension,
+                september:   stu.pension,
+                october:   stu.pension,
+                november:   stu.pension,
+                december:   stu.pension,
+                books:   stu.books,
+                agenda:   stu.agenda
+            }
+            studentCreated.then((e) => {
+                registerPension( pensions, e._id).catch((error) => console.log("failed", fail++, error))
+            })
             cnt = cnt + 1;
             console.log("Creado ",cnt)
         }
+        console.log("Total Failed ",fail)
         return {message: "SUCCESSFULLY CREATED"};
     } catch (e) {
         return {error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e};
@@ -106,7 +132,7 @@ export const loginStudent = async ({ email, password }: Auth) => {
     return {token , data};
   };
   
-export const findStudentById = async(studentId:string) => {
+export const findStudentByParamId = async(studentId:string) => {
     const studentTarget = await Student.findById(studentId, {password: 0}).populate("pension");
     if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;
@@ -119,7 +145,17 @@ export const findStudentByDNI = async(studentDNI:string) => {
     return studentTarget;
 }
 
-export const getAllStudents  = async () =>{
+export const findAllStudents  = async () =>{
     const allStudent= await Student.find();
     return allStudent;
+}
+
+export const findStudentById = async () => {
+    console.log("Get Student By Id Alive");
+    console.log()
+}
+
+export const modifyStudent = async () => {
+    console.log("Modify Student Alive");
+    console.log()
 }

@@ -26,6 +26,8 @@ const findMonth = (arrN:any[], wordX:string) => {
 }
 
 export const registerPension = async(pensionArr:any, studentId:Types.ObjectId) => {
+    // console.log("PENSION LLEGANDO",pensionArr);
+    // console.log("WTF",pensionArr.admission);
 
     const modifiedData = {
         admission:{
@@ -86,6 +88,16 @@ export const registerPension = async(pensionArr:any, studentId:Types.ObjectId) =
         december: {
             payed: 0,
             total: pensionArr.december,
+            id_ticked: []
+        },
+        books: {
+            payed: 0,
+            total: pensionArr.books,
+            id_ticked: []
+        },
+        agenda: {
+            payed: 0,
+            total: pensionArr.agenda,
             id_ticked: []
         }
     }
@@ -180,3 +192,9 @@ export const payMonthPension = async (idStudent:string, month:string) => {
     console.log(tickedGenerated);
     return tickedGenerated;
 };
+
+
+
+export const modifyPension = async () => {
+    console.log("Modify Pension Alive");
+}

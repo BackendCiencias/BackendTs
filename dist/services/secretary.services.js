@@ -31,13 +31,17 @@ const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.registerSecretary = registerSecretary;
 const loginSecretary = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
-    const secretary = yield secretary_model_1.default.findOne({ email });
+    const secretary = yield secretary_model_1.default.findOne({ email }).populate('roles');
+    const readyRoles = [];
     if (!secretary)
         return "EMAIL_INCORRECTO";
+    for (let r of secretary === null || secretary === void 0 ? void 0 : secretary.roles)
+        readyRoles.push(r.name);
     const isCorrect = yield secretary.validatePassword(password); //validate in utils?
     if (!isCorrect)
         return "CONTRASEÑA_INCORRECTA";
-    const data = { email: secretary.email, names: secretary.names, _id: secretary._id };
+    const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles };
+    console.log(data.rol);
     const token = (0, jwt_handle_1.generateToken)(`${secretary._id}`);
     return { token, data };
 });
