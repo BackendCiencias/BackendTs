@@ -1,6 +1,6 @@
 import { updateVacancies } from './../services/classroom.services';
 import { modifyPension, registerPension } from './../services/pension.services';
-import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudent, findStudentByParamId} from './../services/student.services';
+import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudent} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
@@ -20,7 +20,7 @@ export const createStudent =  async({body}: Request, res: Response) => {
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = await registerPension(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        const actStudent = await findStudentByParamId(responseStudent._id);
+        const actStudent = await findStudentById(responseStudent._id);
         res.send({actStudent, email: responseStudent.email, password: responseStudent.password});
         // res.send({message: "Success"});
     }catch(e){
@@ -46,9 +46,18 @@ export const getStudents =  async(req: Request, res: Response) => {
     }
 };
 
-export const getStudentsById =  async(req: Request, res: Response) => {
+export const getStudentsByParamId =  async(req: Request, res: Response) => {
     try{
-        const responseStudents = await findStudentByParamId(req.params.student_id);
+        const responseStudents = await findStudentById(req.params.student_id);
+        res.send(responseStudents);
+    }catch(e){
+        handleHttp(res, 'ERROR_STUDENT_PARAM_ID',e);
+    }
+};
+
+export const getStudentsById = async ({body}: Request, res: Response) => {
+    try{
+        const responseStudents = await findStudentById(body.student_id);
         res.send(responseStudents);
     }catch(e){
         handleHttp(res, 'ERROR_STUDENT_ID',e);
@@ -92,7 +101,6 @@ export const modifyStudentData = async ({body}: Request, res: Response) => {
         const {email, password} = body;
         const modStudent = await modifyStudent();
         const modPension = await modifyPension();
-        
     }catch(e){
         handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
     }

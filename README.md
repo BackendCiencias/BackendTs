@@ -5,7 +5,7 @@ https://backend-ts.vercel.app/api/
 ```
 ## Secretary
 <!-- Secretary Signin -->
----
+
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Sign in Secretary</code></summary>
 
@@ -23,10 +23,7 @@ https://backend-ts.vercel.app/api/
 }
 ```
 
-#### Responses
-
-<details>
-<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+#### Response - Success
 
 ```
 {
@@ -40,7 +37,8 @@ https://backend-ts.vercel.app/api/
       "surname1": "somevalue",
       "surname2": "somevalue",
     },
-    "_id": "somevalue"
+    "_id": "somevalue",
+    "rol": []
   }
 }
 ```
@@ -48,6 +46,7 @@ https://backend-ts.vercel.app/api/
 </details>
 </details>
 
+---
 ---
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Register New Student</code></summary>
@@ -95,10 +94,10 @@ https://backend-ts.vercel.app/api/
 }
 ```
 
-#### Responses
+#### Response
 
 <details>
-<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+<summary><code>Status 200</code> <code><b>/</b></code> <code> Success </code></summary>
 
 ```
 {
@@ -121,6 +120,7 @@ https://backend-ts.vercel.app/api/
 </details>
 </details>
 
+---
 ---
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Register New Assistant</code></summary>
@@ -189,6 +189,7 @@ https://backend-ts.vercel.app/api/
 </details>
 
 ---
+---
 
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Pay Month Pension</code></summary>
@@ -224,10 +225,10 @@ secretary/pension
 </details></details>
 
 ---
+---
 
 ## Student
 <!-- Secretary Signin -->
----
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Sign in Student</code></summary>
 
@@ -269,6 +270,7 @@ secretary/pension
 </details></details>
 
 ---
+---
 
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Get By DNI Student</code></summary>
@@ -298,9 +300,10 @@ secretary/pension
 </details></details>
 
 ---
+---
 
 <details>
- <summary><code>GET</code> <code><b>/</b></code> <code>Get By ID Student</code></summary>
+ <summary><code>GET</code> <code><b>/</b></code> <code>Get By Param Id Student</code></summary>
 
 #### Link
 ```
@@ -319,6 +322,38 @@ secretary/pension
 ```
 </details></details>
 
+---
+---
+
+<details>
+ <summary><code>POST</code> <code><b>/</b></code> <code>Get By Id Student</code></summary>
+
+#### Link
+```
+/api/student/id
+```
+
+#### Request
+
+```
+{
+  "student_id": "id"
+}
+```
+
+#### Responses
+
+<details>
+<summary><code>Status 200</code> <code><b>/</b></code> <code>Success</code></summary>
+
+```
+{
+  STUDENT_MODEL
+}
+```
+</details></details>
+
+---
 ---
 
 
@@ -344,10 +379,10 @@ secretary/pension
 </details></details>
 
 ---
+---
 
 
 ## Assitant(Auxiliar)
----
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Sign in Assistant</code></summary>
 
@@ -388,6 +423,7 @@ secretary/pension
 ```
 </details></details>
 
+---
 ---
 
 <details>
@@ -446,6 +482,7 @@ secretary/pension
 </details></details>
 
 ---
+---
 
 <details>
  <summary><code>POST</code> <code><b>/</b></code> <code>Student Attendance</code></summary>
@@ -480,6 +517,7 @@ secretary/pension
 </details>
 </details>
 
+---
 --- 
 
 

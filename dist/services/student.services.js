@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudent = exports.findStudentById = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentByParamId = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
+exports.modifyStudent = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
@@ -141,13 +141,13 @@ const loginStudent = ({ email, password }) => __awaiter(void 0, void 0, void 0, 
     return { token, data };
 });
 exports.loginStudent = loginStudent;
-const findStudentByParamId = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
+const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     const studentTarget = yield student_model_1.default.findById(studentId, { password: 0 }).populate("pension");
     if (!studentTarget)
         return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;
 });
-exports.findStudentByParamId = findStudentByParamId;
+exports.findStudentById = findStudentById;
 const findStudentByDNI = (studentDNI) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(studentDNI);
     const studentTarget = yield student_model_1.default.findOne({ "dni": studentDNI }).populate("pension");
@@ -161,14 +161,10 @@ const findAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
     return allStudent;
 });
 exports.findAllStudents = findAllStudents;
-const findStudentById = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Get Student By Id Alive");
-    console.log();
-});
-exports.findStudentById = findStudentById;
 const modifyStudent = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Modify Student Alive");
     console.log();
+    return;
 });
 exports.modifyStudent = modifyStudent;
 //# sourceMappingURL=student.services.js.map

@@ -8,7 +8,8 @@ router.post('/api/student/signup', [jwt_handle_1.verifyToken, jwt_handle_1.isSec
 router.post('/api/student/signupbulk', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.createBulkStudents);
 router.post('/api/student/signin', student_controller_1.signinStudent);
 router.get('/api/student', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudents);
-router.get('/api/student/:student_id', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsById);
+router.get('/api/student/:student_id', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsByParamId);
+router.post('/api/student/id', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsById);
 router.post('/api/student/dni', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsByDNI);
 router.post('/api/student/modify', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.modifyStudentData);
 exports.default = router;

@@ -132,7 +132,7 @@ export const loginStudent = async ({ email, password }: Auth) => {
     return {token , data};
   };
   
-export const findStudentByParamId = async(studentId:string) => {
+export const findStudentById = async(studentId:string) => {
     const studentTarget = await Student.findById(studentId, {password: 0}).populate("pension");
     if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_ID";
     return studentTarget;
@@ -150,12 +150,8 @@ export const findAllStudents  = async () =>{
     return allStudent;
 }
 
-export const findStudentById = async () => {
-    console.log("Get Student By Id Alive");
-    console.log()
-}
-
 export const modifyStudent = async () => {
     console.log("Modify Student Alive");
     console.log()
+    return;
 }

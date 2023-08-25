@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
+exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
@@ -31,7 +31,7 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
         // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
         const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
         // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
-        const actStudent = yield (0, student_services_1.findStudentByParamId)(responseStudent._id);
+        const actStudent = yield (0, student_services_1.findStudentById)(responseStudent._id);
         res.send({ actStudent, email: responseStudent.email, password: responseStudent.password });
         // res.send({message: "Success"});
     }
@@ -60,9 +60,19 @@ const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getStudents = getStudents;
-const getStudentsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getStudentsByParamId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseStudents = yield (0, student_services_1.findStudentByParamId)(req.params.student_id);
+        const responseStudents = yield (0, student_services_1.findStudentById)(req.params.student_id);
+        res.send(responseStudents);
+    }
+    catch (e) {
+        (0, error_handle_1.handleHttp)(res, 'ERROR_STUDENT_PARAM_ID', e);
+    }
+});
+exports.getStudentsByParamId = getStudentsByParamId;
+const getStudentsById = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const responseStudents = yield (0, student_services_1.findStudentById)(body.student_id);
         res.send(responseStudents);
     }
     catch (e) {
@@ -106,6 +116,7 @@ const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
         const { email, password } = body;
         const modStudent = yield (0, student_services_1.modifyStudent)();
         const modPension = yield (0, pension_services_1.modifyPension)();
+        res.status(200).send("Ez p caca");
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_MODIFY_STUDENT', e);
