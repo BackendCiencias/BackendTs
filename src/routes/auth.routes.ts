@@ -7,7 +7,7 @@ import {signinSecretary, signupSecretary, profileSecretary} from '../controllers
 import { payPension } from '../controllers/pension.controller';
 
 router.get('/', (req,res) => {
-    res.send('Backend alive... at least for now')
+    res.send('Backend alive... at least for now jejeje')
 })
 
 router.post('/api/auth/secretary/signup', [verifyToken, isSecretary], signupSecretary);
