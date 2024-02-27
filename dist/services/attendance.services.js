@@ -95,9 +95,7 @@ const todayAttendance = () => __awaiter(void 0, void 0, void 0, function* () {
     const codeToday = (0, date_fns_1.format)(today, 'dd/MM/yyyy');
     console.log("consultando por el codigo: ", codeToday);
     const allAttendances = yield attendance_model_1.default.find({ code: codeToday });
-    return {
-        attendance: allAttendances
-    };
+    return allAttendances;
 });
 exports.todayAttendance = todayAttendance;
 //# sourceMappingURL=attendance.services.js.map

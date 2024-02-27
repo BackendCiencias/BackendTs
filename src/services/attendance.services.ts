@@ -80,7 +80,5 @@ export const todayAttendance = async() => {
     const codeToday = format(today, 'dd/MM/yyyy');
     console.log("consultando por el codigo: ", codeToday)
     const allAttendances = await Attendance.find({code: codeToday});
-    return {
-        attendance: allAttendances
-    };
+    return allAttendances;
 }
