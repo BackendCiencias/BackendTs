@@ -27,8 +27,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 let corsOptions = {
-  // origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
-  origin: '*',
+  origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
   credentials: true,
   optionsSuccessStatus: 200
 };
