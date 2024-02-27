@@ -30,9 +30,7 @@ app.use(express_1.default.json());
 let corsOptions = {
     origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
     credentials: true,
-    optionsSuccessStatus: 200,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization', // Specify the allowed headers
+    optionsSuccessStatus: 200
 };
 app.use((0, cors_1.default)(corsOptions));
 // routes
