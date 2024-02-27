@@ -20,6 +20,7 @@ const jwt_handle_1 = require("../middlewares/jwt.handle");
 const registerAssistant = (assistant) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni, names } = assistant;
     const { name1, name2, surname1, surname2 } = names;
+    console.log("here");
     const createdEmail = (0, stringPreprocesor_1.createEmail)(name1, surname1, surname2);
     const literalPassword = (0, stringPreprocesor_1.createPassword)(dni, name1, name2, surname1, surname2);
     assistant.password = literalPassword;

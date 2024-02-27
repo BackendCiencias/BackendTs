@@ -7,7 +7,7 @@ const router = (0, express_1.Router)();
 const auth_controller_1 = require("../controllers/auth.controller");
 const pension_controller_1 = require("../controllers/pension.controller");
 router.get('/', (req, res) => {
-    res.send('Backend alive... at least for now');
+    res.send('Backend alive... at least for now jejeje');
 });
 router.post('/api/auth/secretary/signup', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], auth_controller_1.signupSecretary);
 router.post('/api/auth/secretary/signin', auth_controller_1.signinSecretary);

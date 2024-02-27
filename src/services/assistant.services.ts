@@ -8,6 +8,7 @@ import { generateToken } from "../middlewares/jwt.handle";
 export const registerAssistant = async(assistant:IAssistant) => {
     const {dni, names} = assistant;
     const {name1, name2, surname1, surname2} = names;
+    console.log("here")
     const createdEmail:string =  createEmail(name1, surname1, surname2);
     const literalPassword:string = createPassword(dni,name1, name2, surname1, surname2);
     assistant.password = literalPassword;

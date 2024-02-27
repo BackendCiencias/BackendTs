@@ -116,7 +116,6 @@ const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
         const { email, password } = body;
         const modStudent = yield (0, student_services_1.modifyStudent)();
         const modPension = yield (0, pension_services_1.modifyPension)();
-        res.status(200).send("Ez p caca");
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_MODIFY_STUDENT', e);
