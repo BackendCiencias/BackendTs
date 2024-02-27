@@ -66,7 +66,8 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
     const today = new Date();
     const codeAttendanceToday = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
     try {
-        const student = yield student_model_1.default.findOne({ dni: dni }, { attendanceNormal: 1 });
+        // Nombre apellidos grado foto
+        const student = yield student_model_1.default.findOne({ dni: dni }, { names: 1, grade: 1, attendanceNormal: 1 });
         if (!student)
             return { error: "STUDENT_NOT_FOUND_ATTENDANCE" };
         const sz = (student === null || student === void 0 ? void 0 : student.attendanceNormal.length) - 1;
@@ -81,7 +82,7 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
         student.attendanceNormal[sz].state = stateAtt;
         student.attendanceNormal[sz].timeAtt = timeNow;
         student.save();
-        return { state: stateAtt, time: timeNow };
+        return { state: stateAtt, time: timeNow, student: student };
     }
     catch (error) {
         return { error: "ERROR_SING_STUDENT_ATTENDACE", reason: error };

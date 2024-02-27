@@ -9,7 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 function main() {
     app_1.default.listen(app_1.default.get('port'), () => console.log(`Server on port ${app_1.default.get('port')}`));
     mongoose_1.default.set('strictQuery', false);
-    (0, mongo_1.default)().then(() => console.log("Conected to MongoDB Atlas")).catch((err) => console.log(err));
+    (0, mongo_1.default)().then(() => console.log("Conected to MongoDB Atlas")).catch((err) => console.log("Bad Conection", err));
 }
 main();
 //# sourceMappingURL=index.js.map
