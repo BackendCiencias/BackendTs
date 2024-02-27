@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialSetup_1 = require("./utils/initialSetup");
-// import "dotenv/config"
 const express_1 = __importDefault(require("express"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const classroom_routes_1 = __importDefault(require("./routes/classroom.routes"));
@@ -29,7 +28,7 @@ app.use((0, morgan_1.default)('dev'));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 let corsOptions = {
-    origin: ['http://localhost:3000', "https://frontend-cienciasapp.vercel.app", "https://www.cienciasperu.edu.pe"],
+    origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
     credentials: true,
     optionsSuccessStatus: 200,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
