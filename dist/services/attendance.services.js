@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.todayAttendance = exports.studentAttendanceSign = exports.createAttendanceToday = void 0;
 const attendance_model_1 = __importDefault(require("./../models/attendance.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
+const date_fns_1 = require("date-fns");
 const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, function* () {
     const today = new Date();
-    const nameAtt = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
-    attendance.code = nameAtt;
+    const codeToday = (0, date_fns_1.format)(today, 'dd/MM/yyyy');
+    attendance.code = codeToday;
     if (attendance.type == 'E') {
         const newIndex = yield attendance_model_1.default.count();
-        attendance.code = nameAtt + "_E" + newIndex;
+        attendance.code = codeToday + "_E" + newIndex;
         const createdAttendance = yield attendance_model_1.default.create(attendance);
         const allStudents = yield student_model_1.default.find({}, { attendanceSpecial: 1 });
         const newAttendance = {
@@ -40,7 +41,7 @@ const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, 
         }
     }
     else {
-        const checkExist = yield attendance_model_1.default.findOne({ code: nameAtt });
+        const checkExist = yield attendance_model_1.default.findOne({ code: codeToday });
         if (checkExist)
             return "ERROR_ALREADY_CREADTED_ATTENDANCE";
         const createdAttendance = yield attendance_model_1.default.create(attendance);
@@ -64,7 +65,7 @@ const createAttendanceToday = (attendance) => __awaiter(void 0, void 0, void 0, 
 exports.createAttendanceToday = createAttendanceToday;
 const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, function* () {
     const today = new Date();
-    const codeAttendanceToday = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
+    const codeToday = (0, date_fns_1.format)(today, 'dd/MM/yyyy');
     try {
         // Nombre apellidos grado foto
         const student = yield student_model_1.default.findOne({ dni: dni }, { names: 1, grade: 1, attendanceNormal: 1 });
@@ -91,9 +92,12 @@ const studentAttendanceSign = (dni) => __awaiter(void 0, void 0, void 0, functio
 exports.studentAttendanceSign = studentAttendanceSign;
 const todayAttendance = () => __awaiter(void 0, void 0, void 0, function* () {
     const today = new Date();
-    const codeToday = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear();
+    const codeToday = (0, date_fns_1.format)(today, 'dd/MM/yyyy');
+    console.log("consultando por el codigo: ", codeToday);
     const allAttendances = yield attendance_model_1.default.find({ code: codeToday });
-    return allAttendances;
+    return {
+        attendance: allAttendances
+    };
 });
 exports.todayAttendance = todayAttendance;
 //# sourceMappingURL=attendance.services.js.map

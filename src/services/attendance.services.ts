@@ -78,6 +78,9 @@ export const studentAttendanceSign = async(dni:IAttendance) => {
 export const todayAttendance = async() => {
     const today = new Date();
     const codeToday = format(today, 'dd/MM/yyyy');
+    console.log("consultando por el codigo: ", codeToday)
     const allAttendances = await Attendance.find({code: codeToday});
-    return allAttendances;
+    return {
+        attendance: allAttendances
+    };
 }
