@@ -98,7 +98,7 @@ export const signinStudent = async ({body}: Request, res: Response) => {
 
 export const modifyStudentData = async ({body}: Request, res: Response) => {
     try{
-        const {email, password} = body;
+        const {dni} = body;
         const modStudent = await modifyStudent();
         const modPension = await modifyPension();
     }catch(e){

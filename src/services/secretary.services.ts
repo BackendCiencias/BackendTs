@@ -18,20 +18,17 @@ export const registerSecretary = async (secretary: ISecretary) => {
 };
 
 export const loginSecretary = async ({ email, password }: Auth) => {
-  const secretary = await Secretary.findOne({ email }).populate('roles').lean();
+  const secretary = await Secretary.findOne({ email }).populate('roles');
   const readyRoles: string[] = [];
-
+  
   if (!secretary) return "EMAIL_INCORRECTO";
 
   for (let r of secretary?.roles) {
     const role = await Role.findById(r);
-    if (role) {
-      readyRoles.push(role.name);
-    }
+    if (role) readyRoles.push(role.name);
   }
 
   const isCorrect: boolean = await secretary.validatePassword(password);
-
   if (!isCorrect) return "CONTRASEÑA_INCORRECTA";
 
   const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles };

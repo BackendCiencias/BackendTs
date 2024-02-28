@@ -24,6 +24,7 @@ export const signinSecretary = async ({body}: Request, res: Response) => {
         } 
         const {token} = responseSecretary;
         
+
         // sending token
         res.cookie('auth-token', token).json(responseSecretary);
     }catch(e){

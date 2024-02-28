@@ -113,7 +113,7 @@ const signinStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
 exports.signinStudent = signinStudent;
 const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = body;
+        const { dni } = body;
         const modStudent = yield (0, student_services_1.modifyStudent)();
         const modPension = yield (0, pension_services_1.modifyPension)();
     }

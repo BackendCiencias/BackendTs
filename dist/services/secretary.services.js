@@ -29,15 +29,14 @@ const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.registerSecretary = registerSecretary;
 const loginSecretary = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
-    const secretary = yield secretary_model_1.default.findOne({ email }).populate('roles').lean();
+    const secretary = yield secretary_model_1.default.findOne({ email }).populate('roles');
     const readyRoles = [];
     if (!secretary)
         return "EMAIL_INCORRECTO";
     for (let r of secretary === null || secretary === void 0 ? void 0 : secretary.roles) {
         const role = yield role_model_1.default.findById(r);
-        if (role) {
+        if (role)
             readyRoles.push(role.name);
-        }
     }
     const isCorrect = yield secretary.validatePassword(password);
     if (!isCorrect)
