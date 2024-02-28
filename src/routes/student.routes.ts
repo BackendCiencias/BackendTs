@@ -10,6 +10,6 @@ router.get('/api/student', [verifyToken, isSecretary], getStudents)
 router.get('/api/student/:student_id', [verifyToken, isSecretary], getStudentsByParamId)
 router.post('/api/student/id', [verifyToken, isSecretary], getStudentsById)
 router.post('/api/student/dni', [verifyToken, isSecretary], getStudentsByDNI)
-router.put('/api/student/modify', [verifyToken, isSecretary], modifyStudentData);
+router.post('/api/student/modify', [verifyToken, isSecretary], modifyStudentData);
 
 export default router;

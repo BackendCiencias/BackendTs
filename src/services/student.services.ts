@@ -159,7 +159,7 @@ export const findAllStudents  = async () =>{
 
 export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
   try {
-    const modifiedStudent = await Student.findOneAndUpdate({ dni }, modifydData, { new: true });
+    const modifiedStudent = await Student.findOneAndUpdate({ dni }, modifydData, { new: true }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');
     return modifiedStudent;
   } catch (error) {
     throw error;

@@ -111,18 +111,18 @@ export const signinStudent = async ({body}: Request, res: Response) => {
 
 export const modifyStudentData = async ({body}: Request, res: Response) => {
     try {
-      const { dni } = body.dni;
+      const { dni } = body;
       const modifyData = body;
-  
+
       const modStudent = await modifyStudentByDNI(dni, modifyData);
   
       if (!modStudent) {
-        return res.status(404).json({ error: 'Estudiante no encontrado' });
+        return res.status(404).json({ error: 'STUDENT_NOT_FOUNDED' });
       }
   
       return res.json(modStudent);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error interno del servidor' });
+      return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
     }
   };

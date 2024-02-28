@@ -168,7 +168,7 @@ exports.findAllStudents = findAllStudents;
 // }
 const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const modifiedStudent = yield student_model_1.default.findOneAndUpdate({ dni }, modifydData, { new: true });
+        const modifiedStudent = yield student_model_1.default.findOneAndUpdate({ dni }, modifydData, { new: true }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');
         return modifiedStudent;
     }
     catch (error) {

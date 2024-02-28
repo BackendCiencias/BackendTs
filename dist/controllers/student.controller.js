@@ -123,17 +123,17 @@ exports.signinStudent = signinStudent;
 // };
 const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { dni } = body.dni;
+        const { dni } = body;
         const modifyData = body;
         const modStudent = yield (0, student_services_1.modifyStudentByDNI)(dni, modifyData);
         if (!modStudent) {
-            return res.status(404).json({ error: 'Estudiante no encontrado' });
+            return res.status(404).json({ error: 'STUDENT_NOT_FOUNDED' });
         }
         return res.json(modStudent);
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Error interno del servidor' });
+        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
     }
 });
 exports.modifyStudentData = modifyStudentData;
