@@ -82,6 +82,7 @@ const getStudentsById = ({ body }, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getStudentsById = getStudentsById;
 const getStudentsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // no quiero pension, roles, attendance, tutor, contracts
         const responseStudents = yield (0, student_services_1.findStudentByDNI)(body.dni);
         if (responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI") {
             return res.status(400).send({ error: responseStudents });
@@ -111,14 +112,28 @@ const signinStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.signinStudent = signinStudent;
+// export const modifyStudentData = async ({body}: Request, res: Response) => {
+//     try{
+//         console.log(body);
+//         const {dni} = body;
+//         const modStudent = await modifyStudent(dni, body);
+//     }catch(e){
+//         handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
+//     }
+// };
 const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { dni } = body;
-        const modStudent = yield (0, student_services_1.modifyStudent)();
-        const modPension = yield (0, pension_services_1.modifyPension)();
+        const { dni } = body.dni;
+        const modifyData = body;
+        const modStudent = yield (0, student_services_1.modifyStudentByDNI)(dni, modifyData);
+        if (!modStudent) {
+            return res.status(404).json({ error: 'Estudiante no encontrado' });
+        }
+        return res.json(modStudent);
     }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_MODIFY_STUDENT', e);
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 exports.modifyStudentData = modifyStudentData;

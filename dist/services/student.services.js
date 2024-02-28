@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudent = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
+exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
@@ -142,18 +142,18 @@ const loginStudent = ({ email, password }) => __awaiter(void 0, void 0, void 0, 
 });
 exports.loginStudent = loginStudent;
 const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
-    const studentTarget = yield student_model_1.default.findById(studentId, { password: 0 }).populate("pension");
-    if (!studentTarget)
+    const studentFounded = yield student_model_1.default.findById(studentId, { password: 0 }).populate("pension");
+    if (!studentFounded)
         return "NOT_STUDENT_FOUNDED_BY_ID";
-    return studentTarget;
+    return studentFounded;
 });
 exports.findStudentById = findStudentById;
-const findStudentByDNI = (studentDNI) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(studentDNI);
-    const studentTarget = yield student_model_1.default.findOne({ "dni": studentDNI }).populate("pension");
-    if (!studentTarget)
+const findStudentByDNI = (dni) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(dni);
+    const studentFounded = yield student_model_1.default.findOne({ dni }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');
+    if (!studentFounded)
         return "NOT_STUDENT_FOUNDED_BY_DNI";
-    return studentTarget;
+    return studentFounded;
 });
 exports.findStudentByDNI = findStudentByDNI;
 const findAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -161,10 +161,19 @@ const findAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
     return allStudent;
 });
 exports.findAllStudents = findAllStudents;
-const modifyStudent = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Modify Student Alive");
-    console.log();
-    return;
+// export const modifyStudent = async (studentDNI:string, studentData:IStudent) => {
+//     console.log("Modify Student Alive");
+//     console.log()
+//     return;
+// }
+const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const modifiedStudent = yield student_model_1.default.findOneAndUpdate({ dni }, modifydData, { new: true });
+        return modifiedStudent;
+    }
+    catch (error) {
+        throw error;
+    }
 });
-exports.modifyStudent = modifyStudent;
+exports.modifyStudentByDNI = modifyStudentByDNI;
 //# sourceMappingURL=student.services.js.map

@@ -1,9 +1,10 @@
 import { updateVacancies } from './../services/classroom.services';
-import { modifyPension, registerPension } from './../services/pension.services';
-import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudent} from './../services/student.services';
+import { registerPension } from './../services/pension.services';
+import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
 import { Request , Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
+import { IStudent } from 'models/student.model';
 export const createStudent =  async({body}: Request, res: Response) => {
     try{
         const {pensions} = body;
@@ -66,6 +67,7 @@ export const getStudentsById = async ({body}: Request, res: Response) => {
 
 export const getStudentsByDNI =  async({body}: Request, res: Response) => {
     try{
+        // no quiero pension, roles, attendance, tutor, contracts
         const responseStudents = await findStudentByDNI(body.dni);
         if(responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI"){
             return res.status(400).send({error: responseStudents});
@@ -96,12 +98,31 @@ export const signinStudent = async ({body}: Request, res: Response) => {
     
 };
 
+// export const modifyStudentData = async ({body}: Request, res: Response) => {
+//     try{
+//         console.log(body);
+//         const {dni} = body;
+//         const modStudent = await modifyStudent(dni, body);
+
+//     }catch(e){
+//         handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
+//     }
+// };
+
 export const modifyStudentData = async ({body}: Request, res: Response) => {
-    try{
-        const {dni} = body;
-        const modStudent = await modifyStudent();
-        const modPension = await modifyPension();
-    }catch(e){
-        handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
+    try {
+      const { dni } = body.dni;
+      const modifyData = body;
+  
+      const modStudent = await modifyStudentByDNI(dni, modifyData);
+  
+      if (!modStudent) {
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
+      }
+  
+      return res.json(modStudent);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
     }
-};
+  };

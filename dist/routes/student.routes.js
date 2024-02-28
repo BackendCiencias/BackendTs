@@ -11,6 +11,6 @@ router.get('/api/student', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary],
 router.get('/api/student/:student_id', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsByParamId);
 router.post('/api/student/id', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsById);
 router.post('/api/student/dni', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.getStudentsByDNI);
-router.post('/api/student/modify', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.modifyStudentData);
+router.put('/api/student/modify', [jwt_handle_1.verifyToken, jwt_handle_1.isSecretary], student_controller_1.modifyStudentData);
 exports.default = router;
 //# sourceMappingURL=student.routes.js.map

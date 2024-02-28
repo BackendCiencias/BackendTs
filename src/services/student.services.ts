@@ -133,16 +133,16 @@ export const loginStudent = async ({ email, password }: Auth) => {
   };
   
 export const findStudentById = async(studentId:string) => {
-    const studentTarget = await Student.findById(studentId, {password: 0}).populate("pension");
-    if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_ID";
-    return studentTarget;
+    const studentFounded = await Student.findById(studentId, {password: 0}).populate("pension");
+    if(!studentFounded) return "NOT_STUDENT_FOUNDED_BY_ID";
+    return studentFounded;
 }
 
-export const findStudentByDNI = async(studentDNI:string) => {
-    console.log(studentDNI);
-    const studentTarget = await Student.findOne({"dni": studentDNI}).populate("pension");
-    if(!studentTarget) return "NOT_STUDENT_FOUNDED_BY_DNI";
-    return studentTarget;
+export const findStudentByDNI = async(dni:string) => {
+    console.log(dni);
+    const studentFounded = await Student.findOne({ dni }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');
+    if(!studentFounded) return "NOT_STUDENT_FOUNDED_BY_DNI";
+    return studentFounded;
 }
 
 export const findAllStudents  = async () =>{
@@ -150,9 +150,18 @@ export const findAllStudents  = async () =>{
     return allStudent;
 }
 
-export const modifyStudent = async () => {
-    
-    console.log("Modify Student Alive");
-    console.log()
-    return;
-}
+// export const modifyStudent = async (studentDNI:string, studentData:IStudent) => {
+
+//     console.log("Modify Student Alive");
+//     console.log()
+//     return;
+// }
+
+export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
+  try {
+    const modifiedStudent = await Student.findOneAndUpdate({ dni }, modifydData, { new: true });
+    return modifiedStudent;
+  } catch (error) {
+    throw error;
+  }
+};
