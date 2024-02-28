@@ -2,10 +2,8 @@ import { generateToken } from "../middlewares/jwt.handle";
 import Secretary, { ISecretary } from "../models/secretary.model";
 import Role, { IRole } from './../models/role.model';
 import { Auth } from "interfaces/auth";
-export const registerSecretary = async (secretary: ISecretary) => {
-  // const checkIs = await Secretary.findOne({email: secretary.email})
-  // if(checkIs) return "ALREADY_USER";
 
+export const registerSecretary = async (secretary: ISecretary) => {
   const createdSecretary = await Secretary.create(secretary);
   createdSecretary.password = await createdSecretary.encryptPassword(createdSecretary.password);
   const role = await Role.findOne({name: "secretary"});
@@ -20,17 +18,26 @@ export const registerSecretary = async (secretary: ISecretary) => {
 };
 
 export const loginSecretary = async ({ email, password }: Auth) => {
-  const secretary = await Secretary.findOne({ email }).populate('roles');
-  const readyRoles:String[]= [];
-  if (!secretary) return "EMAIL_INCORRECTO";
-  for(let r of secretary?.roles) readyRoles.push(r.name);
+  const secretary = await Secretary.findOne({ email }).populate('roles').lean();
+  const readyRoles: string[] = [];
 
-  const isCorrect: boolean = await secretary.validatePassword(password); //validate in utils?
+  if (!secretary) return "EMAIL_INCORRECTO";
+
+  for (let r of secretary?.roles) {
+    const role = await Role.findById(r);
+    if (role) {
+      readyRoles.push(role.name);
+    }
+  }
+
+  const isCorrect: boolean = await secretary.validatePassword(password);
+
   if (!isCorrect) return "CONTRASEÑA_INCORRECTA";
 
-  const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles};
+  const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles };
   console.log(data.rol);
+
   const token = generateToken(`${secretary._id}`);
   
-  return {token , data};
+  return { token, data };
 };

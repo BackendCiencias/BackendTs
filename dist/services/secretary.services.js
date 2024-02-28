@@ -17,8 +17,6 @@ const jwt_handle_1 = require("../middlewares/jwt.handle");
 const secretary_model_1 = __importDefault(require("../models/secretary.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
 const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, function* () {
-    // const checkIs = await Secretary.findOne({email: secretary.email})
-    // if(checkIs) return "ALREADY_USER";
     const createdSecretary = yield secretary_model_1.default.create(secretary);
     createdSecretary.password = yield createdSecretary.encryptPassword(createdSecretary.password);
     const role = yield role_model_1.default.findOne({ name: "secretary" });
@@ -31,13 +29,17 @@ const registerSecretary = (secretary) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.registerSecretary = registerSecretary;
 const loginSecretary = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
-    const secretary = yield secretary_model_1.default.findOne({ email }).populate('roles');
+    const secretary = yield secretary_model_1.default.findOne({ email }).populate('roles').lean();
     const readyRoles = [];
     if (!secretary)
         return "EMAIL_INCORRECTO";
-    for (let r of secretary === null || secretary === void 0 ? void 0 : secretary.roles)
-        readyRoles.push(r.name);
-    const isCorrect = yield secretary.validatePassword(password); //validate in utils?
+    for (let r of secretary === null || secretary === void 0 ? void 0 : secretary.roles) {
+        const role = yield role_model_1.default.findById(r);
+        if (role) {
+            readyRoles.push(role.name);
+        }
+    }
+    const isCorrect = yield secretary.validatePassword(password);
     if (!isCorrect)
         return "CONTRASEÑA_INCORRECTA";
     const data = { email: secretary.email, names: secretary.names, _id: secretary._id, rol: readyRoles };
