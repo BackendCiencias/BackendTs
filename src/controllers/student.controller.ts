@@ -119,9 +119,9 @@ export const modifyStudentData = async ({body}: Request, res: Response) => {
 export const modifyStudentPhoto = async ({body}: Request, res: Response) => {
     try{
         const { dni, image } = body;
-        await saveStudentImage(dni, image);
-        return res.status(200).json({message: 'Successfully saved photo'})
+        const savedStudent = await saveStudentImage(dni, image);
+        return res.status(200).json({savedStudent , message: 'Successfully saved photo'})
     } catch(error){
-        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw : error });
     }
 }

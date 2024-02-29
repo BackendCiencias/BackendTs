@@ -168,10 +168,11 @@ export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
 
 export const saveStudentImage = async (studentDNI: string, imageData: Buffer) => {
     try {
-        const student = await Student.findById({dni : studentDNI});
+        const student = await Student.findOne({dni : studentDNI});
         if (!student) throw new Error('STUDENT_NOT_FOUND');
         student.photo = imageData;
-        await student.save();
+        const studentSaved = await student.save()
+        return studentSaved;
     } catch (error) {
         throw error;
     }

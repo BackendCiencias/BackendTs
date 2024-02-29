@@ -178,11 +178,12 @@ const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 
 exports.modifyStudentByDNI = modifyStudentByDNI;
 const saveStudentImage = (studentDNI, imageData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const student = yield student_model_1.default.findById({ dni: studentDNI });
+        const student = yield student_model_1.default.findOne({ dni: studentDNI });
         if (!student)
             throw new Error('STUDENT_NOT_FOUND');
         student.photo = imageData;
-        yield student.save();
+        const studentSaved = yield student.save();
+        return studentSaved;
     }
     catch (error) {
         throw error;

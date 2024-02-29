@@ -131,11 +131,11 @@ exports.modifyStudentData = modifyStudentData;
 const modifyStudentPhoto = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { dni, image } = body;
-        yield (0, student_services_1.saveStudentImage)(dni, image);
-        return res.status(200).json({ message: 'Successfully saved photo' });
+        const savedStudent = yield (0, student_services_1.saveStudentImage)(dni, image);
+        return res.status(200).json({ savedStudent, message: 'Successfully saved photo' });
     }
     catch (error) {
-        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw: error });
     }
 });
 exports.modifyStudentPhoto = modifyStudentPhoto;
