@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
+exports.modifyStudentPhoto = exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
@@ -112,15 +112,6 @@ const signinStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.signinStudent = signinStudent;
-// export const modifyStudentData = async ({body}: Request, res: Response) => {
-//     try{
-//         console.log(body);
-//         const {dni} = body;
-//         const modStudent = await modifyStudent(dni, body);
-//     }catch(e){
-//         handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
-//     }
-// };
 const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { dni } = body;
@@ -137,4 +128,15 @@ const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.modifyStudentData = modifyStudentData;
+const modifyStudentPhoto = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { dni, image } = body;
+        yield (0, student_services_1.saveStudentImage)(dni, image);
+        return res.status(200).json({ message: 'Successfully saved photo' });
+    }
+    catch (error) {
+        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+    }
+});
+exports.modifyStudentPhoto = modifyStudentPhoto;
 //# sourceMappingURL=student.controller.js.map

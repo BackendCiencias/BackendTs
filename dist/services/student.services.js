@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
+exports.saveStudentImage = exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
@@ -176,4 +176,17 @@ const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 
     }
 });
 exports.modifyStudentByDNI = modifyStudentByDNI;
+const saveStudentImage = (studentDNI, imageData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const student = yield student_model_1.default.findById({ dni: studentDNI });
+        if (!student)
+            throw new Error('STUDENT_NOT_FOUND');
+        student.photo = imageData;
+        yield student.save();
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.saveStudentImage = saveStudentImage;
 //# sourceMappingURL=student.services.js.map

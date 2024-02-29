@@ -1,4 +1,4 @@
-import { getStudents, createStudent, getStudentsById, getStudentsByParamId, getStudentsByDNI, signinStudent, createBulkStudents, modifyStudentData} from './../controllers/student.controller';
+import { getStudents, createStudent, getStudentsById, getStudentsByParamId, getStudentsByDNI, signinStudent, createBulkStudents, modifyStudentData, modifyStudentPhoto} from './../controllers/student.controller';
 import { verifyToken, isSecretary} from '../middlewares/jwt.handle';
 import { Router } from 'express';
 const router: Router = Router();
@@ -11,5 +11,6 @@ router.get('/api/student/:student_id', [verifyToken, isSecretary], getStudentsBy
 router.post('/api/student/id', [verifyToken, isSecretary], getStudentsById)
 router.post('/api/student/dni', [verifyToken, isSecretary], getStudentsByDNI)
 router.post('/api/student/modify', [verifyToken, isSecretary], modifyStudentData);
+router.post('/api/student/image', [verifyToken, isSecretary], modifyStudentPhoto);
 
 export default router;

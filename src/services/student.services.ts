@@ -165,3 +165,14 @@ export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
     throw error;
   }
 };
+
+export const saveStudentImage = async (studentDNI: string, imageData: Buffer) => {
+    try {
+        const student = await Student.findById({dni : studentDNI});
+        if (!student) throw new Error('STUDENT_NOT_FOUND');
+        student.photo = imageData;
+        await student.save();
+    } catch (error) {
+        throw error;
+    }
+};

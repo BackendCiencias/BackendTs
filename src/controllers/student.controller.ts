@@ -1,8 +1,8 @@
 import { updateVacancies } from './../services/classroom.services';
 import { registerPension } from './../services/pension.services';
-import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI} from './../services/student.services';
+import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI, saveStudentImage} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
-import { Request , Response } from 'express';
+import { Request , Response, response } from 'express';
 import { handleHttp } from '../utils/error.handle';
 import { IStudent } from 'models/student.model';
 export const createStudent =  async({body}: Request, res: Response) => {
@@ -98,17 +98,6 @@ export const signinStudent = async ({body}: Request, res: Response) => {
     
 };
 
-// export const modifyStudentData = async ({body}: Request, res: Response) => {
-//     try{
-//         console.log(body);
-//         const {dni} = body;
-//         const modStudent = await modifyStudent(dni, body);
-
-//     }catch(e){
-//         handleHttp(res, 'ERROR_MODIFY_STUDENT',e);
-//     }
-// };
-
 export const modifyStudentData = async ({body}: Request, res: Response) => {
     try {
       const { dni } = body;
@@ -125,4 +114,14 @@ export const modifyStudentData = async ({body}: Request, res: Response) => {
       console.error(error);
       return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
     }
-  };
+};
+
+export const modifyStudentPhoto = async ({body}: Request, res: Response) => {
+    try{
+        const { dni, image } = body;
+        await saveStudentImage(dni, image);
+        return res.status(200).json({message: 'Successfully saved photo'})
+    } catch(error){
+        return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+    }
+}

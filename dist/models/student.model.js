@@ -21,6 +21,7 @@ const studentSchema = new mongoose_1.Schema({
         surname1: { type: String, required: true },
         surname2: { type: String, required: true },
     },
+    photo: { type: Buffer, required: false },
     genre: { type: String, required: false },
     dni: { type: String, required: true, unique: true },
     nationality: { type: String, default: "PER", required: false },
