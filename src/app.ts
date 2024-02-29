@@ -24,7 +24,7 @@ app.set('port', PORT);
 //middlewares 
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json());
 
 let corsOptions = {
   origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
