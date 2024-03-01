@@ -176,13 +176,17 @@ const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 
     }
 });
 exports.modifyStudentByDNI = modifyStudentByDNI;
-const saveStudentImage = (studentDNI, imageData) => __awaiter(void 0, void 0, void 0, function* () {
+const saveStudentImage = (dni, url, public_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const student = yield student_model_1.default.findOne({ dni: studentDNI });
-        if (!student)
+        const foundedStudent = yield student_model_1.default.findOne({ dni });
+        if (!foundedStudent)
             throw new Error('STUDENT_NOT_FOUND');
-        student.photo = imageData;
-        const studentSaved = yield student.save();
+        if (!foundedStudent.image) {
+            foundedStudent.image = { url: url, public_id: public_id };
+        }
+        foundedStudent.image.url = url;
+        foundedStudent.image.public_id = public_id;
+        const studentSaved = yield foundedStudent.save();
         return studentSaved;
     }
     catch (error) {

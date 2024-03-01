@@ -1,5 +1,6 @@
 import { createRoles } from './utils/initialSetup';
 import express, { Application } from 'express';
+import fileUpload from 'express-fileupload';
 import authRoutes from './routes/auth.routes';
 import classroomRoutes from './routes/classroom.routes';
 import studentRoutes from './routes/student.routes';
@@ -13,7 +14,6 @@ import attendanceRoutes from './routes/attendance.routes';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 const app: Application = express();
 createRoles();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +25,10 @@ app.set('port', PORT);
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: './upload'
+}))
 
 let corsOptions = {
   origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],

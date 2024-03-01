@@ -6,7 +6,6 @@ import { generateToken } from './../middlewares/jwt.handle';
 import { updateVacancies } from './classroom.services';
 import { registerPension } from './pension.services';
 
-
 export const registerStudent = async(student:IStudent) => {
     const {dni, names} = student;
     const {name1, name2, surname1, surname2} = names;
@@ -166,12 +165,17 @@ export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
   }
 };
 
-export const saveStudentImage = async (studentDNI: string, imageData: Buffer) => {
+export const saveStudentImage = async (dni: string, url: string, public_id: string) => {
     try {
-        const student = await Student.findOne({dni : studentDNI});
-        if (!student) throw new Error('STUDENT_NOT_FOUND');
-        student.photo = imageData;
-        const studentSaved = await student.save()
+        const foundedStudent = await Student.findOne({ dni });
+        if (!foundedStudent) throw new Error('STUDENT_NOT_FOUND');
+
+        if (!foundedStudent.image) {
+            foundedStudent.image = {url: url, public_id: public_id};
+        }
+        foundedStudent.image.url = url;
+        foundedStudent.image.public_id = public_id;
+        const studentSaved = await foundedStudent.save()
         return studentSaved;
     } catch (error) {
         throw error;

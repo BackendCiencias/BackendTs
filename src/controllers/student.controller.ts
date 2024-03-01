@@ -4,7 +4,8 @@ import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, lo
 import { checkVacancies } from '../services/classroom.services';
 import { Request , Response, response } from 'express';
 import { handleHttp } from '../utils/error.handle';
-import { IStudent } from 'models/student.model';
+import { uploadImage } from '../config/cloudinary';
+import fs from 'fs-extra'
 export const createStudent =  async({body}: Request, res: Response) => {
     try{
         const {pensions} = body;
@@ -116,11 +117,14 @@ export const modifyStudentData = async ({body}: Request, res: Response) => {
     }
 };
 
-export const modifyStudentPhoto = async ({body}: Request, res: Response) => {
+export const modifyStudentImage = async (req: Request, res: Response) => {
     try{
-        const { dni, image } = body;
-        const savedStudent = await saveStudentImage(dni, image);
-        return res.status(200).json({savedStudent , message: 'Successfully saved photo'})
+        if(!req.files.image) return res.status(400).json({error: 'MISSING_IMAGE'});
+        const {url, public_id} = await uploadImage(req.files.image.tempFilePath);
+
+        await fs.remove(req.files.image.tempFilePath);
+        const savedStudent = await saveStudentImage(req.body.dni, url, public_id);
+        return res.status(200).json({ savedStudent, message: 'SUCCESSFULLY_SAVED_PHOTO' });
     } catch(error){
         return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw : error });
     }

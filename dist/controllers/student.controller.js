@@ -8,13 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.modifyStudentPhoto = exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
+exports.modifyStudentImage = exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
 const classroom_services_2 = require("../services/classroom.services");
 const error_handle_1 = require("../utils/error.handle");
+const cloudinary_1 = require("../config/cloudinary");
+const fs_extra_1 = __importDefault(require("fs-extra"));
 const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { pensions } = body;
@@ -128,15 +133,18 @@ const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.modifyStudentData = modifyStudentData;
-const modifyStudentPhoto = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+const modifyStudentImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { dni, image } = body;
-        const savedStudent = yield (0, student_services_1.saveStudentImage)(dni, image);
-        return res.status(200).json({ savedStudent, message: 'Successfully saved photo' });
+        if (!req.files.image)
+            return res.status(400).json({ error: 'MISSING_IMAGE' });
+        const { url, public_id } = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
+        yield fs_extra_1.default.remove(req.files.image.tempFilePath);
+        const savedStudent = yield (0, student_services_1.saveStudentImage)(req.body.dni, url, public_id);
+        return res.status(200).json({ savedStudent, message: 'SUCCESSFULLY_SAVED_PHOTO' });
     }
     catch (error) {
         return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw: error });
     }
 });
-exports.modifyStudentPhoto = modifyStudentPhoto;
+exports.modifyStudentImage = modifyStudentImage;
 //# sourceMappingURL=student.controller.js.map

@@ -7,7 +7,10 @@ export interface IStudent extends Document {
     surname1: string;
     surname2: string;
   };
-  photo: Buffer;
+  image: {
+    url: string,
+    public_id: string
+  };
   dni: string;
   genre: "M" | "F";
   nationality: string;
@@ -41,8 +44,8 @@ const studentSchema = new Schema(
       surname1: { type: String, required: true },
       surname2: { type: String, required: true },
     },
-    photo: { type: Buffer, required: false },
-    
+    photo: { url: String, public_id: String },
+
     genre: { type: String, required: false },
     dni: { type: String, required: true, unique: true },
     nationality: { type: String, default: "PER",required: false },
