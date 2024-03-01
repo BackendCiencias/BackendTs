@@ -175,8 +175,7 @@ export const saveStudentImage = async (dni: string, url: string, public_id: stri
         }
         foundedStudent.image.url = url;
         foundedStudent.image.public_id = public_id;
-        const studentSaved = await foundedStudent.save()
-        return studentSaved;
+        await foundedStudent.save()
     } catch (error) {
         throw error;
     }

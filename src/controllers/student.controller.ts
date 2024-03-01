@@ -123,8 +123,8 @@ export const modifyStudentImage = async (req: Request, res: Response) => {
         const {url, public_id} = await uploadImage(req.files.image.tempFilePath);
 
         await fs.remove(req.files.image.tempFilePath);
-        const savedStudent = await saveStudentImage(req.body.dni, url, public_id);
-        return res.status(200).json({ savedStudent, message: 'SUCCESSFULLY_SAVED_PHOTO' });
+        await saveStudentImage(req.body.dni, url, public_id);
+        return res.status(200).json({ message: 'SUCCESSFULLY_SAVED_PHOTO' });
     } catch(error){
         return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw : error });
     }

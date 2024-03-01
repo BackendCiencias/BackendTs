@@ -139,8 +139,8 @@ const modifyStudentImage = (req, res) => __awaiter(void 0, void 0, void 0, funct
             return res.status(400).json({ error: 'MISSING_IMAGE' });
         const { url, public_id } = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
         yield fs_extra_1.default.remove(req.files.image.tempFilePath);
-        const savedStudent = yield (0, student_services_1.saveStudentImage)(req.body.dni, url, public_id);
-        return res.status(200).json({ savedStudent, message: 'SUCCESSFULLY_SAVED_PHOTO' });
+        yield (0, student_services_1.saveStudentImage)(req.body.dni, url, public_id);
+        return res.status(200).json({ message: 'SUCCESSFULLY_SAVED_PHOTO' });
     }
     catch (error) {
         return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', errorRaw: error });

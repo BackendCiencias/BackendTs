@@ -186,8 +186,7 @@ const saveStudentImage = (dni, url, public_id) => __awaiter(void 0, void 0, void
         }
         foundedStudent.image.url = url;
         foundedStudent.image.public_id = public_id;
-        const studentSaved = yield foundedStudent.save();
-        return studentSaved;
+        yield foundedStudent.save();
     }
     catch (error) {
         throw error;
