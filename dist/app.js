@@ -30,7 +30,7 @@ app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use((0, express_fileupload_1.default)({
     useTempFiles: true,
-    tempFileDir: 'upload'
+    tempFileDir: '/tmp'
 }));
 let corsOptions = {
     origin: ['http://localhost:3000', 'https://frontend-cienciasapp.vercel.app', 'https://www.cienciasperu.edu.pe'],
