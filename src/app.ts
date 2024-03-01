@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(fileUpload({
   useTempFiles: true,
-  tempFileDir: './upload'
+  tempFileDir: 'upload'
 }))
 
 let corsOptions = {
