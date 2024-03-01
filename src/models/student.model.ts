@@ -44,7 +44,7 @@ const studentSchema = new Schema(
       surname1: { type: String, required: true },
       surname2: { type: String, required: true },
     },
-    photo: { url: String, public_id: String },
+    image: { url: String, public_id: String },
 
     genre: { type: String, required: false },
     dni: { type: String, required: true, unique: true },
