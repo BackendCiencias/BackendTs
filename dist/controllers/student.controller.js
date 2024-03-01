@@ -135,6 +135,8 @@ const modifyStudentData = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
 exports.modifyStudentData = modifyStudentData;
 const modifyStudentImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (!req.files)
+            return res.status(400).json({ error: 'MISING FILES P CTMRE' });
         if (!req.files.image)
             return res.status(400).json({ error: 'MISSING_IMAGE' });
         const { url, public_id } = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);

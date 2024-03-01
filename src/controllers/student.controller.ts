@@ -119,6 +119,7 @@ export const modifyStudentData = async ({body}: Request, res: Response) => {
 
 export const modifyStudentImage = async (req: Request, res: Response) => {
     try{
+        if(!req.files) return res.status(400).json({error: 'MISING FILES P CTMRE'})
         if(!req.files.image) return res.status(400).json({error: 'MISSING_IMAGE'});
         const {url, public_id} = await uploadImage(req.files.image.tempFilePath);
 
