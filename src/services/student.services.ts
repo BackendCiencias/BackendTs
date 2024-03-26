@@ -139,7 +139,7 @@ export const findStudentById = async(studentId:string) => {
 
 export const findStudentByDNI = async(dni:string) => {
     console.log(dni);
-    const studentFounded = await Student.findOne({ dni }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');
+    const studentFounded = await Student.findOne({ dni }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts').populate('image');
     if(!studentFounded) return "NOT_STUDENT_FOUNDED_BY_DNI";
     return studentFounded;
 }
