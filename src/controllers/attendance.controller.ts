@@ -7,6 +7,6 @@ export const studentAttendance =  async({body}: Request, res: Response) => {
         const responseAssistants = await markAttendance(body.dni);
         res.send(responseAssistants);
     }catch(e){
-        res.status(400).send(e.message);
+        res.status(400).send({error: e.message});
     }
 };

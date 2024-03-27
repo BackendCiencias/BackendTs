@@ -17,7 +17,7 @@ const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
         res.send(responseAssistants);
     }
     catch (e) {
-        res.status(400).send(e.message);
+        res.status(400).send({ error: e.message });
     }
 });
 exports.studentAttendance = studentAttendance;
