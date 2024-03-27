@@ -33,32 +33,27 @@ function daysInMonth(month, year) {
     return new Date(year, month + 1, 0).getDate();
 }
 const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const studentFounded = yield student_model_1.default.findOne({ dni });
-        if (!studentFounded)
-            throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
-        const timeArrive = new Date();
-        timeArrive.setHours(timeArrive.getHours() - 5);
-        const hoursArrive = timeArrive.getHours();
-        const code = (0, date_fns_1.format)(timeArrive, 'dd/MM/yyyy');
-        const responseAttendance = yield attendance_model_1.default.findOne({ student: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded._id, code });
-        if (!responseAttendance)
-            throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
-        if (responseAttendance.state != 'F')
-            throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
-        responseAttendance.date = timeArrive;
-        responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
-        const savedAttendance = yield responseAttendance.save();
-        return {
-            state: savedAttendance.state,
-            date: savedAttendance.date,
-            names: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.names,
-            grade: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.grade
-        };
-    }
-    catch (e) {
-        return { error: "ERROR_SING_STUDENT_ATTENDACE", reason: e };
-    }
+    const studentFounded = yield student_model_1.default.findOne({ dni });
+    if (!studentFounded)
+        throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
+    const timeArrive = new Date();
+    timeArrive.setHours(timeArrive.getHours() - 5);
+    const hoursArrive = timeArrive.getHours();
+    const code = (0, date_fns_1.format)(timeArrive, 'dd/MM/yyyy');
+    const responseAttendance = yield attendance_model_1.default.findOne({ student: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded._id, code });
+    if (!responseAttendance)
+        throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
+    if (responseAttendance.state != 'F')
+        throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
+    responseAttendance.date = timeArrive;
+    responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
+    const savedAttendance = yield responseAttendance.save();
+    return {
+        state: savedAttendance.state,
+        date: savedAttendance.date,
+        names: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.names,
+        grade: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.grade
+    };
 });
 exports.markAttendance = markAttendance;
 //# sourceMappingURL=attendance.services.js.map

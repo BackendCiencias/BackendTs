@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentAttendance = void 0;
-const error_handle_1 = require("../utils/error.handle");
 const attendance_services_1 = require("./../services/attendance.services");
 const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -18,7 +17,7 @@ const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
         res.send(responseAssistants);
     }
     catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_STUDENT_ATTENDANCE', e);
+        res.status(400).send(e.message);
     }
 });
 exports.studentAttendance = studentAttendance;

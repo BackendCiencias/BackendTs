@@ -21,30 +21,26 @@ function daysInMonth(month:number, year:number) {
 }
 
 export const markAttendance = async(dni:string) => {
-    try {
-        const studentFounded = await Student.findOne({dni});
-        if(!studentFounded) throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
-        
-        const timeArrive = new Date();
-        timeArrive.setHours(timeArrive.getHours() - 5);
-        const hoursArrive = timeArrive.getHours();
-        const code = format(timeArrive, 'dd/MM/yyyy');
+    const studentFounded = await Student.findOne({dni});
+    if(!studentFounded) throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
+    
+    const timeArrive = new Date();
+    timeArrive.setHours(timeArrive.getHours() - 5);
+    const hoursArrive = timeArrive.getHours();
+    const code = format(timeArrive, 'dd/MM/yyyy');
 
-        const responseAttendance = await Attendance.findOne({student: studentFounded?._id, code});
-        if(!responseAttendance) throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
-        
-        if(responseAttendance.state != 'F') throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
-        responseAttendance.date = timeArrive;
-        responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
-        
-        const savedAttendance = await responseAttendance.save();
-        return {
-            state: savedAttendance.state,
-            date: savedAttendance.date,
-            names: studentFounded?.names,
-            grade: studentFounded?.grade
-        }
-    } catch (e) {
-        return {error: "ERROR_SING_STUDENT_ATTENDACE", reason: e};
+    const responseAttendance = await Attendance.findOne({student: studentFounded?._id, code});
+    if(!responseAttendance) throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
+    
+    if(responseAttendance.state != 'F') throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
+    responseAttendance.date = timeArrive;
+    responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
+    
+    const savedAttendance = await responseAttendance.save();
+    return {
+        state: savedAttendance.state,
+        date: savedAttendance.date,
+        names: studentFounded?.names,
+        grade: studentFounded?.grade
     }
 }
