@@ -52,6 +52,7 @@ const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
         const savedAttendance = yield responseAttendance.save();
         return {
             state: savedAttendance.state,
+            date: savedAttendance.date,
             names: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.names,
             grade: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded.grade
         };

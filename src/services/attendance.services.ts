@@ -38,6 +38,7 @@ export const markAttendance = async(dni:string) => {
         const savedAttendance = await responseAttendance.save();
         return {
             state: savedAttendance.state,
+            date: savedAttendance.date,
             names: studentFounded?.names,
             grade: studentFounded?.grade
         }
