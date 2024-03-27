@@ -2,17 +2,16 @@ import { Schema, model, Types, Document} from "mongoose";
 
 export interface IAttendance extends Document {
     code: string,
-    description: string,
-    type: 'N' | 'E',
-    timeLimit: Date;
+    student: Types.ObjectId[],
+    date: Date,
+    state: 'P' | 'T' | 'F' | 'X' | 'J',
 }
-// const tl = new Date();
-// tl.setTime()
+
 const attendanceSchema = new Schema({
   code: { type: String, required: true },
-  description: { type: String},
-  type: { type: String, default: 'N',required: true},
-  timeLimit: { type: Date, default: new Date().setHours(8,0,0), required: true}
+  student: { ref: "Student", type: Schema.Types.ObjectId },
+  date: { type: Date },
+  state: { type: String, default: 'F', required: true},
 },
 {
   timestamps: true,

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.modifyStudentImage = exports.modifyStudentData = exports.signinStudent = exports.getStudentsByDNI = exports.getStudentsById = exports.getStudentsByParamId = exports.getStudents = exports.createBulkStudents = exports.createStudent = void 0;
 const classroom_services_1 = require("./../services/classroom.services");
+const attendance_services_1 = require("./../services/attendance.services");
 const pension_services_1 = require("./../services/pension.services");
 const student_services_1 = require("./../services/student.services");
 const classroom_services_2 = require("../services/classroom.services");
@@ -33,12 +34,12 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
             const { _id, grade, collegue } = responseStudent;
             yield (0, classroom_services_1.updateVacancies)(_id, grade, collegue);
         }
-        // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
-        const responsePensions = yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
-        // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
+        yield (0, attendance_services_1.generateAttendanceForYear)(responseStudent._id);
+        console.log("Asistencias creadas");
+        if (pensions)
+            yield (0, pension_services_1.registerPension)(pensions, responseStudent._id);
         const actStudent = yield (0, student_services_1.findStudentById)(responseStudent._id);
         res.send({ actStudent, email: responseStudent.email, password: responseStudent.password });
-        // res.send({message: "Success"});
     }
     catch (e) {
         (0, error_handle_1.handleHttp)(res, 'ERROR_SIGNUP_STUDENT', e);

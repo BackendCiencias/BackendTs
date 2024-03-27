@@ -161,11 +161,6 @@ const findAllStudents = () => __awaiter(void 0, void 0, void 0, function* () {
     return allStudent;
 });
 exports.findAllStudents = findAllStudents;
-// export const modifyStudent = async (studentDNI:string, studentData:IStudent) => {
-//     console.log("Modify Student Alive");
-//     console.log()
-//     return;
-// }
 const modifyStudentByDNI = (dni, modifydData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const modifiedStudent = yield student_model_1.default.findOneAndUpdate({ dni }, modifydData, { new: true }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');

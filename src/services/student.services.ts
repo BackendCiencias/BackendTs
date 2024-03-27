@@ -149,13 +149,6 @@ export const findAllStudents  = async () =>{
     return allStudent;
 }
 
-// export const modifyStudent = async (studentDNI:string, studentData:IStudent) => {
-
-//     console.log("Modify Student Alive");
-//     console.log()
-//     return;
-// }
-
 export const modifyStudentByDNI = async (dni: string, modifydData: any) => {
   try {
     const modifiedStudent = await Student.findOneAndUpdate({ dni }, modifydData, { new: true }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts');

@@ -1,4 +1,5 @@
 import { updateVacancies } from './../services/classroom.services';
+import { generateAttendanceForYear } from './../services/attendance.services';
 import { registerPension } from './../services/pension.services';
 import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI, saveStudentImage} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
@@ -19,12 +20,13 @@ export const createStudent =  async({body}: Request, res: Response) => {
             await updateVacancies(_id, grade, collegue)
         }
 
-        // if(responseStudent == "MISSSING_DNI") return res.status(400).send({"error": responseStudent});
-        const responsePensions = await registerPension(pensions, responseStudent._id);
-        // if(responsePensions == "ERROR_FINDING_STUDENT") return res.status(400).send({"error": responsePensions});
+        await generateAttendanceForYear(responseStudent._id);
+        console.log("Asistencias creadas");
+
+        if(pensions) await registerPension(pensions, responseStudent._id);   
+        
         const actStudent = await findStudentById(responseStudent._id);
         res.send({actStudent, email: responseStudent.email, password: responseStudent.password});
-        // res.send({message: "Success"});
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_STUDENT',e);
     }

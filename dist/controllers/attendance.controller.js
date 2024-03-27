@@ -9,25 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTodayAttendance = exports.studentAttendance = exports.createAttendance = void 0;
+exports.studentAttendance = void 0;
 const error_handle_1 = require("../utils/error.handle");
 const attendance_services_1 = require("./../services/attendance.services");
-const createAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseAttendance = yield (0, attendance_services_1.createAttendanceToday)(body);
-        if (responseAttendance == "ERROR_ALREADY_CREADTED_ATTENDANCE") {
-            return res.status(400).send({ error: responseAttendance });
-        }
-        res.send(responseAttendance);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_ASSISTANT_CREATE_ATTENDANCE', e);
-    }
-});
-exports.createAttendance = createAttendance;
 const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseAssistants = yield (0, attendance_services_1.studentAttendanceSign)(body.dni);
+        const responseAssistants = yield (0, attendance_services_1.markAttendance)(body.dni);
         if (responseAssistants == "ALREADY_SIGN_STUDENT_ATTENDANCE") {
             return res.status(400).send({ error: responseAssistants });
         }
@@ -38,17 +25,4 @@ const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.studentAttendance = studentAttendance;
-const getTodayAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const responseAssistants = yield (0, attendance_services_1.todayAttendance)();
-        // if(responseAssistants == "ALREADY_CREATE_ATTENDANCE"){
-        //     return res.status(400).send({error: responseAssistants});
-        // }
-        res.send(responseAssistants);
-    }
-    catch (e) {
-        (0, error_handle_1.handleHttp)(res, 'ERROR_GET_TODAY_ATTENDANCE', e);
-    }
-});
-exports.getTodayAttendance = getTodayAttendance;
 //# sourceMappingURL=attendance.controller.js.map
