@@ -39,13 +39,13 @@ const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
         const timeArrive = new Date();
         timeArrive.setHours(timeArrive.getHours() - 5);
+        const hoursArrive = timeArrive.getHours();
         const code = (0, date_fns_1.format)(timeArrive, 'dd/MM/yyyy');
         const responseAttendance = yield attendance_model_1.default.findOne({ student: studentFounded === null || studentFounded === void 0 ? void 0 : studentFounded._id, code });
         if (!responseAttendance)
-            return 'NOT_FOUND_MATCH_ATTENDANCE_STUDENT';
-        const hoursArrive = timeArrive.getHours();
+            throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
         if (responseAttendance.state != 'F')
-            return 'ALREADY_SIGN_STUDENT_ATTENDANCE';
+            throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
         responseAttendance.date = timeArrive;
         responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
         const savedAttendance = yield responseAttendance.save();

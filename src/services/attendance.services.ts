@@ -27,13 +27,16 @@ export const markAttendance = async(dni:string) => {
         
         const timeArrive = new Date();
         timeArrive.setHours(timeArrive.getHours() - 5);
-        const code = format(timeArrive, 'dd/MM/yyyy');
-        const responseAttendance = await Attendance.findOne({student: studentFounded?._id, code});
-        if(!responseAttendance) return 'NOT_FOUND_MATCH_ATTENDANCE_STUDENT';
         const hoursArrive = timeArrive.getHours();
-        if(responseAttendance.state != 'F') return 'ALREADY_SIGN_STUDENT_ATTENDANCE';
+        const code = format(timeArrive, 'dd/MM/yyyy');
+
+        const responseAttendance = await Attendance.findOne({student: studentFounded?._id, code});
+        if(!responseAttendance) throw new Error('NOT_FOUND_MATCH_ATTENDANCE_STUDENT');
+        
+        if(responseAttendance.state != 'F') throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
         responseAttendance.date = timeArrive;
         responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
+        
         const savedAttendance = await responseAttendance.save();
         return {
             state: savedAttendance.state,
