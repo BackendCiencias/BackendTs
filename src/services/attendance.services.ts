@@ -26,14 +26,13 @@ export const markAttendance = async(dni:string) => {
         if(!studentFounded) throw new Error('STUDENT_NOT_FOUND_ATTENDANCE');
         
         const timeArrive = new Date();
+        timeArrive.setHours(timeArrive.getHours() - 5);
         const code = format(timeArrive, 'dd/MM/yyyy');
         const responseAttendance = await Attendance.findOne({student: studentFounded?._id, code});
         if(!responseAttendance) return 'NOT_FOUND_MATCH_ATTENDANCE_STUDENT';
         const hoursArrive = timeArrive.getHours();
         if(responseAttendance.state != 'F') return 'ALREADY_SIGN_STUDENT_ATTENDANCE';
-        var fechaUTC = new Date(timeArrive);
-        fechaUTC.setHours(fechaUTC.getHours() - 5);
-        responseAttendance.date = fechaUTC;
+        responseAttendance.date = timeArrive;
         responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
         const savedAttendance = await responseAttendance.save();
         return {
