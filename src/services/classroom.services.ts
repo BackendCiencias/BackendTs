@@ -81,6 +81,7 @@ export const addVacancies = async (grade:string, collegue:string, cant:number) =
 }
 
 export const registerVacancies  = async (classroomArr:IClassroom[]) =>{
+    return "Desactivado :P";
     let x = 0;
     try {
         for(let classroom of classroomArr ){
@@ -91,7 +92,6 @@ export const registerVacancies  = async (classroomArr:IClassroom[]) =>{
     } catch (e) {
         return {error: "ERROR_CREATE_CLASSROOM_BULK", reason: e}
     }
-    return "Desactivado :P";
 }
 
 // export const assingStudentClass =async (grade:string, collegue:string, studentid:Types.ObjectId) => {

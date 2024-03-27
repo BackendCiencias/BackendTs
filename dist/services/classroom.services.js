@@ -94,6 +94,7 @@ const addVacancies = (grade, collegue, cant) => __awaiter(void 0, void 0, void 0
 });
 exports.addVacancies = addVacancies;
 const registerVacancies = (classroomArr) => __awaiter(void 0, void 0, void 0, function* () {
+    return "Desactivado :P";
     let x = 0;
     try {
         for (let classroom of classroomArr) {
@@ -106,7 +107,6 @@ const registerVacancies = (classroomArr) => __awaiter(void 0, void 0, void 0, fu
     catch (e) {
         return { error: "ERROR_CREATE_CLASSROOM_BULK", reason: e };
     }
-    return "Desactivado :P";
 });
 exports.registerVacancies = registerVacancies;
 // export const assingStudentClass =async (grade:string, collegue:string, studentid:Types.ObjectId) => {

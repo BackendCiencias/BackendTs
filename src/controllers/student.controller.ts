@@ -1,7 +1,7 @@
 import { updateVacancies } from './../services/classroom.services';
 import { generateAttendanceForYear } from './../services/attendance.services';
 import { registerPension } from './../services/pension.services';
-import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI, saveStudentImage} from './../services/student.services';
+import { registerStudent, findAllStudents, findStudentById, findStudentByDNI, loginStudent, registerStudentSpecial, modifyStudentByDNI, saveStudentImage, registerBulkStudents} from './../services/student.services';
 import { checkVacancies } from '../services/classroom.services';
 import { Request , Response, response } from 'express';
 import { handleHttp } from '../utils/error.handle';
@@ -34,7 +34,8 @@ export const createStudent =  async({body}: Request, res: Response) => {
 
 export const createBulkStudents =  async({body}: Request, res: Response) => {
     try{
-        const responseStudent = await registerStudentSpecial();
+        // const responseStudent = await registerStudentSpecial();
+        const responseStudent = await registerBulkStudents();
         res.status(200).send(responseStudent);
     }catch(e){
         handleHttp(res, 'ERROR_SIGNUP_SPECIAL_BULK_STUDENTS',e);

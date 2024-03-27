@@ -18,7 +18,6 @@ const student_model_1 = __importDefault(require("./../models/student.model"));
 const date_fns_1 = require("date-fns");
 const generateAttendanceForYear = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     const year = new Date().getFullYear();
-    console.log(year);
     const attendance = [];
     for (let month = 0; month < 12; month++) {
         for (let day = 1; day <= daysInMonth(month, year); day++) {

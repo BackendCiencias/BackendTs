@@ -5,6 +5,7 @@ import { Auth } from "interfaces/auth";
 import { generateToken } from './../middlewares/jwt.handle';
 import { updateVacancies } from './classroom.services';
 import { registerPension } from './pension.services';
+import { generateAttendanceForYear } from './attendance.services';
 
 export const registerStudent = async(student:IStudent) => {
     const {dni, names} = student;
@@ -50,6 +51,44 @@ export const tradGrade = (nivel: string, grade: string) => {
     console.log(newGrade);
     return newGrade;
 }
+
+export const registerBulkStudents = async() => {
+    const fs = require('fs');
+    const leerArchivo = (path:string) => fs.readFileSync(path, 'utf8');
+// 
+    const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
+    const studentArr = JSON.parse(archivoChistes1);
+    console.log(studentArr[1]);
+
+    const role = await Role.findOne({name: "student"});
+    try{
+        for(let stu of studentArr)  {
+            const studentCreated = Student.create({
+                names: {
+                    name1: stu.name1,
+                    name2: stu.name2,
+                    surname1: stu.surname1,
+                    surname2: stu.surname2,
+                },
+                nivel: stu.nivel,
+                grade : stu.grade,
+                section: stu.section,
+                collegue: "Ciencias Secundaria",
+                dni: stu.dni,
+                roles: [role?._id]
+            });
+            studentCreated.then((e) => {
+                updateVacancies(e.id, e.grade, e.collegue);
+                generateAttendanceForYear(e._id);
+                // console.log("id: ", e.id)
+            }).catch((error) => console.log("pipipi"));
+        }
+        return {message: "SUCCESSFULLY CREATED"};
+    }catch (e:any) {
+        return {error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e.message};
+    }
+}
+
 export const registerStudentSpecial = async() => {
     const fs = require('fs');
     const leerArchivo = (path:string) => fs.readFileSync(path, 'utf8');

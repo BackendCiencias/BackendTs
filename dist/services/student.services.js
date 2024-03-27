@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveStudentImage = exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.tradGrade = exports.registerStudent = void 0;
+exports.saveStudentImage = exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.registerBulkStudents = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
 const jwt_handle_1 = require("./../middlewares/jwt.handle");
 const classroom_services_1 = require("./classroom.services");
 const pension_services_1 = require("./pension.services");
+const attendance_services_1 = require("./attendance.services");
 const registerStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni, names } = student;
     const { name1, name2, surname1, surname2 } = names;
@@ -61,6 +62,43 @@ const tradGrade = (nivel, grade) => {
     return newGrade;
 };
 exports.tradGrade = tradGrade;
+const registerBulkStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+    const fs = require('fs');
+    const leerArchivo = (path) => fs.readFileSync(path, 'utf8');
+    // 
+    const archivoChistes1 = leerArchivo(process.env.DATA_PATH || "path");
+    const studentArr = JSON.parse(archivoChistes1);
+    console.log(studentArr[1]);
+    const role = yield role_model_1.default.findOne({ name: "student" });
+    try {
+        for (let stu of studentArr) {
+            const studentCreated = student_model_1.default.create({
+                names: {
+                    name1: stu.name1,
+                    name2: stu.name2,
+                    surname1: stu.surname1,
+                    surname2: stu.surname2,
+                },
+                nivel: stu.nivel,
+                grade: stu.grade,
+                section: stu.section,
+                collegue: "Ciencias Secundaria",
+                dni: stu.dni,
+                roles: [role === null || role === void 0 ? void 0 : role._id]
+            });
+            studentCreated.then((e) => {
+                (0, classroom_services_1.updateVacancies)(e.id, e.grade, e.collegue);
+                (0, attendance_services_1.generateAttendanceForYear)(e._id);
+                // console.log("id: ", e.id)
+            }).catch((error) => console.log("pipipi"));
+        }
+        return { message: "SUCCESSFULLY CREATED" };
+    }
+    catch (e) {
+        return { error: "ERROR_CREATE_SINGLE_SPECIAL_STUDENT", reason: e.message };
+    }
+});
+exports.registerBulkStudents = registerBulkStudents;
 const registerStudentSpecial = () => __awaiter(void 0, void 0, void 0, function* () {
     const fs = require('fs');
     const leerArchivo = (path) => fs.readFileSync(path, 'utf8');

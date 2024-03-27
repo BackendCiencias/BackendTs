@@ -48,7 +48,8 @@ const createStudent = ({ body }, res) => __awaiter(void 0, void 0, void 0, funct
 exports.createStudent = createStudent;
 const createBulkStudents = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseStudent = yield (0, student_services_1.registerStudentSpecial)();
+        // const responseStudent = await registerStudentSpecial();
+        const responseStudent = yield (0, student_services_1.registerBulkStudents)();
         res.status(200).send(responseStudent);
     }
     catch (e) {

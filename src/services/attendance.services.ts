@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 
 export const generateAttendanceForYear = async(studentId:Types.ObjectId) => {
     const year = new Date().getFullYear();
-    console.log(year);
     const attendance = [];
     for (let month = 0; month < 12; month++) {
         for (let day = 1; day <= daysInMonth(month, year); day++) {
