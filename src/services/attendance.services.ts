@@ -31,7 +31,9 @@ export const markAttendance = async(dni:string) => {
         if(!responseAttendance) return 'NOT_FOUND_MATCH_ATTENDANCE_STUDENT';
         const hoursArrive = timeArrive.getHours();
         if(responseAttendance.state != 'F') return 'ALREADY_SIGN_STUDENT_ATTENDANCE';
-        responseAttendance.date = timeArrive;
+        var fechaUTC = new Date(timeArrive);
+        fechaUTC.setHours(fechaUTC.getHours() - 5);
+        responseAttendance.date = fechaUTC;
         responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
         const savedAttendance = await responseAttendance.save();
         return {
