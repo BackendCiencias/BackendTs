@@ -33,7 +33,11 @@ export const markAttendance = async(dni:string) => {
     
     if(responseAttendance.state != 'F') throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
     responseAttendance.date = timeArrive;
-    responseAttendance.state = (hoursArrive < 8) ? 'P' : 'T';
+    
+    let state = 'T';
+    if(hoursArrive < 8) state = 'P';
+    else if(hoursArrive == 8) state = (timeArrive.getMinutes() <= 5 ? 'P' : 'T')
+    responseAttendance.state = state;
     
     const savedAttendance = await responseAttendance.save();
     return {
