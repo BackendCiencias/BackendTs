@@ -45,8 +45,6 @@ const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
     if (responseAttendance.state != 'F')
         throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
     responseAttendance.date = timeArrive;
-    // console.log("minutos", timeArrive.getMinutes());
-    // console.log("hours", timeArrive.getHours());
     let state = 'T';
     if (hoursArrive < 8)
         state = 'P';
