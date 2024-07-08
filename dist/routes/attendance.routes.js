@@ -5,5 +5,6 @@ const jwt_handle_1 = require("../middlewares/jwt.handle");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 router.post('/api/attendance/studentAtt', [jwt_handle_1.verifyToken, jwt_handle_1.isAssistant], attendance_controller_1.studentAttendance);
+router.post('/api/attendance/classroom', [jwt_handle_1.verifyToken], attendance_controller_1.attendanceByGradeAndSection);
 exports.default = router;
 //# sourceMappingURL=attendance.routes.js.map

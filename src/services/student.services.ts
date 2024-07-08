@@ -212,3 +212,12 @@ export const saveStudentImage = async (dni: string, url: string, public_id: stri
         throw error;
     }
 };
+
+export const studentsByGradeAndSection = async(grade: string, section: string, collegue: string) => {
+    try{
+        const responseStudents = await Student.find({grade: grade, section : section, collegue: collegue}, {_id: 1, names:1, dni:1});
+        return responseStudents;
+    }catch(error){
+        throw error;
+    }
+}

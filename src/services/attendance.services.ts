@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import Attendance, { IAttendance } from './../models/attendance.model';
 import Student, { IStudent } from './../models/student.model';
 import { format } from 'date-fns';
+import { response } from 'express';
 
 export const generateAttendanceForYear = async(studentId:Types.ObjectId) => {
     const year = new Date().getFullYear();
@@ -34,7 +35,9 @@ export const markAttendance = async(dni:string) => {
     if(responseAttendance.state != 'F') throw new Error('ALREADY_SIGN_STUDENT_ATTENDANCE');
     responseAttendance.date = timeArrive;
     
-    let state = 'T';
+    type MyStates = "F" | "P" | "T" | "X" | "J";
+
+    let state:MyStates = 'T';
     if(hoursArrive < 8) state = 'P';
     else if(hoursArrive == 8) state = (timeArrive.getMinutes() <= 5 ? 'P' : 'T')
     responseAttendance.state = state;
@@ -46,4 +49,13 @@ export const markAttendance = async(dni:string) => {
         names: studentFounded?.names,
         grade: studentFounded?.grade
     }
+}
+
+export const studentPoputaleAttendance = async(student:IStudent, month:number) => {
+    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`); // Expresión regular para el código del mes/año
+    const attendances = await Attendance.find({
+        student: student._id,
+        code: regex
+    }, {code:1, state:1});
+    return { student, attendances }
 }

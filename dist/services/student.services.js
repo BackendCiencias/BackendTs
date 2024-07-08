@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveStudentImage = exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.registerBulkStudents = exports.tradGrade = exports.registerStudent = void 0;
+exports.studentsByGradeAndSection = exports.saveStudentImage = exports.modifyStudentByDNI = exports.findAllStudents = exports.findStudentByDNI = exports.findStudentById = exports.loginStudent = exports.registerStudentSpecial = exports.registerBulkStudents = exports.tradGrade = exports.registerStudent = void 0;
 const stringPreprocesor_1 = require("./../utils/stringPreprocesor");
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const role_model_1 = __importDefault(require("./../models/role.model"));
@@ -226,4 +226,14 @@ const saveStudentImage = (dni, url, public_id) => __awaiter(void 0, void 0, void
     }
 });
 exports.saveStudentImage = saveStudentImage;
+const studentsByGradeAndSection = (grade, section, collegue) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const responseStudents = yield student_model_1.default.find({ grade: grade, section: section, collegue: collegue }, { _id: 1, names: 1, dni: 1 });
+        return responseStudents;
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.studentsByGradeAndSection = studentsByGradeAndSection;
 //# sourceMappingURL=student.services.js.map

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.markAttendance = exports.generateAttendanceForYear = void 0;
+exports.studentPoputaleAttendance = exports.markAttendance = exports.generateAttendanceForYear = void 0;
 const attendance_model_1 = __importDefault(require("./../models/attendance.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const date_fns_1 = require("date-fns");
@@ -60,4 +60,13 @@ const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.markAttendance = markAttendance;
+const studentPoputaleAttendance = (student, month) => __awaiter(void 0, void 0, void 0, function* () {
+    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`); // Expresión regular para el código del mes/año
+    const attendances = yield attendance_model_1.default.find({
+        student: student._id,
+        code: regex
+    }, { code: 1, state: 1 });
+    return { student, attendances };
+});
+exports.studentPoputaleAttendance = studentPoputaleAttendance;
 //# sourceMappingURL=attendance.services.js.map

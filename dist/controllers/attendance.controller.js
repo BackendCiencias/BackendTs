@@ -9,16 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentAttendance = void 0;
+exports.attendanceByGradeAndSection = exports.studentAttendance = void 0;
 const attendance_services_1 = require("./../services/attendance.services");
+const student_services_1 = require("./../services/student.services");
 const studentAttendance = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const responseAssistants = yield (0, attendance_services_1.markAttendance)(body.dni);
         res.send(responseAssistants);
     }
     catch (e) {
-        res.status(400).send({ error: e.message });
+        res.status(400).send({ error: e });
     }
 });
 exports.studentAttendance = studentAttendance;
+const attendanceByGradeAndSection = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { grade, section, collegue, month } = body;
+        const responseStudents = yield (0, student_services_1.studentsByGradeAndSection)(grade, section, collegue);
+        const populatedAttendance = yield Promise.all(responseStudents.map((student) => __awaiter(void 0, void 0, void 0, function* () { return yield (0, attendance_services_1.studentPoputaleAttendance)(student, month); })));
+        res.send(populatedAttendance);
+    }
+    catch (e) {
+        res.status(400).send({ error: e });
+    }
+});
+exports.attendanceByGradeAndSection = attendanceByGradeAndSection;
 //# sourceMappingURL=attendance.controller.js.map
