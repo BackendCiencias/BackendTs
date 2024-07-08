@@ -36,7 +36,7 @@ export const attendanceByGradeAndSection = async({body}:Request, res: Response) 
         const populatedAttendance = await Promise.all(
             responseStudents.map(async (student) => await studentPoputaleAttendance(student, month))
         );
-        res.send(populatedAttendance);
+        res.status(200).send(populatedAttendance);
     }catch(e){
         res.status(400).send({error: e});
     }
