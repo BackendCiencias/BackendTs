@@ -37,7 +37,7 @@ const attendanceByGradeAndSection = ({ body }, res) => __awaiter(void 0, void 0,
         console.log(responseStudents);
         const sortedStudents = responseStudents.sort(compareStudents);
         const populatedAttendance = yield Promise.all(responseStudents.map((student) => __awaiter(void 0, void 0, void 0, function* () { return yield (0, attendance_services_1.studentPoputaleAttendance)(student, month); })));
-        res.status(200).send(populatedAttendance);
+        res.send(populatedAttendance);
     }
     catch (e) {
         res.status(400).send({ error: e });
