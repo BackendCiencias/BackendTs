@@ -187,10 +187,12 @@ const findStudentById = (studentId) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.findStudentById = findStudentById;
 const findStudentByDNI = (dni) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(dni);
-    const studentFounded = yield student_model_1.default.findOne({ dni }).select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts').populate('image');
-    if (!studentFounded)
-        return "NOT_STUDENT_FOUNDED_BY_DNI";
+    const studentFounded = yield student_model_1.default.findOne({ dni })
+        .select('-pension -roles -attendanceNormal -attendanceSpecial -tutor -contracts')
+        .populate('image');
+    if (!studentFounded) {
+        throw new Error('NOT_STUDENT_FOUND_BY_DNI');
+    }
     return studentFounded;
 });
 exports.findStudentByDNI = findStudentByDNI;

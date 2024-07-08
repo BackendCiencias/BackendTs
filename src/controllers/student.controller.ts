@@ -69,18 +69,18 @@ export const getStudentsById = async ({body}: Request, res: Response) => {
     }
 };
 
-export const getStudentsByDNI =  async({body}: Request, res: Response) => {
-    try{
-        // no quiero pension, roles, attendance, tutor, contracts
+export const getStudentsByDNI = async ({ body }: Request, res: Response) => {
+    try {
         const responseStudents = await findStudentByDNI(body.dni);
-        if(responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI"){
-            return res.status(400).send({error: responseStudents});
-        }
         res.send(responseStudents);
-    }catch(e){
-        handleHttp(res, 'ERROR_STUDENT_DNI',e);
+    } catch (e:any) {
+        if (e.message === 'NOT_STUDENT_FOUND_BY_DNI') {
+            return res.status(400).send({ error: e.message });
+        }
+        handleHttp(res, 'ERROR_STUDENT_DNI', e);
     }
 };
+
 
 export const signinStudent = async ({body}: Request, res: Response) => {
     try{

@@ -89,14 +89,13 @@ const getStudentsById = ({ body }, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getStudentsById = getStudentsById;
 const getStudentsByDNI = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // no quiero pension, roles, attendance, tutor, contracts
         const responseStudents = yield (0, student_services_1.findStudentByDNI)(body.dni);
-        if (responseStudents == "NOT_STUDENT_FOUNDED_BY_DNI") {
-            return res.status(400).send({ error: responseStudents });
-        }
         res.send(responseStudents);
     }
     catch (e) {
+        if (e.message === 'NOT_STUDENT_FOUND_BY_DNI') {
+            return res.status(400).send({ error: e.message });
+        }
         (0, error_handle_1.handleHttp)(res, 'ERROR_STUDENT_DNI', e);
     }
 });

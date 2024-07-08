@@ -16,6 +16,7 @@ exports.studentPoputaleAttendance = exports.markAttendance = exports.generateAtt
 const attendance_model_1 = __importDefault(require("./../models/attendance.model"));
 const student_model_1 = __importDefault(require("./../models/student.model"));
 const date_fns_1 = require("date-fns");
+const date_fns_tz_1 = require("date-fns-tz");
 const generateAttendanceForYear = (studentId) => __awaiter(void 0, void 0, void 0, function* () {
     const year = new Date().getFullYear();
     const attendance = [];
@@ -60,13 +61,27 @@ const markAttendance = (dni) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.markAttendance = markAttendance;
+const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const timeZone = 'America/Lima';
+    const zonedDate = (0, date_fns_tz_1.toZonedTime)(date, timeZone);
+    return (0, date_fns_1.format)(zonedDate, 'hh:mm a');
+};
+const isModified = (date1, date2) => {
+    return (date2.getTime() - date1.getTime()) < 10;
+};
 const studentPoputaleAttendance = (student, month) => __awaiter(void 0, void 0, void 0, function* () {
-    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`); // Expresión regular para el código del mes/año
+    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`);
     const attendances = yield attendance_model_1.default.find({
         student: student._id,
         code: regex
-    }, { code: 1, state: 1 });
-    return { student, attendances };
+    });
+    const formatedAttendances = attendances.map(attendance => ({
+        state: attendance.state,
+        code: attendance.code,
+        date: isModified(attendance.createdAt, attendance.updatedAt) ? "--:-- AM" : formatTime(attendance.updatedAt)
+    }));
+    return { student, attendances: formatedAttendances };
 });
 exports.studentPoputaleAttendance = studentPoputaleAttendance;
 //# sourceMappingURL=attendance.services.js.map

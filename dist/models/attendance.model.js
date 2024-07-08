@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+// P: Presente -> Hora
+// T: Tarde -> Hora
+// F: Falta -> --:-- AM
+// X: ???
+// J: Justificado -> Hora
 const attendanceSchema = new mongoose_1.Schema({
     code: { type: String, required: true },
     student: { ref: "Student", type: mongoose_1.Schema.Types.ObjectId },

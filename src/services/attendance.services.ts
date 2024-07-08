@@ -1,7 +1,8 @@
 import { Types } from 'mongoose';
 import Attendance, { IAttendance } from './../models/attendance.model';
 import Student, { IStudent } from './../models/student.model';
-import { format } from 'date-fns';
+import { format} from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { response } from 'express';
 
 export const generateAttendanceForYear = async(studentId:Types.ObjectId) => {
@@ -50,12 +51,28 @@ export const markAttendance = async(dni:string) => {
         grade: studentFounded?.grade
     }
 }
+const formatTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const timeZone = 'America/Lima';
+    const zonedDate = toZonedTime(date, timeZone);
+    return format(zonedDate, 'hh:mm a');
+};
+
+const isModified = (date1: Date, date2: Date): boolean => {
+    return (date2.getTime() - date1.getTime()) < 10;
+}
 
 export const studentPoputaleAttendance = async(student:IStudent, month:number) => {
-    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`); // Expresión regular para el código del mes/año
+    const regex = new RegExp(`^\\d{2}/${month}/${2024}$`);
     const attendances = await Attendance.find({
         student: student._id,
         code: regex
-    }, {code:1, state:1});
-    return { student, attendances }
+    });
+    
+    const formatedAttendances = attendances.map(attendance => ({
+        state: attendance.state,
+        code: attendance.code,
+        date: isModified(attendance.createdAt, attendance.updatedAt) ? "--:-- AM" : formatTime(attendance.updatedAt)
+    }));
+    return { student, attendances:formatedAttendances }
 }
