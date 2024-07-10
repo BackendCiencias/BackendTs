@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import Attendance, { IAttendance } from './../models/attendance.model';
 import Student, { IStudent } from './../models/student.model';
-import { format} from 'date-fns';
+import { format, parse, isSaturday, isSunday } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { response } from 'express';
 
@@ -68,8 +68,13 @@ export const studentPoputaleAttendance = async(student:IStudent, month:number) =
         student: student._id,
         code: regex
     });
+
+    const filteredAttendances = attendances.filter(attendance => {
+        const date = parse(attendance.code, 'dd/MM/yyyy', new Date());
+        return !isSaturday(date) && !isSunday(date);
+      });
     
-    const formatedAttendances = attendances.map(attendance => ({
+    const formatedAttendances = filteredAttendances.map(attendance => ({
         state: attendance.state,
         code: attendance.code,
         date: isModified(attendance.createdAt, attendance.updatedAt) ? "--:-- AM" : formatTime(attendance.updatedAt)

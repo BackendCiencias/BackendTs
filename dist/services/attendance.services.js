@@ -76,7 +76,11 @@ const studentPoputaleAttendance = (student, month) => __awaiter(void 0, void 0, 
         student: student._id,
         code: regex
     });
-    const formatedAttendances = attendances.map(attendance => ({
+    const filteredAttendances = attendances.filter(attendance => {
+        const date = (0, date_fns_1.parse)(attendance.code, 'dd/MM/yyyy', new Date());
+        return !(0, date_fns_1.isSaturday)(date) && !(0, date_fns_1.isSunday)(date);
+    });
+    const formatedAttendances = filteredAttendances.map(attendance => ({
         state: attendance.state,
         code: attendance.code,
         date: isModified(attendance.createdAt, attendance.updatedAt) ? "--:-- AM" : formatTime(attendance.updatedAt)
